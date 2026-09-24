@@ -2,38 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3D ID Card Universal Scanner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Institution Digital ID Portal</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Fast QR Code Library -->
+  <!-- Standalone QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-  <div class="main-wrapper">
-    <!-- Admin Control Panel (Scan chesi open chesinappudu auto-hide avtundi) -->
-    <div class="upload-box" id="adminBox">
-      <h2>3D ID Card QR Generator</h2>
-      <p class="desc">ID Card upload cheyagane Google Lens scan link ready avtundi.</p>
-      
-      <input type="file" id="idUpload" accept="image/*" />
-      <div id="loader" class="spinner hidden"></div>
-      <p id="msg">ID Card image ni select cheyandi...</p>
+  <!-- College Header Navbar -->
+  <header class="college-header">
+    <div class="header-content">
+      <div class="brand">
+        <div class="college-logo-emblem">🏛️</div>
+        <div class="college-title">
+          <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
+          <p>DEPARTMENT OF TECHNICAL EDUCATION • DIGITAL ID VERIFICATION SYSTEM</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="adminToggleBtn" class="btn-admin-nav">🔑 Admin Portal</button>
+      </div>
+    </div>
+  </header>
 
-      <div id="qrArea" class="qr-result hidden">
-        <div id="qrcode"></div>
-        <p class="scan-note">Scan with Google Lens or Any Camera</p>
+  <div class="main-container">
+
+    <!-- Admin Panel (Collapsible / Password Protected) -->
+    <div class="admin-panel hidden" id="adminPanel">
+      <div class="panel-header">
+        <h3>🏛️ Administrative Issuing Console</h3>
+        <button id="closeAdminBtn" class="btn-close">&times;</button>
+      </div>
+
+      <!-- Password Lock Section -->
+      <div id="adminAuthLock" class="auth-box">
+        <p>Enter Administrator PIN to Access Card Issuing Tools</p>
+        <div class="auth-input-group">
+          <input type="password" id="adminPinInput" placeholder="Default PIN: 1234" />
+          <button id="adminLoginBtn" class="btn-primary">Unlock</button>
+        </div>
+        <p id="authError" class="error-msg hidden">Incorrect Admin PIN!</p>
+      </div>
+
+      <!-- Main Admin Upload Dashboard -->
+      <div id="adminDashboard" class="admin-body hidden">
+        <div class="input-grid">
+          <div class="input-field">
+            <label>Student Full Name</label>
+            <input type="text" id="adminStudentName" placeholder="e.g. K. Veera" />
+          </div>
+          <div class="input-field">
+            <label>PIN / Reg Number</label>
+            <input type="text" id="adminStudentPin" placeholder="e.g. 23055-EC-001" />
+          </div>
+        </div>
+
+        <div class="upload-dropzone">
+          <input type="file" id="idUpload" accept="image/*" />
+          <div class="dropzone-text">
+            <span class="upload-icon">📷</span>
+            <span>Upload Student ID Card Image (Full Quality)</span>
+          </div>
+        </div>
+
+        <div id="loader" class="spinner hidden"></div>
+        <p id="msg" class="status-indicator">Ready to issue new card...</p>
+
+        <!-- QR Display Section -->
+        <div id="qrArea" class="qr-output-box hidden">
+          <h4>Dedicated Student QR Badge</h4>
+          <div id="qrcode"></div>
+          <p class="scan-instructions">Scan with Google Lens / Any Camera to open this exact card</p>
+          <div class="link-copy-box">
+            <input type="text" id="shareUrl" readonly />
+            <button id="copyLinkBtn" class="btn-secondary">Copy Link</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 3D Card Display Scene -->
-    <div class="card-scene" id="cardScene">
+    <!-- 3D Card Display Area (Students & Public View) -->
+    <div class="card-viewport" id="cardScene">
       <div class="card-3d" id="card3D">
+        <div class="gold-rim"></div>
         <div class="hologram-overlay"></div>
-        <!-- Pure Full Card Image -->
-        <img id="cardFullImage" class="full-card-img" src="https://via.placeholder.com/350x520?text=Upload+ID+Card" alt="ID Card" />
+        <div class="card-watermark">SVGPC</div>
+        
+        <!-- Complete Full Image Render -->
+        <img id="cardFullImage" class="full-card-img" src="https://via.placeholder.com/340x510/0b172a/38bdf8?text=Scan+QR+Badge+or+Upload+Card" alt="ID Card View" />
+
+        <div class="card-footer-ribbon">
+          <span>GOVERNMENT OF ANDHRA PRADESH • STATE BOARD OF TECHNICAL EDUCATION</span>
+        </div>
       </div>
     </div>
+
   </div>
 
   <script src="script.js"></script>
