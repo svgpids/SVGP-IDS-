@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+}
+
+body {
+  background: #060913;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  max-width: 950px;
+  width: 100%;
+}
+
+.upload-box {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 22px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.upload-box h2 {
+  font-size: 18px;
+  color: #38bdf8;
+  margin-bottom: 5px;
+}
+
+.desc {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 15px;
+}
+
+#idUpload {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+#msg {
+  font-size: 13px;
+  color: #f1f5f9;
+  margin: 10px 0;
+}
+
+.qr-result {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scan-note {
+  color: #000;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* 3D Card Engine */
+.card-scene {
+  perspective: 1200px;
+}
+
+.card-3d {
+  width: 340px;
+  height: 500px;
+  background: #0b1120;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(56, 189, 248, 0.25);
+  transform-style: preserve-3d;
+  transition: transform 0.08s ease-out;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hologram light reflex */
+.hologram-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255,255,255,0.2) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 100% Full Image */
+.full-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* Upload chesina ID card full screen fit avtundi */
+  border-radius: 16px;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.spinner {
+  border: 3px solid #1e293b;
+  border-top: 3px solid #38bdf8;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  animation: spin 0.8s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

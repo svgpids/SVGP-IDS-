@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D ID Card Universal Scanner</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Fast QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="main-wrapper">
+    <!-- Admin Control Panel (Scan chesi open chesinappudu auto-hide avtundi) -->
+    <div class="upload-box" id="adminBox">
+      <h2>3D ID Card QR Generator</h2>
+      <p class="desc">ID Card upload cheyagane Google Lens scan link ready avtundi.</p>
+      
+      <input type="file" id="idUpload" accept="image/*" />
+      <div id="loader" class="spinner hidden"></div>
+      <p id="msg">ID Card image ni select cheyandi...</p>
+
+      <div id="qrArea" class="qr-result hidden">
+        <div id="qrcode"></div>
+        <p class="scan-note">Scan with Google Lens or Any Camera</p>
+      </div>
+    </div>
+
+    <!-- 3D Card Display Scene -->
+    <div class="card-scene" id="cardScene">
+      <div class="card-3d" id="card3D">
+        <div class="hologram-overlay"></div>
+        <!-- Pure Full Card Image -->
+        <img id="cardFullImage" class="full-card-img" src="https://via.placeholder.com/350x520?text=Upload+ID+Card" alt="ID Card" />
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
