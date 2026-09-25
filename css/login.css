@@ -1,0 +1,212 @@
+:root {
+  --primary-purple: #7c3aed;
+  --primary-hover: #6d28d9;
+  --dark-navy: #0f172a;
+  --light-bg: #f8fafc;
+  --border-color: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --card-radius: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Background & Centering Container */
+body.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, #1e1b4b 0%, #0f172a 100%);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background accent glow */
+body.login-page::before {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: rgba(124, 58, 237, 0.25);
+  filter: blur(80px);
+  border-radius: 50%;
+  top: 15%;
+  left: 20%;
+  pointer-events: none;
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Glassmorphism Card */
+.login-card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--card-radius);
+  padding: 38px 30px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+/* Header Area */
+.login-header {
+  margin-bottom: 24px;
+}
+
+.gov-badge {
+  font-size: 42px;
+  margin-bottom: 8px;
+  display: inline-block;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.login-header h2 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: #1e1b4b;
+  line-height: 1.3;
+}
+
+.login-header p {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--primary-purple);
+  margin-top: 4px;
+}
+
+/* Form Inputs */
+.login-form {
+  text-align: left;
+}
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-color);
+  background: #f8fafc;
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+  background: #ffffff;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* Sign In Button */
+.btn-login {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-purple) 0%, #9333ea 100%);
+  color: #ffffff;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.3);
+  transition: all 0.2s ease;
+  margin-top: 6px;
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #7e22ce 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(124, 58, 237, 0.4);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+/* Error Notification */
+.error-msg {
+  color: #e11d48;
+  background: #ffe4e6;
+  border: 1px solid #fecdd3;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 14px;
+}
+
+/* Footer Tag */
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid #edf2f7;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  body.login-page {
+    padding: 14px;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+    border-radius: 18px;
+  }
+
+  .gov-badge {
+    font-size: 36px;
+  }
+
+  .login-header h2 {
+    font-size: 14px;
+  }
+
+  .login-header p {
+    font-size: 10px;
+  }
+
+  .input-group input {
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+
+  .btn-login {
+    padding: 12px;
+    font-size: 13px;
+  }
+}

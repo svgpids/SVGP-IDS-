@@ -3,41 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - S.V. Government Polytechnic</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <title>Admin Login - S.V. Government Polytechnic, Tirupati</title>
+  <link rel="stylesheet" href="css/login.css">
 </head>
-<body class="login-body">
+<body class="login-page">
 
   <div class="login-wrapper">
     <div class="login-card">
-      <div class="login-logo-box">
-        <div class="gov-seal">🏛️</div>
+      <div class="login-header">
+        <div class="gov-badge">🏛️</div>
         <h2>S.V. GOVERNMENT POLYTECHNIC</h2>
-        <p>TIRUPATI • Administration Access</p>
+        <p>TIRUPATI • ADMINISTRATIVE CONTROL ACCESS</p>
       </div>
 
-      <div class="login-form-area">
-        <label for="adminPin">Administrative Security PIN</label>
-        <input type="password" id="adminPin" placeholder="Enter PIN (Default: 1234)" autocomplete="off">
-        <button id="btnLogin" class="btn-login-submit">Unlock Dashboard</button>
-        <p id="errorMsg" class="login-error-text" style="display: none;">PIN sirrii miti! Irra deebi'aa yaalaa.</p>
-      </div>
+      <form id="adminLoginForm" class="login-form">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter Admin Username" required autocomplete="off">
+        </div>
 
-      <div class="login-footer-info">
-        <p>Government of Andhra Pradesh • SBTET</p>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter Admin Password" required>
+        </div>
+
+        <button type="submit" class="btn-login">Sign In to Dashboard</button>
+        <p id="errorMsg" class="error-msg" style="display: none;">Invalid Username or Password!</p>
+      </form>
+
+      <div class="login-footer">
+        <span>Government of Andhra Pradesh • SBTET Portal</span>
       </div>
     </div>
   </div>
 
   <script>
-    document.getElementById('btnLogin').addEventListener('click', function() {
-      const pin = document.getElementById('adminPin').value.trim();
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
       const err = document.getElementById('errorMsg');
-      
-      // Default Security PIN: 1234
-      if (pin === "1234") {
-        sessionStorage.setItem("admin_auth", "true");
+
+      // Credentials verification: admin / Svgp@018
+      if (u === "admin" && p === "Svgp@018") {
+        sessionStorage.setItem("admin_logged", "true");
         window.location.href = "admin-dashboard.html";
       } else {
         err.style.display = "block";

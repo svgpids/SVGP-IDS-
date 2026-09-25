@@ -1,162 +1,114 @@
-// Eegumsa seensaa mirkaneessuu
-if (sessionStorage.getItem("admin_auth") !== "true") {
+// Session Authentication Check
+if (sessionStorage.getItem("admin_logged") !== "true") {
   window.location.href = "admin-login.html";
 }
 
-// Bahiinsa (Logout)
-document.getElementById('btnLogout').addEventListener('click', () => {
-  sessionStorage.removeItem("admin_auth");
-  window.location.href = "admin-login.html";
-});
+// Logout Trigger
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem("admin_logged");
+    window.location.href = "admin-login.html";
+  });
+}
+
+// All ID Cards Link direct click handler (safeguard)
+const allCardsLink = document.getElementById('allCardsLink');
+if (allCardsLink) {
+  allCardsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = "test.html";
+  });
+}
 
 // ImgBB API Key
 const IMGBB_API_KEY = "40a302f53f0072826c2a779829f1d865";
 
-// Daataa Dameelee Dhaabbataa (Official SBTET Branches)
-let branchData = [
-  { code: "DCE", name: "Civil Engineering", intake: 60, hod: "Sri. K. Ramesh" },
-  { code: "DEEE", name: "Electrical & Electronics Engg.", intake: 120, hod: "Dr. P. Suresh" },
-  { code: "DME", name: "Mechanical Engineering", intake: 120, hod: "Sri. M. Venkat" },
-  { code: "DECE", name: "Electronics & Communication Engg.", intake: 120, hod: "Dr. K. Praveen" },
-  { code: "DCME", name: "Computer Engineering", intake: 60, hod: "Smt. G. Swetha" },
-  { code: "DCHE", name: "Chemical Engineering", intake: 60, hod: "Sri. B. Narayana" },
-  { code: "DIT", name: "Information Technology", intake: 60, hod: "Sri. V. Prasad" },
-  { code: "DPT", name: "Plastics Technology", intake: 30, hod: "Dr. C. Mohan" },
-  { code: "DPRI", name: "Printing Technology", intake: 30, hod: "Sri. R. Krishna" }
-];
-
-// Qabduuwwan (Tab Switching)
-const tabBtns = document.querySelectorAll('.nav-tab-btn');
-const tabPanes = document.querySelectorAll('.dash-pane');
-
-tabBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    tabBtns.forEach(b => b.classList.remove('active'));
-    tabPanes.forEach(p => p.classList.remove('active'));
-
-    btn.classList.add('active');
-    const target = btn.getAttribute('data-tab');
-    document.getElementById(target).classList.add('active');
-  });
-});
-
-// Gabatee Dameelee Agarsiisuu
-function renderBranches() {
-  const tbody = document.getElementById('branchesTableBody');
-  tbody.innerHTML = "";
-  branchData.forEach(b => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${b.code}</strong></td>
-      <td>${b.name}</td>
-      <td>${b.intake}</td>
-      <td>${b.hod}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-renderBranches();
-
-// Damee Haaraa Dabaluu
-document.getElementById('btnAddBranch').addEventListener('click', () => {
-  const name = document.getElementById('newBranchName').value.trim();
-  const code = document.getElementById('newBranchCode').value.trim().toUpperCase();
-  const intake = document.getElementById('newBranchIntake').value.trim();
-
-  if (!name || !code) {
-    alert("Maaloo maqaa fi koodii damee galchaa!");
-    return;
-  }
-
-  branchData.push({
-    code: code,
-    name: name,
-    intake: intake || 60,
-    hod: "Appointed HOD"
-  });
-
-  renderBranches();
-  document.getElementById('newBranchName').value = "";
-  document.getElementById('newBranchCode').value = "";
-  document.getElementById('newBranchIntake').value = "";
-  alert(`Dameen ${code} milkaa'inaan dabalameera!`);
-});
-
-// QR Koodii Uumuu fi ImgBB Olkaa'uu
-const idUpload = document.getElementById('idUpload');
-const msg = document.getElementById('msg');
+// QR Generator Elements
+const idInput = document.getElementById('idCardInput');
+const statusMsg = document.getElementById('statusMsg');
 const loader = document.getElementById('loader');
-const qrArea = document.getElementById('qrArea');
-const qrcodeDiv = document.getElementById('qrcode');
-const shareUrlInput = document.getElementById('shareUrl');
-const copyLinkBtn = document.getElementById('copyLinkBtn');
+const qrBox = document.getElementById('qrResultArea');
+const qrcodeElement = document.getElementById('qrcode');
+const linkInput = document.getElementById('generatedLink');
+const copyBtn = document.getElementById('copyBtn');
+const previewPassBtn = document.getElementById('previewPassBtn');
 
-idUpload.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  msg.textContent = "Suuraan waraqaa eenyummaa qophaa'aa jira...";
-  loader.style.display = "block";
-
-  try {
-    const compressedBlob = await compressImage(file);
-    msg.textContent = "Sarvarii irratti olkaa'amaa jira...";
-    const cloudImageUrl = await uploadToImgBB(compressedBlob);
-
-    // Koodii icciitiin dachaasuu (Base64 URL Token)
-    const cardToken = encodeURIComponent(btoa(cloudImageUrl));
-    const domain = window.location.origin + window.location.pathname.replace("admin-dashboard.html", "index.html");
-    const uniqueCardLink = `${domain}?card=${cardToken}`;
-
-    // QR Koodii Uumuu
-    qrcodeDiv.innerHTML = "";
-    new QRCode(qrcodeDiv, {
-      text: uniqueCardLink,
-      width: 180,
-      height: 180,
-      colorDark: "#0f172a",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
-    });
-
-    shareUrlInput.value = uniqueCardLink;
-    loader.style.display = "none";
-    msg.textContent = "✨ QR Koodiin waraqaa eenyummaa milkaa'inaan uumameera!";
-    qrArea.style.display = "block";
-
-    // Galmee seenaa waraqaalee baafamaniitti dabaluu
-    appendIssuedHistory(cloudImageUrl, uniqueCardLink);
-
-  } catch (err) {
-    loader.style.display = "none";
-    msg.textContent = "Hojiin hin milkoofne: " + err.message;
-  }
-});
-
-function appendIssuedHistory(imgUrl, link) {
-  const tbody = document.getElementById('issuedHistoryBody');
-  if (tbody.innerHTML.includes("Hanga ammaatti")) {
-    tbody.innerHTML = "";
-  }
-  const now = new Date();
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td>${now.toLocaleDateString()} <br><small>${now.toLocaleTimeString()}</small></td>
-    <td><img src="${imgUrl}" style="width:36px; height:46px; object-fit:cover; border-radius:4px; border:1px solid #cbd5e1;"></td>
-    <td><a href="${link}" target="_blank" style="color:#7c3aed; font-weight:700; text-decoration:none;">Bani ↗</a></td>
-  `;
-  tbody.prepend(tr);
+// LocalStorage Persistent Card Storage
+function getSavedCards() {
+  return JSON.parse(localStorage.getItem('svgp_cards') || '[]');
 }
 
-// Geessituu Waraabuu (Copy Link)
-copyLinkBtn.addEventListener('click', () => {
-  shareUrlInput.select();
-  document.execCommand('copy');
-  copyLinkBtn.textContent = "Waraabameera!";
-  setTimeout(() => copyLinkBtn.textContent = "Waraabi (Copy)", 2000);
-});
+function saveCard(cardObj) {
+  const cards = getSavedCards();
+  cards.unshift(cardObj);
+  localStorage.setItem('svgp_cards', JSON.stringify(cards));
+}
 
-// Suuraa xiqqeessuu (Canvas Compression)
+// Image File Upload & Instant QR Processing
+if (idInput) {
+  idInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    statusMsg.textContent = "Compressing ID Card with high fidelity...";
+    loader.style.display = "block";
+
+    try {
+      const compressedBlob = await compressImage(file);
+      statusMsg.textContent = "Storing in secure institutional cloud...";
+      const imageUrl = await uploadToImgBB(compressedBlob);
+
+      // Create encrypted pass token (Base64 parameter for direct rendering)
+      const token = encodeURIComponent(btoa(imageUrl));
+      const baseUrl = window.location.origin + window.location.pathname.replace("admin-dashboard.html", "index.html");
+      const fullCardUrl = `${baseUrl}?card=${token}`;
+
+      // Render Clean High-Contrast QR Code
+      qrcodeElement.innerHTML = "";
+      new QRCode(qrcodeElement, {
+        text: fullCardUrl,
+        width: 180,
+        height: 180,
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      linkInput.value = fullCardUrl;
+      previewPassBtn.href = fullCardUrl;
+      loader.style.display = "none";
+      statusMsg.textContent = "✨ Digital Card issued & QR Code ready!";
+      qrBox.style.display = "block";
+
+      // Save record to LocalStorage so test.html can display it
+      const now = new Date();
+      saveCard({
+        id: Date.now(),
+        image: imageUrl,
+        link: fullCardUrl,
+        date: now.toLocaleDateString(),
+        time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+    } catch (err) {
+      loader.style.display = "none";
+      statusMsg.textContent = "Upload failed: " + err.message;
+    }
+  });
+}
+
+// Copy Pass Link
+if (copyBtn) {
+  copyBtn.addEventListener('click', () => {
+    linkInput.select();
+    document.execCommand('copy');
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => copyBtn.textContent = "Copy Link", 2000);
+  });
+}
+
+// Canvas-based Client-side Image Compression
 function compressImage(file) {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -186,7 +138,7 @@ function compressImage(file) {
   });
 }
 
-// ImgBB API
+// ImgBB REST API Sync
 async function uploadToImgBB(blob) {
   const formData = new FormData();
   formData.append('image', blob);
@@ -198,6 +150,6 @@ async function uploadToImgBB(blob) {
   if (data && data.success && data.data && data.data.url) {
     return data.data.url;
   } else {
-    throw new Error(data.error ? data.error.message : "Sarvarii irratti fe'uu hin dandeenye");
+    throw new Error(data.error ? data.error.message : "Cloud upload failed");
   }
 }

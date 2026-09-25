@@ -2,158 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Console Dashboard - SVGP Tirupati</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Dashboard - S.V. Government Polytechnic, Tirupati</title>
   <link rel="stylesheet" href="css/admin.css">
-  <!-- Fast QR Code Library -->
+  <!-- Fast High-Quality QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
-<body>
+<body class="dashboard-page">
 
-  <!-- Top Admin Bar -->
-  <header class="admin-topbar">
-    <div class="topbar-inner">
+  <!-- Top Administration Header -->
+  <header class="admin-nav">
+    <div class="nav-content">
       <div class="admin-brand">
-        <span class="emblem-mini">🏛️</span>
+        <span class="brand-logo">🏛️</span>
         <div>
           <h3>S.V. GOVERNMENT POLYTECHNIC</h3>
-          <p>Institutional Administration Dashboard</p>
+          <p>TIRUPATI • Administration ID Control Center</p>
         </div>
       </div>
-      <button id="btnLogout" class="btn-logout">Bahi (Logout)</button>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
     </div>
   </header>
 
-  <!-- Dashboard Container -->
-  <div class="dashboard-shell">
+  <!-- Main Container -->
+  <div class="dash-layout">
     
-    <!-- Sidebar Tabs -->
-    <aside class="dashboard-sidebar">
-      <button class="nav-tab-btn active" data-tab="tab-qr">🪪 QR Code Generator</button>
-      <button class="nav-tab-btn" data-tab="tab-branches">🏛️ Daataa Dameelee (Branches)</button>
-      <button class="nav-tab-btn" data-tab="tab-codes">🆔 Koodii Dameelee (IDs)</button>
-      <button class="nav-tab-btn" data-tab="tab-issued">👥 Waraqaalee Baafaman</button>
-    </aside>
+    <!-- Top 2-Option Tabs Navigation -->
+    <nav class="dash-tabs-bar">
+      <button type="button" class="nav-tab-btn active" id="tabGenBtn">
+        <span class="tab-icon">🪪</span>
+        <div class="tab-text">
+          <strong>QR Generator</strong>
+          <small>Upload &amp; Issue Student QR Pass</small>
+        </div>
+      </button>
+
+      <!-- Direct Redirect to test.html -->
+      <a href="test.html" class="nav-tab-btn" id="allCardsLink" style="text-decoration: none;">
+        <span class="tab-icon">🗂️</span>
+        <div class="tab-text">
+          <strong>All ID Cards</strong>
+          <small>Manage Issued Student Passes</small>
+        </div>
+      </a>
+    </nav>
 
     <!-- Main Workspace Area -->
-    <main class="dashboard-workspace">
+    <main class="dash-main-area">
 
-      <!-- TAB 1: QR CODE GENERATOR -->
-      <section id="tab-qr" class="dash-pane active">
-        <div class="pane-title">
-          <h3>QR Code Eenyummaa Barattootaa Uumuu</h3>
-          <p>Suuraa waraqaa eenyummaa olkaa'uun kallattiin QR koodii eegumsa qabu uumaa.</p>
+      <!-- PAGE 1: QR GENERATOR -->
+      <section id="tab-generator" class="tab-pane active">
+        <div class="pane-header">
+          <h3>Issue Student Digital ID &amp; Generate QR</h3>
+          <p>Upload a clear photo of the student's ID card. It will be compressed, hosted on cloud storage, and an authenticated QR pass will be created instantly.</p>
         </div>
 
-        <div class="upload-dropzone">
-          <input type="file" id="idUpload" accept="image/*">
-          <div class="drop-text">
-            <span class="upload-icon">📁</span>
-            <strong>Suuraa Waraqaa Eenyummaa Filadhaa</strong>
-            <small>PNG, JPG ykn JPEG (Qulqullina guutuu)</small>
+        <div class="generator-grid">
+          <!-- Left: Dropzone Area -->
+          <div class="drop-zone-card">
+            <div class="drop-zone">
+              <input type="file" id="idCardInput" accept="image/*">
+              <div class="zone-text">
+                <span class="zone-icon">📁</span>
+                <strong>Click or Drop Student ID Image Here</strong>
+                <small>High fidelity auto-compression (JPG, PNG, WEBP)</small>
+              </div>
+            </div>
+
+            <div id="loader" class="spinner" style="display: none;"></div>
+            <p id="statusMsg" class="status-text">Select an ID image to begin generation...</p>
           </div>
-        </div>
 
-        <div id="loader" class="spinner" style="display: none;"></div>
-        <p id="msg" class="status-msg">Waraqaa eenyummaa olkaa'aa...</p>
-
-        <!-- QR Display Container -->
-        <div id="qrArea" class="qr-output-box" style="display: none;">
-          <span class="qr-heading">SVGPC VERIFIED DIGITAL ID BADGE</span>
-          <div id="qrcode"></div>
-          <p class="qr-note">Kaameraa bilbilaatiin ykn Google Lens'iin dubbisaa</p>
-          <div class="copy-bar">
-            <input type="text" id="shareUrl" readonly>
-            <button id="copyLinkBtn" class="btn-copy">Waraabi (Copy)</button>
+          <!-- Right: Output QR Badge -->
+          <div id="qrResultArea" class="qr-box" style="display: none;">
+            <div class="badge-tag">✓ VERIFIED STUDENT PASS</div>
+            <div id="qrcode"></div>
+            <p class="qr-instruction">Scan with any mobile camera or Google Lens</p>
+            
+            <div class="link-copy-box">
+              <input type="text" id="generatedLink" readonly>
+              <button id="copyBtn" class="btn-copy">Copy Link</button>
+            </div>
+            
+            <a id="previewPassBtn" href="#" target="_blank" class="btn-preview-pass">Open Digital Pass ↗</a>
           </div>
-        </div>
-      </section>
-
-      <!-- TAB 2: BRANCHES DATA -->
-      <section id="tab-branches" class="dash-pane">
-        <div class="pane-title">
-          <h3>Daataa Dameelee fi Bulchiinsa</h3>
-          <p>Kutaalee barnootaa, baay'ina barattootaa fi geggeessitoota ilaalaa ykn haaromsaa.</p>
-        </div>
-
-        <!-- Add Branch Form -->
-        <div class="mini-form">
-          <input type="text" id="newBranchName" placeholder="Maqaa Damee (Fkn: AI & Machine Learning)">
-          <input type="text" id="newBranchCode" placeholder="Koodii (Fkn: AIML)">
-          <input type="number" id="newBranchIntake" placeholder="Baay'ina Barattootaa (Intake)">
-          <button id="btnAddBranch" class="btn-add-primary">+ Galchi</button>
-        </div>
-
-        <div class="table-scroll">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Koodii</th>
-                <th>Maqaa Damee Barnootaa</th>
-                <th>Barattoota</th>
-                <th>Itti Gaafatamaa (HOD)</th>
-              </tr>
-            </thead>
-            <tbody id="branchesTableBody">
-              <!-- JavaScript'n guutama -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 3: BRANCH CODES & ID SYSTEM -->
-      <section id="tab-codes" class="dash-pane">
-        <div class="pane-title">
-          <h3>Koodiiwwan Galmee SBTET</h3>
-          <p>Koodii addaa qajeelcha herreegaa fi bulchiinsaaf kennaman.</p>
-        </div>
-
-        <div class="table-scroll">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Koodii (Prefix)</th>
-                <th>Kutaalee Barnootaa</th>
-                <th>Haala</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>01</td><td><strong>DCE</strong></td><td>Civil Engineering</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>02</td><td><strong>DEEE</strong></td><td>Electrical & Electronics Engineering</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>03</td><td><strong>DME</strong></td><td>Mechanical Engineering</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>04</td><td><strong>DECE</strong></td><td>Electronics & Communication Engineering</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>05</td><td><strong>DCME</strong></td><td>Computer Engineering</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>06</td><td><strong>DCHE</strong></td><td>Chemical Engineering</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>07</td><td><strong>DIT</strong></td><td>Information Technology</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>08</td><td><strong>DPT</strong></td><td>Plastics Technology</td><td><span class="tag-live">Hojirra</span></td></tr>
-              <tr><td>09</td><td><strong>DPRI</strong></td><td>Printing Technology</td><td><span class="tag-live">Hojirra</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 4: ISSUED HISTORY -->
-      <section id="tab-issued" class="dash-pane">
-        <div class="pane-title">
-          <h3>Galmee Waraqaalee Eenyummaa Baafamanii</h3>
-          <p>Waraqaalee eenyummaa fi hidhannoowwan dhiyoo uumaman.</p>
-        </div>
-
-        <div class="table-scroll">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Guyyaa fi Sa'aatii</th>
-                <th>Suuraa</th>
-                <th>Geessituu (Link)</th>
-              </tr>
-            </thead>
-            <tbody id="issuedHistoryBody">
-              <tr><td colspan="3" style="text-align:center; color:#94a3b8;">Hanga ammaatti waraqaan baafame hin jiru.</td></tr>
-            </tbody>
-          </table>
         </div>
       </section>
 

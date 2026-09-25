@@ -1,0 +1,54 @@
+/* Clean Tree Scrollbar */
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 6px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Card Elevation on Hover */
+.student-card {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.student-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.09);
+}
+
+/* Print Badge Engine Optimization */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #previewModal, #previewModal * {
+    visibility: visible;
+  }
+  #previewModal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: white !important;
+  }
+  #closePreviewBtn, #previewDeleteBtn, #previewDriveLink, #printBadgeBtn, #zoomOutBtn, #zoomResetBtn, #zoomInBtn {
+    display: none !important;
+  }
+}
+
+/* Pop Animation */
+@keyframes cardPop {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-card-pop {
+  animation: cardPop 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

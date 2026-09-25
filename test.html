@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVGP - Professional Digital ID Hub</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="test.css">
+</head>
+<body class="bg-[#f8fafc] text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP PROFESSIONAL APPBAR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+      
+      <!-- LOGO & COLLEGE NAME -->
+      <div class="flex items-center space-x-3">
+        <button id="mobileMenuBtn" class="md:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100">
+          <i class="fa-solid fa-bars text-sm"></i>
+        </button>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-900 to-indigo-700 text-amber-300 flex items-center justify-center shadow-md text-xl font-bold border border-blue-800">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-none">
+              S.V. GOVERNMENT POLYTECHNIC
+            </h1>
+            <span class="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200">ID HUB</span>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">Digital Identity & Cloud Drive Infrastructure • Tirupati</p>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="flex-1 max-w-md hidden sm:block mx-3">
+        <div class="relative group">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search Roll No (e.g. 24018-EC-001) or Branch..." 
+            class="w-full pl-9 pr-9 py-2 bg-slate-100 hover:bg-slate-200/60 focus:bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-700 transition"
+          >
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs group-focus-within:text-blue-700 transition"></i>
+          <span id="clearSearchBtn" class="hidden absolute right-3 top-2 text-xs text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="flex items-center space-x-2">
+        <button id="refreshBtn" class="p-2 sm:px-3 sm:py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center space-x-1.5 transition" title="Sync Google Drive">
+          <i class="fa-solid fa-arrows-rotate text-blue-700"></i>
+          <span class="hidden sm:inline">Sync</span>
+        </button>
+        <button id="exportCsvBtn" class="hidden sm:flex px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold items-center space-x-1.5 transition" title="Export Student List">
+          <i class="fa-solid fa-file-csv"></i>
+          <span>Export</span>
+        </button>
+        <button id="uploadModalOpenBtn" class="px-3.5 py-2 bg-blue-900 hover:bg-blue-800 text-white rounded-xl text-xs font-bold shadow-sm flex items-center space-x-1.5 transition">
+          <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i>
+          <span>Upload</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- MOBILE SEARCH BAR -->
+    <div class="p-2 sm:hidden border-t border-slate-100 bg-white">
+      <div class="relative">
+        <input 
+          type="text" 
+          id="mobileSearchInput" 
+          placeholder="Search Roll No or Branch..." 
+          class="w-full pl-9 pr-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:bg-white focus:border-blue-700"
+        >
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 flex-1 w-full grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
+    
+    <!-- LEFT SIDEBAR: TREE HIERARCHY -->
+    <aside id="sidebarDrawer" class="fixed inset-y-0 left-0 z-50 w-72 bg-white p-4 shadow-2xl transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:inset-auto md:w-auto md:p-0 md:shadow-none md:col-span-4 lg:col-span-3 flex flex-col space-y-3">
+      
+      <!-- MOBILE DRAWER CLOSE -->
+      <div class="flex md:hidden items-center justify-between pb-3 border-b border-slate-200">
+        <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Drive Hierarchy</span>
+        <button id="closeDrawerBtn" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- DIRECTORY TREE CARD -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-xs flex flex-col h-[75vh] md:h-[78vh]">
+        <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+          <div class="flex items-center space-x-2 text-slate-800 font-bold text-xs uppercase tracking-wider">
+            <i class="fa-solid fa-folder-tree text-amber-500"></i>
+            <span>Batches & Branches</span>
+          </div>
+          <span id="folderCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold">0 Folders</span>
+        </div>
+
+        <!-- TREE ACCORDION CONTAINER -->
+        <div id="treeContainer" class="flex-1 overflow-y-auto custom-scroll text-xs select-none pr-1 mt-2.5 space-y-1">
+          <div class="flex items-center justify-center h-32 text-slate-400 text-xs">
+            <i class="fa-solid fa-circle-notch fa-spin mr-2 text-blue-700"></i> Loading Drive...
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- DRAWER BACKDROP -->
+    <div id="drawerBackdrop" class="fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden"></div>
+
+    <!-- RIGHT MAIN GALLERY -->
+    <main class="md:col-span-8 lg:col-span-9 flex flex-col space-y-3.5">
+      
+      <!-- TOP CONTROL BANNER -->
+      <div id="branchBanner" class="bg-white border border-slate-200 px-4 py-3 rounded-2xl shadow-xs flex flex-wrap items-center justify-between gap-3 transition-all">
+        <div class="flex items-center space-x-3 truncate">
+          <span id="branchPillIcon" class="w-9 h-9 rounded-xl bg-blue-900 text-white flex items-center justify-center text-sm font-bold shadow-xs">
+            <i class="fa-solid fa-folder-open"></i>
+          </span>
+          <div>
+            <span id="currentPath" class="text-xs sm:text-sm font-black text-slate-900 tracking-tight block truncate">SVGP_IDS</span>
+            <span id="branchTagSubtitle" class="text-[10px] text-slate-400 font-semibold">Active Directory</span>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <!-- CARD SIZE SELECTOR -->
+          <div class="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs">
+            <button id="viewCompactBtn" class="px-2 py-1 rounded-lg text-[10px] font-bold text-slate-500 hover:text-slate-800 transition">Small</button>
+            <button id="viewStandardBtn" class="px-2 py-1 rounded-lg text-[10px] font-bold bg-white text-blue-950 shadow-xs">Standard</button>
+          </div>
+          <!-- TOTAL CARDS BADGE -->
+          <div class="flex items-center space-x-1.5 shrink-0 bg-slate-50 px-3 py-1 rounded-xl border border-slate-200">
+            <span class="text-[10px] text-slate-400 font-bold uppercase">Total:</span>
+            <span id="fileCountBadge" class="text-blue-900 font-black text-xs">0 Cards</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GALLERY CONTAINER -->
+      <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl shadow-xs flex-1 min-h-[500px] flex flex-col">
+        
+        <!-- CARD GRID -->
+        <div id="fileGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 transition-all">
+          <!-- Populated Dynamically -->
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div id="emptyState" class="hidden flex-1 flex flex-col items-center justify-center py-24 text-slate-400">
+          <div class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 text-2xl shadow-xs mb-3">
+            <i class="fa-regular fa-folder-open"></i>
+          </div>
+          <p class="text-xs font-bold text-slate-700">No Student ID Cards in this Branch</p>
+          <p class="text-[11px] text-slate-400 mt-1">Upload JPG ID photos using the top button</p>
+        </div>
+
+        <!-- LOADING STATE -->
+        <div id="gridLoading" class="flex-1 flex flex-col items-center justify-center py-24 text-slate-400">
+          <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-700 mb-2"></i>
+          <p class="text-xs font-semibold text-slate-600">Syncing student photos from Google Drive...</p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- FULL RESOLUTION STUDENT ID PREVIEW MODAL -->
+  <div id="previewModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-sm sm:max-w-md w-full border border-slate-200 shadow-2xl p-5 flex flex-col items-center relative animate-card-pop">
+      
+      <!-- TOP ID LANYARD ACCENT -->
+      <div class="w-14 h-2.5 bg-slate-200 rounded-full mb-3 shadow-inner"></div>
+
+      <!-- CLOSE BUTTON -->
+      <button id="closePreviewBtn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <!-- CARD HEADING -->
+      <div class="text-center w-full pb-3 border-b border-slate-100">
+        <span class="text-[9px] font-black tracking-widest text-blue-900 uppercase bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">Govt of Andhra Pradesh</span>
+        <h3 class="text-xs font-black text-slate-900 mt-1 uppercase tracking-tight">S.V. GOVERNMENT POLYTECHNIC</h3>
+        <p class="text-[10px] text-slate-400 font-medium">Department of Technical Education • Tirupati</p>
+      </div>
+
+      <!-- FULL RESOLUTION PHOTO VIEW WITH CONTROLS -->
+      <div class="w-full relative my-3.5">
+        <div id="previewImgBox" class="w-full h-72 sm:h-80 bg-slate-100 border-2 rounded-2xl overflow-hidden flex items-center justify-center shadow-inner relative group">
+          <img id="previewImg" src="" alt="Student Photo" referrerpolicy="no-referrer" class="max-h-full max-w-full object-contain transition-transform duration-200">
+        </div>
+        <!-- FLOATING ZOOM CONTROLS -->
+        <div class="absolute bottom-2 right-2 bg-white/90 backdrop-blur-xs border border-slate-200 rounded-xl p-1 flex items-center space-x-1 shadow-sm">
+          <button id="zoomOutBtn" class="w-6 h-6 rounded-lg text-slate-600 hover:bg-slate-100 flex items-center justify-center text-xs"><i class="fa-solid fa-minus"></i></button>
+          <button id="zoomResetBtn" class="w-6 h-6 rounded-lg text-slate-600 hover:bg-slate-100 flex items-center justify-center text-[10px] font-bold">1x</button>
+          <button id="zoomInBtn" class="w-6 h-6 rounded-lg text-slate-600 hover:bg-slate-100 flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- STUDENT DETAILS -->
+      <div class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs space-y-1.5 mb-3">
+        <div class="flex justify-between items-center pb-1.5 border-b border-slate-200">
+          <span class="text-slate-500 font-semibold">Roll Number:</span>
+          <div class="flex items-center space-x-1.5">
+            <span id="previewRoll" class="font-black text-blue-950 text-sm tracking-tight">-</span>
+            <button id="copyRollBtn" class="text-slate-400 hover:text-blue-700 text-xs" title="Copy Roll Number"><i class="fa-regular fa-copy"></i></button>
+          </div>
+        </div>
+        <div class="flex justify-between items-center pb-1.5 border-b border-slate-200">
+          <span class="text-slate-500 font-semibold">Department:</span>
+          <span id="previewBranch" class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold border">-</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-500 font-semibold">Drive File:</span>
+          <span id="previewFileName" class="text-slate-600 font-mono text-[10px] truncate max-w-[190px]">-</span>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS: PRINT, TRASH, DRIVE -->
+      <div class="w-full grid grid-cols-3 gap-2">
+        <button id="printBadgeBtn" class="py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1">
+          <i class="fa-solid fa-print text-[11px] text-blue-700"></i>
+          <span>Print</span>
+        </button>
+        <button id="previewDeleteBtn" class="py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1">
+          <i class="fa-solid fa-trash-can text-[11px]"></i>
+          <span>Trash</span>
+        </button>
+        <a id="previewDriveLink" href="#" target="_blank" class="py-2 bg-blue-900 hover:bg-blue-800 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 shadow-sm">
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          <span>Drive</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- UPLOAD MODAL -->
+  <div id="uploadModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 border border-slate-200 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <h3 class="text-sm font-bold text-slate-900">Upload Student Photo (.JPG)</h3>
+        <button id="closeUploadModalBtn" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3.5">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">Target Folder</label>
+          <input type="text" id="targetFolderDisplay" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs text-blue-900 font-bold font-mono">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">Select Images</label>
+          <input type="file" id="filePicker" accept="image/*" multiple class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100 cursor-pointer">
+        </div>
+
+        <div id="uploadProgressContainer" class="hidden">
+          <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
+            <div id="uploadProgressBar" class="bg-blue-800 h-2 rounded-full w-0 transition-all duration-300"></div>
+          </div>
+          <p id="uploadStatusText" class="text-center text-[11px] text-blue-900 font-semibold mt-1.5">Uploading...</p>
+        </div>
+
+        <div class="flex justify-end space-x-2 pt-2">
+          <button id="cancelUploadBtn" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancel</button>
+          <button id="startUploadBtn" class="px-4 py-2 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold rounded-xl flex items-center space-x-1.5 shadow-sm">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>Upload</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl text-xs flex items-center space-x-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Operation successful</span>
+  </div>
+
+  <script src="test.js"></script>
+</body>
+</html>
