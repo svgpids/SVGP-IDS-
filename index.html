@@ -1,105 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Institution Digital ID Portal</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Standalone QR Code Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>S.V. GOVERNMENT POLYTECHNIC, TIRUPATI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
-  <!-- College Header Navbar -->
-  <header class="college-header">
-    <div class="header-content">
-      <div class="brand">
-        <div class="college-logo-emblem">🏛️</div>
-        <div class="college-title">
+  <!-- Top Header Navigation Bar -->
+  <header class="top-nav-bar">
+    <div class="nav-container">
+      
+      <!-- Left: Logo & Institutional Header -->
+      <div class="brand-block">
+        <img src="images/logo.png" alt="AP Govt Logo" class="college-logo" onerror="this.src='https://via.placeholder.com/50?text=SVGP'">
+        <div class="brand-text">
           <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
-          <p>DEPARTMENT OF TECHNICAL EDUCATION • DIGITAL ID VERIFICATION SYSTEM</p>
+          <p class="loc-text">TIRUPATI, CHITTOOR (Dist.) - 517501</p>
+          <p class="gov-text">GOVERNMENT OF ANDHRA PRADESH</p>
         </div>
       </div>
-      <div class="header-actions">
-        <button id="adminToggleBtn" class="btn-admin-nav">🔑 Admin Portal</button>
+
+      <!-- Center: Tagline Chip -->
+      <div class="center-tagline">
+        <span class="tag-icon">🎓</span>
+        <span class="tag-text">Knowledge &nbsp;|&nbsp; Skills &nbsp;|&nbsp; Better Tomorrow</span>
       </div>
+
+      <!-- Right: Live Date & Time Chip -->
+      <div class="live-datetime-chip">
+        <span class="cal-icon">📅</span>
+        <span id="live-time-display">Loading Time...</span>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-trigger" aria-label="Open Menu">☰</button>
     </div>
   </header>
 
-  <div class="main-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-canvas" style="background-image: url('images/college.jpg');">
+      <!-- Vignette Shade to highlight white text while keeping campus crystal clear -->
+      <div class="hero-vignette"></div>
 
-    <!-- Admin Panel (Collapsible / Password Protected) -->
-    <div class="admin-panel hidden" id="adminPanel">
-      <div class="panel-header">
-        <h3>🏛️ Administrative Issuing Console</h3>
-        <button id="closeAdminBtn" class="btn-close">&times;</button>
+      <!-- Hero Left: Typography Only (Badges removed) -->
+      <div class="hero-left">
+        <div class="welcome-chip">Welcome to</div>
+        <h2 class="hero-title">
+          S.V. GOVERNMENT<br>
+          <span class="grad-purple">POLYTECHNIC, TIRUPATI</span>
+        </h2>
+        <p class="hero-subtitle">Empowering Students for a Brighter Future</p>
       </div>
 
-      <!-- Password Lock Section -->
-      <div id="adminAuthLock" class="auth-box">
-        <p>Enter Administrator PIN to Access Card Issuing Tools</p>
-        <div class="auth-input-group">
-          <input type="password" id="adminPinInput" placeholder="Default PIN: 1234" />
-          <button id="adminLoginBtn" class="btn-primary">Unlock</button>
-        </div>
-        <p id="authError" class="error-msg hidden">Incorrect Admin PIN!</p>
-      </div>
-
-      <!-- Main Admin Upload Dashboard -->
-      <div id="adminDashboard" class="admin-body hidden">
-        <div class="input-grid">
-          <div class="input-field">
-            <label>Student Full Name</label>
-            <input type="text" id="adminStudentName" placeholder="e.g. K. Veera" />
-          </div>
-          <div class="input-field">
-            <label>PIN / Reg Number</label>
-            <input type="text" id="adminStudentPin" placeholder="e.g. 23055-EC-001" />
-          </div>
-        </div>
-
-        <div class="upload-dropzone">
-          <input type="file" id="idUpload" accept="image/*" />
-          <div class="dropzone-text">
-            <span class="upload-icon">📷</span>
-            <span>Upload Student ID Card Image (Full Quality)</span>
-          </div>
-        </div>
-
-        <div id="loader" class="spinner hidden"></div>
-        <p id="msg" class="status-indicator">Ready to issue new card...</p>
-
-        <!-- QR Display Section -->
-        <div id="qrArea" class="qr-output-box hidden">
-          <h4>Dedicated Student QR Badge</h4>
-          <div id="qrcode"></div>
-          <p class="scan-instructions">Scan with Google Lens / Any Camera to open this exact card</p>
-          <div class="link-copy-box">
-            <input type="text" id="shareUrl" readonly />
-            <button id="copyLinkBtn" class="btn-secondary">Copy Link</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3D Card Display Area (Students & Public View) -->
-    <div class="card-viewport" id="cardScene">
-      <div class="card-3d" id="card3D">
-        <div class="gold-rim"></div>
-        <div class="hologram-overlay"></div>
-        <div class="card-watermark">SVGPC</div>
+      <!-- Hero Right: Floating Access Panel (3 Buttons) -->
+      <div class="hero-access-panel">
         
-        <!-- Complete Full Image Render -->
-        <img id="cardFullImage" class="full-card-img" src="https://via.placeholder.com/340x510/0b172a/38bdf8?text=Scan+QR+Badge+or+Upload+Card" alt="ID Card View" />
+        <!-- 1. Scan ID Card -->
+        <a href="scan-id.html" class="access-btn btn-scan">
+          <div class="btn-info">
+            <div class="btn-icon-wrapper">🔲</div>
+            <div class="btn-text">
+              <h4>Scan ID Card</h4>
+              <p>View Student Details</p>
+            </div>
+          </div>
+          <span class="btn-chevron">&gt;</span>
+        </a>
 
-        <div class="card-footer-ribbon">
-          <span>GOVERNMENT OF ANDHRA PRADESH • STATE BOARD OF TECHNICAL EDUCATION</span>
-        </div>
+        <!-- 2. Admin Login -->
+        <a href="admin-login.html" class="access-btn btn-admin">
+          <div class="btn-info">
+            <div class="btn-icon-wrapper admin-icon">🛡️</div>
+            <div class="btn-text">
+              <h4>Admin Login</h4>
+              <p>College Administration</p>
+            </div>
+          </div>
+          <span class="btn-chevron">&gt;</span>
+        </a>
+
+        <!-- 3. Branch Login -->
+        <a href="branch-login.html" class="access-btn btn-branch">
+          <div class="btn-info">
+            <div class="btn-icon-wrapper branch-icon">👥</div>
+            <div class="btn-text">
+              <h4>Branch Login</h4>
+              <p>HOD / Staff Access</p>
+            </div>
+          </div>
+          <span class="btn-chevron">&gt;</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Explore Our Diploma Programs (Official SBTET Branch Names) -->
+  <section class="content-section">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">OUR BRANCHES</span>
+        <h3 class="section-heading">Explore Our Diploma Programs</h3>
+        <p class="section-subheading">Choose your branch to know more about departments, faculty, labs and activities.</p>
+      </div>
+      <a href="#all-branches" class="view-all-pill">View All Branches &rarr;</a>
+    </div>
+
+    <!-- 9 Official Department Cards Grid -->
+    <div class="branches-grid">
+      <!-- 1. DCE -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-blue">🏛️</div>
+        <h5>DCE</h5>
+        <p>Civil Engineering</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 2. DEEE -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-yellow">⚡</div>
+        <h5>DEEE</h5>
+        <p>Electrical &amp; Electronics Engineering</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 3. DME -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-cyan">⚙️</div>
+        <h5>DME</h5>
+        <p>Mechanical Engineering</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 4. DECE -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-purple">🗼</div>
+        <h5>DECE</h5>
+        <p>Electronics &amp; Communication Engg.</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 5. DCME -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-indigo">💻</div>
+        <h5>DCME</h5>
+        <p>Computer Engineering</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 6. DCHE -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-pink">🧪</div>
+        <h5>DCHE</h5>
+        <p>Chemical Engineering</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 7. DIT -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-green">🖥️</div>
+        <h5>DIT</h5>
+        <p>Information Technology</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 8. DPT (Plastics) -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-amber">📦</div>
+        <h5>DPT</h5>
+        <p>Plastics Technology</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+
+      <!-- 9. DPRINT -->
+      <div class="branch-card">
+        <div class="branch-icon-box bg-rose">🖨️</div>
+        <h5>DPRI</h5>
+        <p>Printing Technology</p>
+        <span class="card-arrow">&gt;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Campus Facilities -->
+  <section class="content-section">
+    <div class="section-header-row">
+      <div>
+        <span class="section-badge">CAMPUS FACILITIES</span>
+        <h3 class="section-heading">Facilities for a Better Learning Experience</h3>
+        <p class="section-subheading">Well-equipped infrastructure and student support for a brighter future.</p>
       </div>
     </div>
 
-  </div>
+    <!-- Facilities Cards Grid -->
+    <div class="facilities-grid">
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-purple">👥</div>
+          <div>
+            <h5>Staff</h5>
+            <p>The highly motivated teaching and non-teaching staff strive a lot in imparting quality technical education to the students.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
 
-  <script src="script.js"></script>
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-red">🧪</div>
+          <div>
+            <h5>Laboratories</h5>
+            <p>Each branch has several well-established laboratories and also well-equipped workshop where students gain practical knowledge.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-green">⚙️</div>
+          <div>
+            <h5>AP Skill Development Centre</h5>
+            <p>The Centre imparts training to the students in Proge Cad, Solid Edge, Total Station, VM software which enable students to become employable.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-amber">🛡️</div>
+          <div>
+            <h5>National Cadet Corps (NCC)</h5>
+            <p>The NCC unit functions with an intake of 100 boy and girl cadets. It provides an opportunity for students to get B and C certificates.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-blue">🤝</div>
+          <div>
+            <h5>National Service Scheme (NSS)</h5>
+            <p>The NSS unit with an intake of 100 volunteers provides an opportunity to the students to participate in community development.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-indigo">💼</div>
+          <div>
+            <h5>Campus Placements</h5>
+            <p>Several reputed companies conduct placement drives in the campus wherein students are placed in top industries.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-rose">🏠</div>
+          <div>
+            <h5>Hostel</h5>
+            <p>Well established hostel facilities for boys and girls with clean dining and security.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-yellow">🏆</div>
+          <div>
+            <h5>Sports and Games</h5>
+            <p>Students practice in the sprawling playground and excel in inter-polytechnic sports meets.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+
+      <div class="facility-card">
+        <div class="fac-left">
+          <div class="fac-icon-box bg-blue">📖</div>
+          <div>
+            <h5>Library</h5>
+            <p>Well stocked central library on diverse technical titles and journals for student knowledge.</p>
+          </div>
+        </div>
+        <span class="fac-arrow">&gt;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-col-1">
+        <h4>S.V. GOVERNMENT POLYTECHNIC, TIRUPATI</h4>
+        <p>TIRUPATI, CHITTOOR (Dist.) - 517501<br>Government of Andhra Pradesh</p>
+      </div>
+
+      <div class="footer-col-2">
+        <h4>Quick Links</h4>
+        <p>Home &nbsp;|&nbsp; About &nbsp;|&nbsp; Branches &nbsp;|&nbsp; Campus Facilities &nbsp;|&nbsp; Contact</p>
+      </div>
+
+      <div class="footer-col-3">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <span>📺</span>
+          <span>📸</span>
+          <span>📘</span>
+          <span>🐦</span>
+        </div>
+      </div>
+
+      <div class="footer-col-4">
+        <p class="tag">Knowledge &nbsp;|&nbsp; Skills &nbsp;|&nbsp; Better Tomorrow</p>
+        <p class="copy">&copy; 2026 SVGP, Tirupati. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

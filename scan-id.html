@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Student ID Scanner - SVGP Tirupati</title>
+  <link rel="stylesheet" href="css/scan.css">
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-nav-bar">
+    <div class="nav-container">
+      <div class="brand-block">
+        <img src="images/logo.png" alt="AP Govt Logo" class="college-logo" onerror="this.src='https://via.placeholder.com/46?text=SVGP'">
+        <div class="brand-text">
+          <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
+          <p class="loc-text">TIRUPATI • Digital Student Verification System</p>
+        </div>
+      </div>
+      <a href="index.html" class="home-back-btn">← Back to Home</a>
+    </div>
+  </header>
+
+  <!-- Main Grid Wrapper -->
+  <main class="portal-main-wrapper">
+    
+    <!-- LEFT PANEL: Scanner Section -->
+    <section class="portal-card scanner-panel">
+      <div class="panel-header">
+        <span class="badge-chip">LIVE CAMERA SCANNER</span>
+        <h2>Scan Student Digital ID</h2>
+        <p>College ID card QR code ni camera mundu align cheyandi leda QR image file upload cheyandi.</p>
+      </div>
+
+      <div class="camera-viewport-frame">
+        <div id="qr-reader"></div>
+        <div class="scanner-laser" id="laser-line"></div>
+      </div>
+
+      <div class="scanner-btn-group">
+        <button id="btn-toggle" class="btn-ctrl btn-camera">
+          <span>📷</span> Camera Start / Stop
+        </button>
+        <label class="btn-ctrl btn-file-upload">
+          <span>📁</span> Upload QR Image
+          <input type="file" id="qr-image-input" accept="image/*" style="display:none;">
+        </label>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: Fixed Auth & Scanned Details -->
+    <section class="portal-card id-display-panel">
+      
+      <!-- 1. Idle Placeholder State (Scan ki mundhu) -->
+      <div id="idle-box" class="display-idle-state">
+        <div class="idle-icon-wrap">🔲</div>
+        <h3>No ID Card Scanned</h3>
+        <p>QR scan cheyagane student photo tho paatu college details mariyu location ikkada display avthayi.</p>
+      </div>
+
+      <!-- 2. Scanned Details Result Box (Scan ayyaka) -->
+      <div id="result-box" class="display-active-card" style="display:none;">
+        
+        <div class="card-verify-badge">
+          <span class="verify-icon">✓</span>
+          <span>GOVT VERIFIED DIGITAL ID</span>
+        </div>
+
+        <!-- Student Photo -->
+        <div class="student-photo-card">
+          <div class="photo-glow-ring">
+            <img id="scanned-image" src="" alt="Student Photo" class="student-avatar" onerror="handleImageFallback(this)">
+          </div>
+          <div class="photo-verified-tag">✓ Verified Student Record</div>
+        </div>
+
+        <!-- College Details & Location Card -->
+        <div class="college-details-card">
+          <div class="details-heading">COLLEGE &amp; LOCATION DETAILS</div>
+          
+          <div class="detail-row">
+            <span class="d-label">Institution:</span>
+            <span class="d-val">S.V. Government Polytechnic</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="d-label">Govt Code:</span>
+            <span class="d-val">031 (SBTET - AP)</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="d-label">Campus Location:</span>
+            <span class="d-val">KT Road, Tirupati, Tirupati (Dist.)</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="d-label">Postal Code:</span>
+            <span class="d-val">517501, Andhra Pradesh</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="d-label">Verification Time:</span>
+            <span class="d-val text-time" id="scan-time-val">--</span>
+          </div>
+        </div>
+
+        <!-- Scan Another Card Button (Details kinda matrame untundi) -->
+        <button onclick="resetScannerView()" class="btn-rescan-single">
+          <span>🔄</span> Scan Another Card
+        </button>
+
+      </div>
+
+      <!-- Fixed Auth Logins (Eppudoo display avthayi) -->
+      <div class="fixed-login-section">
+        <div class="fixed-login-title">AUTHORIZED PORTAL ACCESS</div>
+        <div class="fixed-buttons-row">
+          <a href="admin-login.html" class="fixed-btn btn-admin">
+            <span class="btn-ic">🛡️</span>
+            <div>
+              <h6>Admin Login</h6>
+              <p>Principal / College Admin</p>
+            </div>
+            <span class="btn-arr">&gt;</span>
+          </a>
+
+          <a href="branch-login.html" class="fixed-btn btn-branch">
+            <span class="btn-ic">👥</span>
+            <div>
+              <h6>Branch Login</h6>
+              <p>HOD / Department Staff</p>
+            </div>
+            <span class="btn-arr">&gt;</span>
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/scanner.js"></script>
+</body>
+</html>

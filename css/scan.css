@@ -1,0 +1,474 @@
+:root {
+  --primary-purple: #7c3aed;
+  --primary-grad: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  --admin-pink: #e11d48;
+  --branch-blue: #0284c7;
+  --bg-page: #f8fafc;
+  --card-bg: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --border-subtle: #e2e8f0;
+  --radius-xl: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+/* Header */
+.top-nav-bar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 10px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.nav-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.college-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.brand-text h1 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1e1b4b;
+  letter-spacing: 0.3px;
+}
+
+.brand-text .loc-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.home-back-btn {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  padding: 8px 18px;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.home-back-btn:hover {
+  background: #ede9fe;
+}
+
+/* Layout */
+.portal-main-wrapper {
+  max-width: 1360px;
+  margin: 20px auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.portal-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+/* Scanner Left */
+.badge-chip {
+  background: #ede9fe;
+  color: var(--primary-purple);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.panel-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e1b4b;
+  margin-bottom: 4px;
+}
+
+.panel-header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.camera-viewport-frame {
+  position: relative;
+  background: #090d16;
+  border-radius: 18px;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ddd6fe;
+}
+
+#qr-reader {
+  width: 100% !important;
+  border: none !important;
+}
+
+#qr-reader video {
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.scanner-laser {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 90%;
+  height: 3px;
+  background: #a855f7;
+  box-shadow: 0 0 14px #c084fc;
+  z-index: 10;
+  display: none;
+  animation: sweep 2s infinite ease-in-out;
+}
+
+@keyframes sweep {
+  0% { top: 15%; }
+  50% { top: 85%; }
+  100% { top: 15%; }
+}
+
+.scanner-btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-ctrl {
+  padding: 11px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-camera {
+  background: var(--primary-grad);
+  color: #ffffff;
+}
+
+.btn-file-upload {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* Right Panel */
+.id-display-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+}
+
+.display-idle-state {
+  text-align: center;
+  padding: 60px 16px;
+  color: var(--text-muted);
+  margin: auto;
+}
+
+.idle-icon-wrap {
+  font-size: 52px;
+  color: #cbd5e1;
+  margin-bottom: 10px;
+}
+
+.display-idle-state h3 {
+  font-size: 18px;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.display-idle-state p {
+  font-size: 12px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.display-active-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.card-verify-badge {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+/* Student Photo Showcase */
+.student-photo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.photo-glow-ring {
+  width: 150px;
+  height: 180px;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 5px;
+  border: 3px solid #7c3aed;
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.student-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.photo-verified-tag {
+  background: #ede9fe;
+  color: #6d28d9;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+
+/* College Details & Location Card */
+.college-details-card {
+  width: 100%;
+  background: #f8fafc;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.details-heading {
+  font-size: 10px;
+  font-weight: 800;
+  color: #7c3aed;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #edf2f7;
+  font-size: 12px;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.d-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.d-val {
+  color: #1e1b4b;
+  font-weight: 800;
+  text-align: right;
+}
+
+.text-time {
+  color: #0284c7;
+}
+
+/* Single Scan Another Card Button */
+.btn-rescan-single {
+  width: 100%;
+  background: var(--primary-grad);
+  color: #ffffff;
+  padding: 11px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+  margin-bottom: 18px;
+  transition: transform 0.2s;
+}
+
+.btn-rescan-single:hover {
+  transform: translateY(-2px);
+}
+
+/* Fixed Logins Section */
+.fixed-login-section {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.fixed-login-title {
+  font-size: 10px;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.fixed-buttons-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.fixed-btn {
+  padding: 10px 12px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.2s;
+}
+
+.fixed-btn:hover {
+  transform: translateY(-2px);
+}
+
+.fixed-btn .btn-ic {
+  font-size: 18px;
+}
+
+.fixed-btn h6 {
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.fixed-btn p {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.fixed-btn .btn-arr {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.btn-admin {
+  background: #ffffff;
+  color: var(--admin-pink);
+  border-color: #fecdd3;
+}
+
+.btn-admin h6 { color: #1e1b4b; }
+.btn-admin .btn-arr { color: #94a3b8; }
+
+.btn-branch {
+  background: #ffffff;
+  color: var(--branch-blue);
+  border-color: #bae6fd;
+}
+
+.btn-branch h6 { color: #1e1b4b; }
+.btn-branch .btn-arr { color: #94a3b8; }
+
+/* Responsive Mobile */
+@media (max-width: 860px) {
+  .portal-main-wrapper {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 10px auto;
+  }
+
+  .top-nav-bar {
+    padding: 10px 14px;
+  }
+
+  .brand-text h1 {
+    font-size: 13px;
+  }
+
+  .brand-text .loc-text {
+    font-size: 9px;
+  }
+
+  .camera-viewport-frame {
+    min-height: 280px;
+  }
+
+  .photo-glow-ring {
+    width: 130px;
+    height: 160px;
+  }
+
+  .fixed-buttons-row {
+    grid-template-columns: 1fr;
+  }
+}

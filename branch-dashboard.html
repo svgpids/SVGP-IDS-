@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - SVGP</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: white;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2 style="margin-bottom:8px;">Admin Portal</h2>
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">Sign in to college management dashboard</p>
+    <form action="admin-dashboard.html">
+      <div style="margin-bottom:16px;">
+        <label style="font-size:13px; font-weight:600;">Admin Email</label>
+        <input type="text" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5e1; margin-top:4px;" value="admin@svgp.edu.in">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:13px; font-weight:600;">Password</label>
+        <input type="password" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5e1; margin-top:4px;" value="••••••••">
+      </div>
+      <button type="submit" class="action-btn btn-blue" style="width:100%; justify-content:center; border:none; cursor:pointer;">Sign In</button>
+    </form>
+  </div>
+</body>
+</html>
