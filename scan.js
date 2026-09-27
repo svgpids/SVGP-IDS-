@@ -1,85 +1,147 @@
 /**
- * Scan Page - Student Details Logic
- * Reads URL parameters and displays student info dynamically
+ * Scan Page - Complete JavaScript
+ * Handles: Clock, Upload, Camera, Navigation
  */
 (function() {
     'use strict';
 
-    // Mock Database of Students (GitHub Pages lo database ledu kabatti idi use chesthunnamu)
-    const studentDatabase = {
-        '2026ECE001': {
-            name: 'K. PRAVEEN KUMAR',
-            branch: 'Electronics & Communication (ECE)',
-            year: '1st Year',
-            dob: '17-02-2007',
-            batch: '2026 - 2029',
-            blood: 'O +ve',
-            photo: 'images/student.jpg'
-        },
-        '2026CIV002': {
-            name: 'M. SURESH BABU',
-            branch: 'Civil Engineering (DCE)',
-            year: '1st Year',
-            dob: '05-08-2006',
-            batch: '2026 - 2029',
-            blood: 'B +ve',
-            photo: 'images/student.jpg'
-        }
-    };
-
+    // ===== DOM Cache =====
     const DOM = {
-        loading: document.getElementById('scan-loading'),
-        card: document.getElementById('scan-student-card'),
-        roll: document.getElementById('student-roll'),
-        name: document.getElementById('student-name'),
-        branchMain: document.getElementById('student-branch-main'),
-        year: document.getElementById('student-year'),
-        dob: document.getElementById('student-dob'),
-        batch: document.getElementById('student-batch'),
-        blood: document.getElementById('student-blood'),
-        photo: document.getElementById('student-photo')
+        dateEl: document.getElementById('scan-current-date'),
+        timeEl: document.getElementById('scan-current-time'),
+        uploadBtn: document.getElementById('scan-upload-btn'),
+        cameraBtn: document.getElementById('scan-camera-btn'),
+        hamburgerBtn: document.getElementById('scan-hamburger-btn')
     };
 
-    function loadStudentDetails() {
-        // Get URL parameter (e.g., ?id=2026ECE001)
-        const urlParams = new URLSearchParams(window.location.search);
-        const studentId = urlParams.get('id') || '2026ECE001'; // Default to 2026ECE001 if no ID
-
-        // Simulate network delay for realistic feel
-        setTimeout(() => {
-            const student = studentDatabase[studentId];
-
-            if (student) {
-                // Update DOM with student data
-                DOM.roll.textContent = studentId;
-                DOM.name.textContent = student.name;
-                DOM.branchMain.textContent = student.branch;
-                DOM.year.textContent = student.year;
-                DOM.dob.textContent = student.dob;
-                DOM.batch.textContent = student.batch;
-                DOM.blood.textContent = student.blood;
-                DOM.photo.src = student.photo;
-
-                // Show card, hide loading
-                DOM.loading.style.display = 'none';
-                DOM.card.style.display = 'block';
-            } else {
-                // If student not found
-                DOM.loading.innerHTML = `
-                    <div style="color: #ef4444; font-size: 3rem; margin-bottom: 10px;">⚠️</div>
-                    <h3 style="color: #1e293b; margin-bottom: 8px;">Student Not Found</h3>
-                    <p style="color: #64748b; margin-bottom: 20px;">Invalid ID or data not available.</p>
-                    <button class="scan-btn scan-btn-primary" onclick="window.location.href='index.html'">Go to Home</button>
-                `;
-            }
-        }, 800); // 800ms fake loading time
+    // ===== Live Clock =====
+    function updateDateTime() {
+        const now = new Date();
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        const dayName = days[now.getDay()];
+        const date = now.getDate();
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        
+        if (DOM.dateEl) {
+            DOM.dateEl.textContent = `${dayName}, ${date} ${month} ${year}`;
+        }
+        if (DOM.timeEl) {
+            DOM.timeEl.textContent = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+        }
     }
 
-    // Initialize
+    // ===== Upload Image Handler =====
+    function handleUpload() {
+        if (!DOM.uploadBtn) return;
+
+        DOM.uploadBtn.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/jpeg,image/png,image/webp';
+            
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    console.log('📤 File uploaded:', file.name);
+                    console.log('📊 Size:', (file.size / 1024).toFixed(2) + ' KB');
+                    console.log('🎨 Type:', file.type);
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        console.log('✅ Image loaded, ready to scan barcode');
+                    };
+                    reader.readAsDataURL(file);
+                    
+                    alert('✅ Image uploaded: ' + file.name + '\n\nIn production, this will scan the barcode/QR automatically.');
+                }
+            };
+            input.click();
+        });
+    }
+
+    // ===== Camera Handler =====
+    function handleCamera() {
+        if (!DOM.cameraBtn) return;
+
+        DOM.cameraBtn.addEventListener('click', () => {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                })
+                .then(stream => {
+                    console.log('📷 Camera accessed successfully');
+                    alert('📷 Camera activated!\n\nIn production, this will show live camera feed with barcode scanning.');
+                    
+                    setTimeout(() => {
+                        stream.getTracks().forEach(track => track.stop());
+                        console.log('📷 Camera stopped');
+                    }, 3000);
+                })
+                .catch(err => {
+                    console.error('❌ Camera error:', err);
+                    alert('❌ Camera access denied or not available.\n\nError: ' + err.message);
+                });
+            } else {
+                alert('⚠️ Camera not supported in this browser.');
+            }
+        });
+    }
+
+    // ===== Hamburger Menu =====
+    function handleHamburger() {
+        if (!DOM.hamburgerBtn) return;
+
+        DOM.hamburgerBtn.addEventListener('click', () => {
+            DOM.hamburgerBtn.classList.toggle('active');
+            console.log('🍔 Menu toggled');
+        });
+    }
+
+    // ===== Scan Animation Enhancement =====
+    function enhanceScanner() {
+        const scannerArea = document.querySelector('.scan-scanner-area');
+        if (!scannerArea) return;
+
+        scannerArea.addEventListener('click', () => {
+            console.log('🎯 Scan triggered manually');
+            scannerArea.style.boxShadow = '0 0 30px #a855f7';
+            setTimeout(() => {
+                scannerArea.style.boxShadow = 'none';
+            }, 300);
+        });
+    }
+
+    // ===== Initialization =====
+    function init() {
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        handleUpload();
+        handleCamera();
+        handleHamburger();
+        enhanceScanner();
+        
+        console.log('✅ Scan page initialized successfully!');
+        console.log('📱 Ready to scan student ID cards');
+    }
+
+    // Start when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', loadStudentDetails);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        loadStudentDetails();
+        init();
     }
 
 })();

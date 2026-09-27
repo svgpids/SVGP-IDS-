@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Details - S.V. Government Polytechnic</title>
+    <title>Scan Student ID Card - S.V. Government Polytechnic</title>
     <link rel="stylesheet" href="scan.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,14 +15,30 @@
             <img src="images/logo.jfif" alt="Logo" class="scan-logo-img">
             <div class="scan-logo-text">
                 <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
-                <p>TIRUPATI</p>
+                <p>TIRUPATI &nbsp;|&nbsp; ESTD. 1980 &nbsp;|&nbsp; GOVT. OF ANDHRA PRADESH</p>
             </div>
         </div>
+        <div class="scan-nav-center">
+            <a href="index.html" class="scan-nav-btn">Home</a>
+            <a href="scan.html" class="scan-nav-btn scan-nav-btn-active">Scan QR</a>
+            <a href="admin.html" class="scan-nav-btn">Admin Login</a>
+        </div>
         <div class="scan-nav-right">
-            <a href="index.html" class="scan-home-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                Home
-            </a>
+            <div class="scan-datetime-box">
+                <svg class="scan-dt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <div class="scan-dt-content">
+                    <span id="scan-current-date">Fri, 26 Sep 2026</span>
+                    <span id="scan-current-time">12:30:45 PM</span>
+                </div>
+            </div>
+            <button class="scan-hamburger" id="scan-hamburger-btn">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
 
@@ -30,96 +46,152 @@
     <section class="scan-hero">
         <div class="scan-hero-overlay"></div>
         <div class="scan-hero-content">
-            <h1 class="scan-hero-title">Student <span class="scan-highlight">Details</span></h1>
-            <p class="scan-hero-subtitle">S.V. GOVERNMENT POLYTECHNIC | TIRUPATI</p>
+            <h1 class="scan-hero-title">Scan <span class="scan-highlight">Student ID Card</span></h1>
+            <p class="scan-hero-subtitle">Scan the barcode/QR on student ID card to view student details instantly.</p>
+            <div class="scan-hero-badge">
+                <span>S.V. GOVERNMENT POLYTECHNIC &nbsp;|&nbsp; TIRUPATI</span>
+            </div>
+        </div>
+        <!-- Floating ID Card Mockup -->
+        <div class="scan-floating-card">
+            <div class="scan-id-mockup">
+                <div class="scan-id-header">
+                    <span class="scan-id-college">S.V. GOVERNMENT POLYTECHNIC</span>
+                    <span class="scan-id-loc">TIRUPATI</span>
+                </div>
+                <div class="scan-id-body">
+                    <div class="scan-id-photo">
+                        <svg viewBox="0 0 24 24" fill="#94a3b8" width="36" height="36"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <div class="scan-id-lines">
+                        <div class="scan-id-line long"></div>
+                        <div class="scan-id-line medium"></div>
+                        <div class="scan-id-line short"></div>
+                    </div>
+                </div>
+                <div class="scan-id-barcode">
+                    <div class="scan-barcode-bars">
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- ===== MAIN CONTENT ===== -->
     <section class="scan-main">
-        
-        <!-- Loading State -->
-        <div class="scan-loading" id="scan-loading">
-            <div class="scan-loader"></div>
-            <p>Fetching student details...</p>
-        </div>
+        <div class="scan-grid">
 
-        <!-- Student Card (Shows after loading) -->
-        <div class="scan-student-card" id="scan-student-card" style="display: none;">
-            <div class="scan-card-header">
-                <div class="scan-badge">
-                    <svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-                    <span>Verified Student</span>
-                </div>
-                <div class="scan-id-display">
-                    <span>ID: </span>
-                    <strong id="student-roll">2026ECE001</strong>
-                </div>
-            </div>
-
-            <div class="scan-card-body">
-                <div class="scan-photo-section">
-                    <div class="scan-photo-frame">
-                        <img id="student-photo" src="images/student.jpg" alt="Student Photo" onerror="this.src='https://via.placeholder.com/200x240/3b82f6/ffffff?text=Student'">
+            <!-- LEFT: Scanner Card -->
+            <div class="scan-card">
+                <div class="scan-card-header">
+                    <div class="scan-card-icon">
+                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                     </div>
-                    <h2 class="scan-student-name" id="student-name">K. PRAVEEN KUMAR</h2>
-                    <p class="scan-student-branch" id="student-branch-main">Electronics & Communication (ECE)</p>
+                    <h2>Scan ID Card</h2>
                 </div>
 
-                <div class="scan-details-grid">
-                    <div class="scan-detail-item">
-                        <div class="scan-detail-icon">📅</div>
-                        <div class="scan-detail-content">
-                            <span class="scan-detail-label">Year</span>
-                            <span class="scan-detail-value" id="student-year">1st Year</span>
-                        </div>
+                <div class="scan-scanner-area">
+                    <div class="scan-scanner-corners">
+                        <div class="scan-corner scan-corner-tl"></div>
+                        <div class="scan-corner scan-corner-tr"></div>
+                        <div class="scan-corner scan-corner-bl"></div>
+                        <div class="scan-corner scan-corner-br"></div>
                     </div>
-
-                    <div class="scan-detail-item">
-                        <div class="scan-detail-icon">🎂</div>
-                        <div class="scan-detail-content">
-                            <span class="scan-detail-label">Date of Birth</span>
-                            <span class="scan-detail-value" id="student-dob">17-02-2007</span>
+                    <div class="scan-scanner-content">
+                        <div class="scan-barcode-anim">
+                            <span></span><span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
                         </div>
-                    </div>
-
-                    <div class="scan-detail-item">
-                        <div class="scan-detail-icon"></div>
-                        <div class="scan-detail-content">
-                            <span class="scan-detail-label">Batch</span>
-                            <span class="scan-detail-value" id="student-batch">2026 - 2029</span>
-                        </div>
-                    </div>
-
-                    <div class="scan-detail-item">
-                        <div class="scan-detail-icon">🩸</div>
-                        <div class="scan-detail-content">
-                            <span class="scan-detail-label">Blood Group</span>
-                            <span class="scan-detail-value" id="student-blood">O +ve</span>
-                        </div>
+                        <div class="scan-red-line"></div>
+                        <p class="scan-scanner-text">Point your ID card here</p>
+                        <p class="scan-scanner-subtext">Barcode/QR will be scanned automatically</p>
                     </div>
                 </div>
 
                 <div class="scan-actions">
-                    <button class="scan-btn scan-btn-primary" onclick="window.print()">
-                        <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h3v4h14v-4h3v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/></svg>
-                        Print / Save
+                    <button class="scan-action-btn" id="scan-upload-btn">
+                        <div class="scan-action-icon scan-upload-icon">
+                            <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                        </div>
+                        <div class="scan-action-text">
+                            <strong>Upload Image</strong>
+                            <span>JPG, PNG, WEBP</span>
+                        </div>
                     </button>
-                    <button class="scan-btn scan-btn-secondary" onclick="window.location.href='qr.html'">
-                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4z"/></svg>
-                        Scan Another
+
+                    <button class="scan-action-btn" id="scan-camera-btn">
+                        <div class="scan-action-icon scan-camera-icon">
+                            <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M9.4 10.5l4.77-8.26C13.47 2.09 12.75 2 12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1zM21.54 9c-.92-2.92-3.15-5.26-6-6.34L11.88 9h9.66zm.26 2h-7.49l.75 1.3L20.4 21.5c.96-1.34 1.6-2.93 1.82-4.66.12-.97.12-1.94 0-2.91l-.42-2.93zM8.54 12L3.1 2.57C1.82 4.21 1 6.27 1 8.5c0 .68.08 1.34.21 1.98L8.54 12zM1 15.5c.22 1.73.86 3.32 1.82 4.66l5.64-9.76H1c0 .68.08 1.34.21 1.98l-.21-.88zM12 22c2.4 0 4.6-.85 6.32-2.25l-3.66-6.35L12 17.5V22z"/></svg>
+                        </div>
+                        <div class="scan-action-text">
+                            <strong>Use Camera</strong>
+                            <span>Scan using device camera</span>
+                        </div>
                     </button>
                 </div>
             </div>
+
+            <!-- RIGHT: Student Details Card -->
+            <div class="scan-card">
+                <div class="scan-card-header">
+                    <div class="scan-card-icon">
+                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <h2>Student Details</h2>
+                </div>
+
+                <div class="scan-student-details">
+                    <div class="scan-student-photo">
+                        <img src="images/student.jpg" alt="Student Photo" onerror="this.src='https://via.placeholder.com/200x240/3b82f6/ffffff?text=Student'">
+                    </div>
+                    <div class="scan-student-info">
+                        <h3 class="scan-student-name">K. PRAVEEN KUMAR</h3>
+                        <div class="scan-detail-row">
+                            <span class="scan-detail-icon">🆔</span>
+                            <span class="scan-detail-label">PIN / Roll No.</span>
+                            <span class="scan-detail-sep">:</span>
+                            <span class="scan-detail-value">2026ECE001</span>
+                        </div>
+                        <div class="scan-detail-row">
+                            <span class="scan-detail-icon">📚</span>
+                            <span class="scan-detail-label">Branch</span>
+                            <span class="scan-detail-sep">:</span>
+                            <span class="scan-detail-value">Electronics & Communication (ECE)</span>
+                        </div>
+                        <div class="scan-detail-row">
+                            <span class="scan-detail-icon">📅</span>
+                            <span class="scan-detail-label">Year</span>
+                            <span class="scan-detail-sep">:</span>
+                            <span class="scan-detail-value">1st Year</span>
+                        </div>
+                        <div class="scan-detail-row">
+                            <span class="scan-detail-icon">🎂</span>
+                            <span class="scan-detail-label">Date of Birth</span>
+                            <span class="scan-detail-sep">:</span>
+                            <span class="scan-detail-value">17-02-2007</span>
+                        </div>
+                        <div class="scan-detail-row">
+                            <span class="scan-detail-icon">👥</span>
+                            <span class="scan-detail-label">Batch</span>
+                            <span class="scan-detail-sep">:</span>
+                            <span class="scan-detail-value">2026 - 2029</span>
+                        </div>
+                        <div class="scan-detail-row">
+                            <span class="scan-detail-icon">🩸</span>
+                            <span class="scan-detail-label">Blood Group</span>
+                            <span class="scan-detail-sep">:</span>
+                            <span class="scan-detail-value">O +ve</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
     </section>
-
-    <!-- ===== FOOTER ===== -->
-    <footer class="scan-footer">
-        <p>&copy; 2026 S.V. Government Polytechnic, Tirupati.</p>
-        <p>Government of Andhra Pradesh | Estd. 1980</p>
-    </footer>
 
     <script src="scan.js"></script>
 </body>
