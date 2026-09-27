@@ -1,11 +1,10 @@
 /**
- * QR Generator Page - Pure JavaScript (GitHub Compatible)
- * No Python required. Generates QR instantly using qrcode.js library.
+ * QR Generator Page - 100% Scan Optimized
+ * Pure Black color + Short URL = Easy Scanning
  */
 (function() {
     'use strict';
 
-    // DOM Elements
     const DOM = {
         dropZone: document.getElementById('qr-drop-zone'),
         fileInput: document.getElementById('qr-file-input'),
@@ -21,6 +20,9 @@
         dateEl: document.getElementById('qr-current-date'),
         timeEl: document.getElementById('qr-current-time')
     };
+
+    // ✅ Clean, Short URL (No extra parameters for easy scanning)
+    const SCAN_PAGE_URL = 'https://svgpids.github.io/SVGP-IDS-/scan.html';
 
     let qrInstance = null;
 
@@ -69,36 +71,30 @@
             DOM.dropZone.style.display = 'none';
             DOM.selectBtn.style.display = 'none';
 
-            // Generate QR Code automatically
-            // Note: We use a mock URL because Base64 is too large for QR codes
-            const randomId = Math.floor(100000 + Math.random() * 900000);
-            const mockUrl = `https://svpg-tirupati.ac.in/verify/${randomId}`;
-            
-            generateQRCode(mockUrl);
+            // ✅ Generate QR with ONLY the clean URL (No timestamps, no filenames)
+            generateQRCode(SCAN_PAGE_URL);
         };
         reader.readAsDataURL(file);
     }
 
-    // 3. QR Code Generation
+    // 3. QR Code Generation (Optimized for Scanners)
     function generateQRCode(data) {
-        // Clear previous QR
         DOM.qrDisplay.innerHTML = '';
         DOM.placeholder.style.display = 'none';
 
         try {
-            // Generate new QR automatically
             qrInstance = new QRCode(DOM.qrDisplay, {
                 text: data,
-                width: 200,
-                height: 200,
-                colorDark: "#1e293b",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+                width: 250,       // ✅ Slightly larger for easy scanning
+                height: 250,      // ✅ Slightly larger for easy scanning
+                colorDark: "#000000", // ✅ PURE BLACK (Scanners love this)
+                colorLight: "#ffffff", // ✅ PURE WHITE
+                correctLevel: QRCode.CorrectLevel.H // ✅ High error correction
             });
 
             DOM.downloadBtn.disabled = false;
-            DOM.statusText.textContent = '✅ Your QR code is ready!';
-            console.log('✅ QR Generated for:', data);
+            DOM.statusText.textContent = '✅ QR Code Ready! Scan to open scan.html';
+            console.log('✅ QR Generated with clean URL:', data);
         } catch (error) {
             console.error('QR Generation failed:', error);
             DOM.placeholder.textContent = '❌ Failed to generate QR.';
@@ -108,7 +104,6 @@
 
     // 4. Download QR Code
     function downloadQR() {
-        // Wait a bit for canvas to render
         setTimeout(() => {
             const qrCanvas = DOM.qrDisplay.querySelector('canvas');
             const qrImg = DOM.qrDisplay.querySelector('img');
@@ -127,7 +122,6 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                console.log('📥 QR Code downloaded');
             }
         }, 300);
     }
@@ -148,16 +142,13 @@
 
     // 6. Event Listeners
     function setupEventListeners() {
-        // Click on drop zone
         DOM.dropZone.addEventListener('click', () => DOM.fileInput.click());
         DOM.selectBtn.addEventListener('click', () => DOM.fileInput.click());
 
-        // File input change
         DOM.fileInput.addEventListener('change', (e) => {
             if (e.target.files[0]) handleFileSelect(e.target.files[0]);
         });
 
-        // Drag & Drop
         DOM.dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             DOM.dropZone.classList.add('drag-over');
@@ -171,7 +162,6 @@
             if (e.dataTransfer.files[0]) handleFileSelect(e.dataTransfer.files[0]);
         });
 
-        // Buttons
         DOM.downloadBtn.addEventListener('click', downloadQR);
         DOM.regenerateBtn.addEventListener('click', resetGenerator);
     }
@@ -181,7 +171,7 @@
         updateDateTime();
         setInterval(updateDateTime, 1000);
         setupEventListeners();
-        console.log('✅ QR Generator page initialized successfully!');
+        console.log('✅ QR Generator initialized!');
     }
 
     if (document.readyState === 'loading') {
