@@ -1,9 +1,11 @@
 /**
- * QR Generator Page - 100% Scan Optimized
- * Pure Black color + Short URL = Easy Scanning
+ * QR Generator - 100% Scannable & Bulletproof
  */
 (function() {
     'use strict';
+
+    // Exact URL to be encoded
+    const TARGET_URL = "https://svgpids.github.io/SVGP-IDS-/scan.html";
 
     const DOM = {
         dropZone: document.getElementById('qr-drop-zone'),
@@ -20,9 +22,6 @@
         dateEl: document.getElementById('qr-current-date'),
         timeEl: document.getElementById('qr-current-time')
     };
-
-    // ✅ Clean, Short URL (No extra parameters for easy scanning)
-    const SCAN_PAGE_URL = 'https://svgpids.github.io/SVGP-IDS-/scan.html';
 
     let qrInstance = null;
 
@@ -62,7 +61,6 @@
             return;
         }
 
-        // Show Image Preview
         const reader = new FileReader();
         reader.onload = (e) => {
             DOM.previewImg.src = e.target.result;
@@ -71,30 +69,47 @@
             DOM.dropZone.style.display = 'none';
             DOM.selectBtn.style.display = 'none';
 
-            // ✅ Generate QR with ONLY the clean URL (No timestamps, no filenames)
-            generateQRCode(SCAN_PAGE_URL);
+            // Generate QR with EXACT URL
+            generateQRCode(TARGET_URL);
         };
         reader.readAsDataURL(file);
     }
 
-    // 3. QR Code Generation (Optimized for Scanners)
+    // 3. QR Code Generation (Bulletproof)
     function generateQRCode(data) {
+        // Force clear previous QR code completely
         DOM.qrDisplay.innerHTML = '';
         DOM.placeholder.style.display = 'none';
+
+        // Check if library is loaded
+        if (typeof QRCode === 'undefined') {
+            DOM.placeholder.textContent = '❌ QR Library not loaded. Check internet connection.';
+            DOM.placeholder.style.display = 'block';
+            return;
+        }
 
         try {
             qrInstance = new QRCode(DOM.qrDisplay, {
                 text: data,
-                width: 250,       // ✅ Slightly larger for easy scanning
-                height: 250,      // ✅ Slightly larger for easy scanning
-                colorDark: "#000000", // ✅ PURE BLACK (Scanners love this)
-                colorLight: "#ffffff", // ✅ PURE WHITE
-                correctLevel: QRCode.CorrectLevel.H // ✅ High error correction
+                width: 250,
+                height: 250,
+                colorDark: "#000000", // Pure Black (Best for scanning)
+                colorLight: "#ffffff", // Pure White
+                correctLevel: QRCode.CorrectLevel.H // Highest error correction
             });
+
+            // Add visible URL text below QR so you know what's inside
+            const urlText = document.createElement('p');
+            urlText.textContent = TARGET_URL;
+            urlText.style.marginTop = '15px';
+            urlText.style.fontSize = '0.8rem';
+            urlText.style.color = '#64748b';
+            urlText.style.wordBreak = 'break-all';
+            DOM.qrDisplay.appendChild(urlText);
 
             DOM.downloadBtn.disabled = false;
             DOM.statusText.textContent = '✅ QR Code Ready! Scan to open scan.html';
-            console.log('✅ QR Generated with clean URL:', data);
+            console.log('✅ QR Generated successfully with URL:', data);
         } catch (error) {
             console.error('QR Generation failed:', error);
             DOM.placeholder.textContent = '❌ Failed to generate QR.';
@@ -172,6 +187,7 @@
         setInterval(updateDateTime, 1000);
         setupEventListeners();
         console.log('✅ QR Generator initialized!');
+        console.log('📱 Target URL:', TARGET_URL);
     }
 
     if (document.readyState === 'loading') {
