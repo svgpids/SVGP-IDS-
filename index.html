@@ -1,334 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>S.V. GOVERNMENT POLYTECHNIC, TIRUPATI</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.V. Government Polytechnic - Tirupati</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Top Header Navigation Bar -->
-  <header class="top-nav-bar">
-    <div class="nav-container">
-      
-      <!-- Left: Logo & Institutional Header -->
-      <div class="brand-block">
-        <img src="images/logo.png" alt="AP Govt Logo" class="college-logo" onerror="this.src='https://via.placeholder.com/50?text=SVGP'">
-        <div class="brand-text">
-          <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
-          <p class="loc-text">TIRUPATI, CHITTOOR (Dist.) - 517501</p>
-          <p class="gov-text">GOVERNMENT OF ANDHRA PRADESH</p>
+    <!-- ===== TOP NAVBAR ===== -->
+<nav class="top-nav">
+    <div class="nav-left">
+        <img src="images/logo.jfif" alt="Logo" class="logo-img">
+        <div class="logo-text">
+            <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
+            <p>TIRUPATI</p>
         </div>
-      </div>
-
-      <!-- Center: Tagline Chip -->
-      <div class="center-tagline">
-        <span class="tag-icon">🎓</span>
-        <span class="tag-text">Knowledge &nbsp;|&nbsp; Skills &nbsp;|&nbsp; Better Tomorrow</span>
-      </div>
-
-      <!-- Right: Live Date & Time Chip -->
-      <div class="live-datetime-chip">
-        <span class="cal-icon">📅</span>
-        <span id="live-time-display">Loading Time...</span>
-      </div>
-
-      <!-- Mobile Hamburger Button -->
-      <button class="mobile-menu-trigger" aria-label="Open Menu">☰</button>
     </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-canvas" style="background-image: url('images/college.jpg');">
-      <!-- Vignette Shade to highlight white text while keeping campus crystal clear -->
-      <div class="hero-vignette"></div>
-
-      <!-- Hero Left: Typography Only (Badges removed) -->
-      <div class="hero-left">
-        <div class="welcome-chip">Welcome to</div>
-        <h2 class="hero-title">
-          S.V. GOVERNMENT<br>
-          <span class="grad-purple">POLYTECHNIC, TIRUPATI</span>
-        </h2>
-        <p class="hero-subtitle">Empowering Students for a Brighter Future</p>
-      </div>
-
-      <!-- Hero Right: Floating Access Panel (3 Buttons) -->
-      <div class="hero-access-panel">
-        
-        <!-- 1. Scan ID Card -->
-        <a href="scan-id.html" class="access-btn btn-scan">
-          <div class="btn-info">
-            <div class="btn-icon-wrapper">🔲</div>
-            <div class="btn-text">
-              <h4>Scan ID Card</h4>
-              <p>View Student Details</p>
+    <div class="nav-right">
+        <div class="datetime-box">
+            <svg class="dt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <div class="dt-content">
+                <span id="current-date">Fri, 26 Sep 2026</span>
+                <span id="current-time">12:30:45 PM</span>
             </div>
-          </div>
-          <span class="btn-chevron">&gt;</span>
-        </a>
+        </div>
+        <!-- Hamburger for Mobile -->
+        <button class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
 
-        <!-- 2. Admin Login -->
-        <a href="admin-login.html" class="access-btn btn-admin">
-          <div class="btn-info">
-            <div class="btn-icon-wrapper admin-icon">🛡️</div>
-            <div class="btn-text">
-              <h4>Admin Login</h4>
-              <p>College Administration</p>
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-tagline">SKILLS &nbsp;•&nbsp; DISCIPLINE &nbsp;•&nbsp; INNOVATION &nbsp;•&nbsp; BETTER TOMORROW</p>
+            <h1 class="hero-title">S.V. GOVERNMENT <span class="highlight">POLYTECHNIC</span></h1>
+            <div class="hero-subtitle-wrap">
+                <span class="subtitle-line"></span>
+                <h2 class="hero-subtitle">TIRUPATI</h2>
+                <span class="subtitle-line"></span>
             </div>
-          </div>
-          <span class="btn-chevron">&gt;</span>
-        </a>
+            <p class="hero-motto">"One Identity &nbsp;•&nbsp; Many Possibilities"</p>
+        </div>
+    </section>
 
-        <!-- 3. Branch Login -->
-        <a href="branch-login.html" class="access-btn btn-branch">
-          <div class="btn-info">
-            <div class="btn-icon-wrapper branch-icon">👥</div>
-            <div class="btn-text">
-              <h4>Branch Login</h4>
-              <p>HOD / Staff Access</p>
+    <!-- ===== LOGIN CARDS ===== -->
+    <section class="login-section">
+        <div class="login-cards">
+            <!-- Branch Login -->
+            <div class="login-card card-branch" id="nav-branch">
+                <div class="card-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="white" width="35" height="35">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                </div>
+                <div class="card-info">
+                    <h3>Branch Login</h3>
+                    <p>Login to manage your branch students and issue IDs</p>
+                </div>
+                <button class="card-arrow">
+                    <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
             </div>
-          </div>
-          <span class="btn-chevron">&gt;</span>
-        </a>
 
-      </div>
-    </div>
-  </section>
+            <!-- Scan QR -->
+            <div class="login-card card-qr" id="nav-scan">
+                <div class="card-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="white" width="35" height="35">
+                        <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2zM15 15h2v2h-2zM13 17h2v2h-2zM17 13h2v2h-2zM19 15h2v2h-2zM17 17h2v2h-2zM15 19h2v2h-2zM19 19h2v2h-2z"/>
+                    </svg>
+                </div>
+                <div class="card-info">
+                    <h3>Scan QR</h3>
+                    <p>Scan student ID card to view details instantly</p>
+                </div>
+                <button class="card-arrow">
+                    <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+            </div>
 
-  <!-- Section 1: Explore Our Diploma Programs (Official SBTET Branch Names) -->
-  <section class="content-section">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">OUR BRANCHES</span>
-        <h3 class="section-heading">Explore Our Diploma Programs</h3>
-        <p class="section-subheading">Choose your branch to know more about departments, faculty, labs and activities.</p>
-      </div>
-      <a href="#all-branches" class="view-all-pill">View All Branches &rarr;</a>
-    </div>
-
-    <!-- 9 Official Department Cards Grid -->
-    <div class="branches-grid">
-      <!-- 1. DCE -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-blue">🏛️</div>
-        <h5>DCE</h5>
-        <p>Civil Engineering</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 2. DEEE -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-yellow">⚡</div>
-        <h5>DEEE</h5>
-        <p>Electrical &amp; Electronics Engineering</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 3. DME -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-cyan">⚙️</div>
-        <h5>DME</h5>
-        <p>Mechanical Engineering</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 4. DECE -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-purple">🗼</div>
-        <h5>DECE</h5>
-        <p>Electronics &amp; Communication Engg.</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 5. DCME -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-indigo">💻</div>
-        <h5>DCME</h5>
-        <p>Computer Engineering</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 6. DCHE -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-pink">🧪</div>
-        <h5>DCHE</h5>
-        <p>Chemical Engineering</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 7. DIT -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-green">🖥️</div>
-        <h5>DIT</h5>
-        <p>Information Technology</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 8. DPT (Plastics) -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-amber">📦</div>
-        <h5>DPT</h5>
-        <p>Plastics Technology</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-
-      <!-- 9. DPRINT -->
-      <div class="branch-card">
-        <div class="branch-icon-box bg-rose">🖨️</div>
-        <h5>DPRI</h5>
-        <p>Printing Technology</p>
-        <span class="card-arrow">&gt;</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 2: Campus Facilities -->
-  <section class="content-section">
-    <div class="section-header-row">
-      <div>
-        <span class="section-badge">CAMPUS FACILITIES</span>
-        <h3 class="section-heading">Facilities for a Better Learning Experience</h3>
-        <p class="section-subheading">Well-equipped infrastructure and student support for a brighter future.</p>
-      </div>
-    </div>
-
-    <!-- Facilities Cards Grid -->
-    <div class="facilities-grid">
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-purple">👥</div>
-          <div>
-            <h5>Staff</h5>
-            <p>The highly motivated teaching and non-teaching staff strive a lot in imparting quality technical education to the students.</p>
-          </div>
+            <!-- Admin Login -->
+            <div class="login-card card-admin" id="nav-admin">
+                <div class="card-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="white" width="35" height="35">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                    </svg>
+                </div>
+                <div class="card-info">
+                    <h3>Admin Login</h3>
+                    <p>Login to manage all branches, students and system settings</p>
+                </div>
+                <button class="card-arrow">
+                    <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
+    </section>
 
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-red">🧪</div>
-          <div>
-            <h5>Laboratories</h5>
-            <p>Each branch has several well-established laboratories and also well-equipped workshop where students gain practical knowledge.</p>
-          </div>
+    <!-- ===== OUR BRANCHES ===== -->
+    <section class="branches-section">
+        <div class="section-header">
+            <div class="header-line"></div>
+            <h2>Our Branches</h2>
+            <div class="header-line"></div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
+        <p class="section-subtitle">Explore 9 Diploma Branches with modern facilities and industry-focused education</p>
 
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-green">⚙️</div>
-          <div>
-            <h5>AP Skill Development Centre</h5>
-            <p>The Centre imparts training to the students in Proge Cad, Solid Edge, Total Station, VM software which enable students to become employable.</p>
-          </div>
+        <div class="branches-grid">
+            <!-- 01 DCE -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dce">
+                    <svg viewBox="0 0 24 24" fill="#2563eb" width="45" height="45"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">01</span>
+                        <span class="branch-badge bg-dce-text">DCE</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Civil Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag"> Intake: 120</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Design, construction and maintenance of infrastructure and buildings.</p>
+                    <button class="arrow-btn bg-dce-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 02 DME -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dme">
+                    <svg viewBox="0 0 24 24" fill="#ea580c" width="45" height="45"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L3.16 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">02</span>
+                        <span class="branch-badge bg-dme-text">DME</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Mechanical Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag">📋 Intake: 120</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Learn design, manufacturing, thermodynamics and mechanical systems.</p>
+                    <button class="arrow-btn bg-dme-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 03 DEEE -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-deee">
+                    <svg viewBox="0 0 24 24" fill="#059669" width="45" height="45"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">03</span>
+                        <span class="branch-badge bg-deee-text">DEEE</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Electrical & Electronics Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag">📋 Intake: 120</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Study electrical power systems, control and electronic devices.</p>
+                    <button class="arrow-btn bg-deee-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 04 DECE -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dece">
+                    <svg viewBox="0 0 24 24" fill="#7c3aed" width="45" height="45"><path d="M9 2v2H5v4H3v2h2v4H3v2h2v4h4v2h2v-2h4v2h2v-2h4v-4h2v-2h-2V8h2V6h-2V2h-4V0h-2v2h-4V0H9v2zm0 2h6v2H9V4zm0 4h6v2H9V8zm0 4h6v2H9v-2zm0 4h6v2H9v-2z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">04</span>
+                        <span class="branch-badge bg-dece-text">DECE</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Electronics & Communication Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag"> Intake: 60</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Learn electronic circuits, communication systems and modern technologies.</p>
+                    <button class="arrow-btn bg-dece-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 05 DCME -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dcme">
+                    <svg viewBox="0 0 24 24" fill="#db2777" width="45" height="45"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">05</span>
+                        <span class="branch-badge bg-dcme-text">DCME</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Computer Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag">📋 Intake: 60</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Gain knowledge in programming, networking, databases and computer systems.</p>
+                    <button class="arrow-btn bg-dcme-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 06 DCHST -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dchst">
+                    <svg viewBox="0 0 24 24" fill="#0d9488" width="45" height="45"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">06</span>
+                        <span class="branch-badge bg-dchst-text">DCHST</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Chemical Engineering (Sugar Technology)</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag">📋 Intake: 60</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Learn chemical processes with special focus on sugar technology and industry.</p>
+                    <button class="arrow-btn bg-dchst-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 07 DBME -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dbme">
+                    <svg viewBox="0 0 24 24" fill="#d946ef" width="45" height="45"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">07</span>
+                        <span class="branch-badge bg-dbme-text">DBME</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Biomedical Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag">📋 Intake: 60</span>
+                        <span class="meta-tag">️ Duration: 3½ Years</span>
+                    </div>
+                    <p class="branch-desc">Study medical instruments, biomedical devices and healthcare technology.</p>
+                    <button class="arrow-btn bg-dbme-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 08 DPH -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-dph">
+                    <svg viewBox="0 0 24 24" fill="#2563eb" width="45" height="45"><path d="M4.22 11.29l5.49-5.49c1.17-1.17 3.07-1.17 4.24 0l4.24 4.24c1.17 1.17 1.17 3.07 0 4.24l-5.49 5.49c-1.17 1.17-3.07 1.17-4.24 0l-4.24-4.24c-1.17-1.17-1.17-3.07 0-4.24z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">08</span>
+                        <span class="branch-badge bg-dph-text">DPH</span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Pharmacy</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag">📋 Intake: 60</span>
+                        <span class="meta-tag">⏱️ Duration: 2 Years</span>
+                    </div>
+                    <p class="branch-desc">Learn pharmaceutical sciences, drug formulation and healthcare services.</p>
+                    <button class="arrow-btn bg-dph-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 09 EC -->
+            <div class="branch-card">
+                <div class="branch-icon-box bg-ec">
+                    <svg viewBox="0 0 24 24" fill="#ea580c" width="45" height="45"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </div>
+                <div class="branch-content">
+                    <div class="branch-top">
+                        <span class="branch-no">09</span>
+                        <span class="branch-badge bg-ec-text">EC <span class="industry-tag">(Industry Integrated)</span></span>
+                    </div>
+                    <h4 class="branch-title">Diploma in Electronics & Communication Engineering</h4>
+                    <div class="branch-meta">
+                        <span class="meta-tag"> Intake: 30</span>
+                        <span class="meta-tag">⏱️ Duration: 3 Years</span>
+                    </div>
+                    <p class="branch-desc">Industry-oriented learning with advanced ECE curriculum and practical exposure.</p>
+                    <button class="arrow-btn bg-ec-text">
+                        <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
+    </section>
 
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-amber">🛡️</div>
-          <div>
-            <h5>National Cadet Corps (NCC)</h5>
-            <p>The NCC unit functions with an intake of 100 boy and girl cadets. It provides an opportunity for students to get B and C certificates.</p>
-          </div>
+    <!-- ===== STATS BAR ===== -->
+    <section class="stats-bar">
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="#3b82f6" width="35" height="35">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+            </svg>
+            <div class="stat-info">
+                <span class="stat-number">9</span>
+                <span class="stat-label">Branches</span>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
-
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-blue">🤝</div>
-          <div>
-            <h5>National Service Scheme (NSS)</h5>
-            <p>The NSS unit with an intake of 100 volunteers provides an opportunity to the students to participate in community development.</p>
-          </div>
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="#3b82f6" width="35" height="35">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+            </svg>
+            <div class="stat-info">
+                <span class="stat-number">500</span>
+                <span class="stat-label">Total Intake</span>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
-
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-indigo">💼</div>
-          <div>
-            <h5>Campus Placements</h5>
-            <p>Several reputed companies conduct placement drives in the campus wherein students are placed in top industries.</p>
-          </div>
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="#10b981" width="35" height="35">
+                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+            </svg>
+            <div class="stat-info">
+                <span class="stat-number">3 Years</span>
+                <span class="stat-label">(2 to 3½ Years)</span>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
-
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-rose">🏠</div>
-          <div>
-            <h5>Hostel</h5>
-            <p>Well established hostel facilities for boys and girls with clean dining and security.</p>
-          </div>
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="#f97316" width="35" height="35">
+                <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+            </svg>
+            <div class="stat-info">
+                <span class="stat-number">Government</span>
+                <span class="stat-label">Polytechnic</span>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
-
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-yellow">🏆</div>
-          <div>
-            <h5>Sports and Games</h5>
-            <p>Students practice in the sprawling playground and excel in inter-polytechnic sports meets.</p>
-          </div>
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="#ec4899" width="35" height="35">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <div class="stat-info">
+                <span class="stat-number">Tirupati</span>
+                <span class="stat-label">Andhra Pradesh</span>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
+    </section>
 
-      <div class="facility-card">
-        <div class="fac-left">
-          <div class="fac-icon-box bg-blue">📖</div>
-          <div>
-            <h5>Library</h5>
-            <p>Well stocked central library on diverse technical titles and journals for student knowledge.</p>
-          </div>
+    <!-- ===== FOOTER ===== -->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <img src="images/logo.jpg" alt="Logo" class="footer-logo-img">
+            <div class="footer-logo-text">
+                <h3>S.V. GOVERNMENT POLYTECHNIC</h3>
+                <p>TIRUPATI</p>
+            </div>
         </div>
-        <span class="fac-arrow">&gt;</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Dark Footer -->
-  <footer class="main-footer">
-    <div class="footer-container">
-      <div class="footer-col-1">
-        <h4>S.V. GOVERNMENT POLYTECHNIC, TIRUPATI</h4>
-        <p>TIRUPATI, CHITTOOR (Dist.) - 517501<br>Government of Andhra Pradesh</p>
-      </div>
-
-      <div class="footer-col-2">
-        <h4>Quick Links</h4>
-        <p>Home &nbsp;|&nbsp; About &nbsp;|&nbsp; Branches &nbsp;|&nbsp; Campus Facilities &nbsp;|&nbsp; Contact</p>
-      </div>
-
-      <div class="footer-col-3">
-        <h4>Follow Us</h4>
-        <div class="social-icons">
-          <span>📺</span>
-          <span>📸</span>
-          <span>📘</span>
-          <span>🐦</span>
+        <div class="footer-center">
+            <div class="footer-col">
+                <h4>🎯 Our Vision</h4>
+                <p>Skilled Students for a Better Tomorrow</p>
+            </div>
+            <div class="footer-col">
+                <h4> Our Mission</h4>
+                <p>Quality Technical Education for All</p>
+            </div>
+            <div class="footer-col">
+                <h4> Our Motto</h4>
+                <p>Discipline • Skills • Service</p>
+            </div>
         </div>
-      </div>
+    </footer>
 
-      <div class="footer-col-4">
-        <p class="tag">Knowledge &nbsp;|&nbsp; Skills &nbsp;|&nbsp; Better Tomorrow</p>
-        <p class="copy">&copy; 2026 SVGP, Tirupati. All Rights Reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="js/main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
