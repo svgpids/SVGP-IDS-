@@ -46,13 +46,13 @@
 
         if (DOM.navBranch) {
             DOM.navBranch.addEventListener('click', () => {
-                window.location.href = 'branch.html';
+                window.location.href = 'branch-login.html';
             });
         }
 
         DOM.branchCards.forEach(card => {
             card.addEventListener('click', () => {
-                window.location.href = 'branch.html';
+                window.location.href = 'branch-login.html';
             });
         });
 

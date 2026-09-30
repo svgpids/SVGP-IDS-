@@ -21,6 +21,7 @@ const firebaseConfig = {
   measurementId: "G-QG50SJBF92"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -201,3 +202,4 @@ document.getElementById("btnSendResetEmail").addEventListener("click", async () 
     statusDiv.textContent = "Error: " + error.message;
   }
 });
+

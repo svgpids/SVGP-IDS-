@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branch Login - S.V. GOVERNMENT POLYTECHNIC</title>
+  <link rel="stylesheet" href="branch-login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="bg-overlay"></div>
+
+  <header class="navbar">
+    <div class="nav-brand">
+      <i class="fa-solid fa-building-columns brand-icon"></i>
+      <div class="brand-text">
+        <span class="brand-title">S.V. GOVERNMENT POLYTECHNIC</span>
+        <span class="brand-sub">TIRUPATI | ESTD. 1980 | GOVT. OF ANDHRA PRADESH</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="admin.html" class="nav-item"><i class="fa-solid fa-shield-halved"></i> Admin Login</a>
+      <a href="branch-login.html" class="nav-btn active"><i class="fa-solid fa-users-gear"></i> Branch Login</a>
+    </nav>
+  </header>
+
+  <main class="login-wrapper">
+    <div class="login-card">
+      <div class="badge-icon">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+
+      <h4 class="college-sub">S.V. GOVERNMENT POLYTECHNIC</h4>
+      <p class="location-tag">TIRUPATI</p>
+
+      <h1 class="login-heading">Branch Login</h1>
+      <p class="login-desc">Select your branch and enter credentials to view department data & photos.</p>
+
+      <form id="branchLoginForm">
+        <div class="input-group">
+          <i class="fa-solid fa-diagram-project input-icon"></i>
+          <select id="branchSelect" required>
+            <option value="">-- Select Your Branch --</option>
+            <option value="dce">DCE (Civil Engineering)</option>
+            <option value="dme">DME (Mechanical Engineering)</option>
+            <option value="deee">DEEE (Electrical & Electronics)</option>
+            <option value="dece">DECE (Electronics & Communication)</option>
+            <option value="dcme">DCME (Computer Engineering)</option>
+            <option value="dchst">DCHST (Computer Hardware & Security)</option>
+            <option value="dbme">DBME (Bio-Medical Engineering)</option>
+            <option value="dph">DPH (Pharmacy)</option>
+            <option value="ecii">EC (Industry Integrated)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-regular fa-user input-icon"></i>
+          <input type="text" id="username" placeholder="Username (e.g. DECE)" required autocomplete="off">
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input type="password" id="password" placeholder="Password (e.g. D#ECE@018)" required>
+          <i class="fa-regular fa-eye-slash toggle-pass" id="togglePass"></i>
+        </div>
+
+        <button type="submit" class="submit-btn" id="loginBtn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Login to Branch
+        </button>
+
+        <div id="statusMsg" class="status-msg"></div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    S.V. GOVERNMENT POLYTECHNIC &nbsp;|&nbsp; TIRUPATI
+  </footer>
+
+  <script type="module" src="branch-login.js"></script>
+</body>
+</html>

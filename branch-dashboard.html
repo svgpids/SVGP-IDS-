@@ -2,35 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Login - SVGP</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    .login-container {
-      max-width: 400px;
-      margin: 80px auto;
-      background: white;
-      padding: 32px;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border-color);
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branch Portal - SVGP Tirupati</title>
+  <link rel="stylesheet" href="branch-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="login-container">
-    <h2 style="margin-bottom:8px;">Admin Portal</h2>
-    <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">Sign in to college management dashboard</p>
-    <form action="admin-dashboard.html">
-      <div style="margin-bottom:16px;">
-        <label style="font-size:13px; font-weight:600;">Admin Email</label>
-        <input type="text" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5e1; margin-top:4px;" value="admin@svgp.edu.in">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="nav-left">
+      <button class="mobile-toggle-btn" id="mobileTreeToggle" aria-label="Toggle Folder Tree">
+        <i class="fa-solid fa-folder-tree"></i>
+      </button>
+      <div class="brand">
+        <i class="fa-solid fa-building-columns brand-icon"></i>
+        <div class="brand-text">
+          <span class="portal-title" id="portalHeaderTitle">BRANCH PORTAL</span>
+          <span class="college-sub">S.V. GOVERNMENT POLYTECHNIC, TIRUPATI</span>
+        </div>
       </div>
-      <div style="margin-bottom:20px;">
-        <label style="font-size:13px; font-weight:600;">Password</label>
-        <input type="password" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5e1; margin-top:4px;" value="••••••••">
+    </div>
+
+    <div class="nav-right">
+      <div class="user-pill">
+        <i class="fa-solid fa-circle-user"></i>
+        <span id="activeBranchTag">DECE</span>
       </div>
-      <button type="submit" class="action-btn btn-blue" style="width:100%; justify-content:center; border:none; cursor:pointer;">Sign In</button>
-    </form>
+      <button class="logout-btn" id="btnLogout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <div class="layout-container">
+
+    <!-- LEFT SIDEBAR: FOLDER TREE DIRECTORY -->
+    <aside class="sidebar-tree" id="sidebarTree">
+      <div class="sidebar-header">
+        <h3><i class="fa-solid fa-sitemap"></i> Drive Directory</h3>
+        <button class="close-sidebar-btn" id="closeSidebarBtn">&times;</button>
+      </div>
+
+      <div class="tree-root">
+        <!-- Root: SVGP_IDS -->
+        <div class="tree-item is-root">
+          <i class="fa-solid fa-database"></i>
+          <span>SVGP_IDS</span>
+        </div>
+
+        <!-- Academic Years Tree -->
+        <div class="tree-children">
+          <!-- All Years combined -->
+          <div class="tree-node active" data-year="all" id="nodeAll">
+            <i class="fa-regular fa-folder-open folder-icon"></i>
+            <span class="node-label">All Academic Years</span>
+            <span class="node-badge" id="badgeAll">0</span>
+          </div>
+
+          <!-- 1st Year -->
+          <div class="tree-node" data-year="1st year" id="node1st">
+            <i class="fa-regular fa-folder folder-icon"></i>
+            <span class="node-label">1st Year</span>
+            <span class="node-badge" id="badge1st">-</span>
+          </div>
+
+          <!-- 2nd Year -->
+          <div class="tree-node" data-year="2nd Year" id="node2nd">
+            <i class="fa-regular fa-folder folder-icon"></i>
+            <span class="node-label">2nd Year</span>
+            <span class="node-badge" id="badge2nd">-</span>
+          </div>
+
+          <!-- 3rd Year -->
+          <div class="tree-node" data-year="3rd Year" id="node3rd">
+            <i class="fa-regular fa-folder folder-icon"></i>
+            <span class="node-label">3rd Year</span>
+            <span class="node-badge" id="badge3rd">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Branch Info Box -->
+      <div class="branch-meta-box">
+        <div class="meta-row">
+          <span>Active Branch:</span>
+          <strong id="metaBranchCode">DECE</strong>
+        </div>
+        <div class="meta-row">
+          <span>Selected Folder:</span>
+          <strong id="metaFolderYear">All Years</strong>
+        </div>
+      </div>
+    </aside>
+
+    <!-- SIDEBAR BACKDROP FOR MOBILE -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- RIGHT MAIN CONTENT: CONTROLS & PHOTO GALLERY -->
+    <main class="main-content">
+      
+      <!-- CONTROLS BAR -->
+      <div class="controls-card">
+        <!-- Year Pills (Quick access on Mobile/PC) -->
+        <div class="year-pills-bar">
+          <button class="pill-btn active" data-year="all">All Years</button>
+          <button class="pill-btn" data-year="1st year">1st Year</button>
+          <button class="pill-btn" data-year="2nd Year">2nd Year</button>
+          <button class="pill-btn" data-year="3rd Year">3rd Year</button>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="search-row">
+          <div class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search by Student PIN or Name (e.g. 001)..." autocomplete="off">
+            <button class="clear-search-btn" id="clearSearchBtn" style="display:none;">&times;</button>
+          </div>
+          <div class="stats-counter" id="statsCounter">Loading...</div>
+        </div>
+      </div>
+
+      <!-- PHOTO GALLERY AREA -->
+      <div class="gallery-area">
+        <!-- Loading State -->
+        <div class="state-box" id="loadingState">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <p>Connecting to Google Drive and fetching student photos...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div class="state-box" id="emptyState" style="display:none;">
+          <i class="fa-solid fa-folder-open"></i>
+          <h4>Photos Em Dhorakaledu</h4>
+          <p id="emptyMsg">Ee folder lo photos levu leda matching PIN kanipinchaledu.</p>
+        </div>
+
+        <!-- Live Cards Grid -->
+        <div class="cards-grid" id="photoCardsGrid"></div>
+      </div>
+    </main>
+
   </div>
+
+  <!-- FULL IMAGE PREVIEW MODAL -->
+  <div class="image-modal-overlay" id="imageModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modalPinTitle">23018-EC-001</h3>
+          <span id="modalMetaSubtitle">DECE &bull; 2nd Year</span>
+        </div>
+        <button class="close-modal-btn" id="closeImageModal">&times;</button>
+      </div>
+      <div class="modal-img-wrap">
+        <img id="modalPreviewImg" src="" alt="Student Full Preview">
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn" id="btnCopyPin">
+          <i class="fa-regular fa-copy"></i> Copy PIN
+        </button>
+        <a id="btnOpenDrive" href="#" target="_blank" class="action-btn primary">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in Google Drive
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-notice" id="toastNotice">PIN copied to clipboard!</div>
+
+  <script type="module" src="branch-dashboard.js"></script>
 </body>
 </html>

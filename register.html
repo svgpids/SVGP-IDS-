@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branch Portal - S.V. GOVERNMENT POLYTECHNIC, TIRUPATI</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#0b1329',
+              dark: '#030a1c',
+              card: '#131d36',
+              border: '#1e293b'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b1329;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0284c7;
+    }
+    .glass-effect {
+      background: rgba(19, 29, 54, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .modal-backdrop {
+      background: rgba(3, 10, 28, 0.85);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="bg-brand-900 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur border-b border-brand-border px-4 lg:px-8 py-3.5 flex justify-between items-center shadow-lg">
+    <!-- Brand / College Header -->
+    <div class="flex items-center gap-3">
+      <button id="toggleDrawerBtn" class="lg:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition" aria-label="Toggle Tree Menu">
+        <i class="fa-solid fa-folder-tree text-lg"></i>
+      </button>
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+        <i class="fa-solid fa-building-columns text-xl"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm lg:text-base font-extrabold tracking-wide text-white">S.V. GOVERNMENT POLYTECHNIC</span>
+          <span class="hidden sm:inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">Tirupati</span>
+        </div>
+        <p class="text-[11px] text-slate-400 font-medium">Departmental Photo & ID Management System</p>
+      </div>
+    </div>
+
+    <!-- Right Profile / Status & Actions -->
+    <div class="flex items-center gap-3">
+      <!-- Active Branch Badge -->
+      <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+        <span id="badgeBranchDisplay" class="text-xs font-bold text-slate-200">DECE Branch</span>
+      </div>
+
+      <!-- Quick Refresh Button -->
+      <button id="btnRefresh" title="Refresh Photos" class="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-brand-400 hover:bg-slate-700 transition">
+        <i class="fa-solid fa-arrows-rotate text-sm"></i>
+      </button>
+
+      <!-- Logout / Switch Branch -->
+      <button id="btnLogout" class="px-3.5 py-1.5 rounded-xl bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+        <i class="fa-solid fa-power-off text-xs"></i>
+        <span class="hidden md:inline">Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="flex-1 flex overflow-hidden max-w-[1700px] w-full mx-auto">
+    
+    <!-- LEFT SIDEBAR: FOLDER & YEAR TREE VIEW (PC VIEW & MOBILE SLIDE-OVER) -->
+    <aside id="sidebarDrawer" class="fixed inset-y-0 left-0 z-50 w-72 lg:w-80 bg-brand-card/95 lg:bg-brand-card/60 backdrop-blur-lg border-r border-brand-border p-5 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto">
+      <div>
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-slate-700/60 mb-5">
+          <div class="flex items-center gap-2 text-brand-400 font-bold text-sm tracking-wider uppercase">
+            <i class="fa-solid fa-sitemap"></i>
+            <span>Directory Tree</span>
+          </div>
+          <button id="closeDrawerBtn" class="lg:hidden text-slate-400 hover:text-white p-1">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Department Switcher Dropdown (Branch context) -->
+        <div class="mb-5">
+          <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Branch Portal</label>
+          <div class="relative">
+            <select id="branchSelector" class="w-full bg-slate-900 border border-slate-700 text-slate-100 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:border-brand-500 transition appearance-none cursor-pointer">
+              <option value="DECE">DECE (Electronics & Comm)</option>
+              <option value="DCME">DCME (Computer Engg)</option>
+              <option value="DCE">DCE (Civil Engg)</option>
+              <option value="DME">DME (Mechanical Engg)</option>
+              <option value="DEEE">DEEE (Electrical & Electronics)</option>
+              <option value="DCHST">DCHST (Computer Hardware)</option>
+              <option value="DBME">DBME (Bio-Medical)</option>
+              <option value="DPH">DPH (Pharmacy)</option>
+              <option value="ECII">EC (Industry Integrated)</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-3 top-3 text-xs text-slate-400 pointer-events-none"></i>
+          </div>
+        </div>
+
+        <!-- Folder Tree Navigation Structure -->
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold uppercase text-slate-400 tracking-wider mb-2 flex items-center justify-between">
+            <span>SVGP_IDS Folders</span>
+            <span class="text-[10px] text-slate-400"><i class="fa-brands fa-google-drive"></i> Drive</span>
+          </div>
+
+          <!-- Root: SVGP_IDS -->
+          <div class="group rounded-xl p-2.5 bg-slate-800/40 border border-slate-700/40 text-xs text-slate-200 font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-folder-open text-amber-400 text-sm"></i>
+            <span>SVGP_IDS</span>
+            <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-slate-700 text-slate-300">Root</span>
+          </div>
+
+          <!-- Child Tree Items: Academic Years -->
+          <div class="pl-4 space-y-1.5 border-l-2 border-slate-700/60 ml-3.5 my-2">
+            
+            <!-- 1st Year Node -->
+            <button class="tree-item-btn w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition" data-year="1st year">
+              <i class="fa-solid fa-folder text-amber-400"></i>
+              <span class="truncate">1st year</span>
+              <span class="ml-auto text-[10px] count-badge-1st opacity-60">--</span>
+            </button>
+
+            <!-- 2nd Year Node -->
+            <button class="tree-item-btn active-tree w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600/30 border border-brand-500/40 text-brand-300 transition" data-year="2nd Year">
+              <i class="fa-solid fa-folder-open text-amber-300"></i>
+              <span class="truncate">2nd Year</span>
+              <span class="ml-auto text-[10px] count-badge-2nd px-1.5 py-0.2 rounded bg-brand-500/40 text-white font-bold">--</span>
+            </button>
+
+            <!-- 3rd Year Node -->
+            <button class="tree-item-btn w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition" data-year="3rd Year">
+              <i class="fa-solid fa-folder text-amber-400"></i>
+              <span class="truncate">3rd Year</span>
+              <span class="ml-auto text-[10px] count-badge-3rd opacity-60">--</span>
+            </button>
+
+            <!-- All Years Combined View -->
+            <button class="tree-item-btn w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition" data-year="all">
+              <i class="fa-solid fa-layer-group text-sky-400"></i>
+              <span class="truncate">View All Years</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer Stats -->
+      <div class="pt-4 border-t border-slate-700/60 mt-6">
+        <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Current Branch:</span>
+            <span id="sideBranchName" class="font-bold text-white">DECE</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Endpoint Status:</span>
+            <span class="text-emerald-400 font-bold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live
+            </span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- BACKDROP FOR MOBILE DRAWER -->
+    <div id="drawerOverlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden lg:hidden"></div>
+
+    <!-- RIGHT MAIN CONTENT: CONTROLS & PHOTO GALLERY -->
+    <main class="flex-1 flex flex-col overflow-y-auto p-4 lg:p-7 space-y-5">
+      
+      <!-- Top Action Banner & Quick Tabs -->
+      <div class="glass-effect rounded-2xl p-4 lg:p-6 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <!-- Department Title & Breadcrumbs -->
+          <div>
+            <div class="flex items-center gap-2 text-xs font-bold text-brand-400 tracking-wider uppercase mb-1">
+              <span>Home</span>
+              <i class="fa-solid fa-chevron-right text-[10px] text-slate-500"></i>
+              <span id="crumbYear">2nd Year</span>
+              <i class="fa-solid fa-chevron-right text-[10px] text-slate-500"></i>
+              <span id="crumbBranch" class="text-white">DECE</span>
+            </div>
+            <h1 id="mainDepartmentTitle" class="text-xl lg:text-2xl font-black text-white flex items-center gap-2.5">
+              <span>DECE Department Student Gallery</span>
+            </h1>
+            <p class="text-xs text-slate-400 mt-0.5">Real-time photos and PIN identification sourced from Google Drive storage.</p>
+          </div>
+
+          <!-- Total Counter & Badge -->
+          <div class="flex items-center gap-2.5 self-start md:self-auto">
+            <div class="px-4 py-2 rounded-xl bg-slate-900/90 border border-slate-700/80 text-right">
+              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Total Records</p>
+              <p id="totalRecordsBadge" class="text-lg font-black text-brand-400 leading-tight">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Year Tabs for Rapid Switching on PC & Mobile -->
+        <div class="mt-5 pt-4 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-3">
+          <div class="inline-flex p-1 rounded-xl bg-slate-900 border border-slate-700/80 w-full sm:w-auto">
+            <button class="year-pill-btn flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 text-slate-400 hover:text-white" data-year="1st year">
+              <i class="fa-solid fa-folder text-amber-400"></i>
+              <span>1st Year</span>
+            </button>
+            <button class="year-pill-btn active-pill flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-brand-500 text-white shadow-md shadow-brand-500/30" data-year="2nd Year">
+              <i class="fa-solid fa-folder-open text-amber-300"></i>
+              <span>2nd Year</span>
+            </button>
+            <button class="year-pill-btn flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 text-slate-400 hover:text-white" data-year="3rd Year">
+              <i class="fa-solid fa-folder text-amber-400"></i>
+              <span>3rd Year</span>
+            </button>
+            <button class="year-pill-btn flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 text-slate-400 hover:text-white" data-year="all">
+              <i class="fa-solid fa-layer-group text-sky-400"></i>
+              <span>All</span>
+            </button>
+          </div>
+
+          <!-- Real-Time Search Bar -->
+          <div class="relative w-full sm:w-80">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="text" id="filterInput" placeholder="Search by PIN or Name (e.g. 001)..." class="w-full bg-slate-900/90 border border-slate-700 text-slate-100 placeholder-slate-500 text-xs rounded-xl pl-9 pr-9 py-2.5 outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+            <button id="clearSearchBtn" class="absolute right-3 top-3 text-slate-500 hover:text-slate-300 hidden text-xs">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHOTO GALLERY CONTAINER -->
+      <section class="flex-1 flex flex-col">
+        
+        <!-- Loading State Indicator -->
+        <div id="loadingBox" class="py-24 flex flex-col items-center justify-center text-center">
+          <div class="relative w-14 h-14 mb-4">
+            <div class="absolute inset-0 rounded-full border-4 border-slate-700"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-brand-500 border-t-transparent animate-spin"></div>
+          </div>
+          <h3 class="text-sm font-bold text-slate-200 tracking-wide">Connecting to Google Drive...</h3>
+          <p class="text-xs text-slate-400 mt-1 max-w-sm">Fetching student records for <span id="loadingBranchLabel" class="text-brand-400 font-bold">DECE</span> from academic year folders.</p>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="emptyBox" class="hidden py-20 flex flex-col items-center justify-center text-center p-6 glass-effect rounded-2xl border-dashed border-2 border-slate-700">
+          <div class="w-16 h-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-slate-500 text-2xl mb-3">
+            <i class="fa-regular fa-images"></i>
+          </div>
+          <h3 class="text-base font-bold text-slate-200">No Student Photos Found</h3>
+          <p id="emptyMessageText" class="text-xs text-slate-400 mt-1 max-w-md">No photos were returned for this year. Ensure images are uploaded inside the SVGP_IDS Google Drive folder.</p>
+          <button id="btnRetryEmpty" class="mt-4 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-brand-400 border border-slate-700 transition">
+            <i class="fa-solid fa-rotate-right mr-1"></i> Check Again
+          </button>
+        </div>
+
+        <!-- Active Cards Grid -->
+        <div id="cardsGrid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3.5 lg:gap-4">
+          <!-- Dynamically Injected by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Portal Footer -->
+      <footer class="pt-6 pb-2 text-center text-[11px] text-slate-500 font-medium">
+        S.V. GOVERNMENT POLYTECHNIC &bull; TIRUPATI &bull; ANDHRA PRADESH &bull; ESTD. 1980
+      </footer>
+    </main>
+  </div>
+
+  <!-- FULL SCREEN PHOTO PREVIEW MODAL -->
+  <div id="photoModal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+    <div class="relative bg-brand-card border border-brand-border rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-slate-700/60 flex items-center justify-between bg-slate-900/60">
+        <div>
+          <h3 id="modalPinTitle" class="text-base font-black text-white tracking-wide">23018-EC-001</h3>
+          <p id="modalSubTitle" class="text-xs text-brand-400 font-medium">DECE &bull; 2nd Year</p>
+        </div>
+        <button id="closeModalBtn" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Modal Image Canvas -->
+      <div class="bg-black/90 p-4 flex items-center justify-center min-h-[300px] max-h-[70vh]">
+        <img id="modalImage" src="" alt="Student Photo" class="max-h-[65vh] max-w-full rounded-lg object-contain shadow-lg">
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="p-4 bg-slate-900/80 border-t border-slate-700/60 flex flex-wrap gap-2 justify-between items-center">
+        <button id="modalCopyBtn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+          <i class="fa-regular fa-copy"></i>
+          <span id="copyBtnText">Copy PIN</span>
+        </button>
+
+        <a id="modalDriveLink" href="#" target="_blank" class="px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white flex items-center gap-1.5 shadow-md shadow-brand-500/20 transition">
+          <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+          <span>Open in Drive</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-emerald-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMsg">PIN copied to clipboard!</span>
+  </div>
+
+  <script>
+    /**
+     * SVGP BRANCH DASHBOARD CONTROLLER
+     * Integrates with Google Apps Script Web App Endpoint
+     */
+    const APPS_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbx7PyrXNW7ViafJ2dOSH1idM_p1UZQQmKrdtpGvNIV5LZ6-7nZo9zAYOuD4jKu-X8kU7w/exec";
+
+    // Detect Branch context from URL or local storage (Default to DECE)
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentBranch = (urlParams.get("branch") || localStorage.getItem("activeBranchCode") || "DECE").toUpperCase();
+    let currentYear = urlParams.get("year") || "2nd Year";
+
+    // State cache
+    let cachedPhotos = [];
+    let isFetching = false;
+
+    // DOM Elements
+    const branchSelector = document.getElementById("branchSelector");
+    const badgeBranchDisplay = document.getElementById("badgeBranchDisplay");
+    const sideBranchName = document.getElementById("sideBranchName");
+    const mainDepartmentTitle = document.getElementById("mainDepartmentTitle");
+    const crumbBranch = document.getElementById("crumbBranch");
+    const crumbYear = document.getElementById("crumbYear");
+    const totalRecordsBadge = document.getElementById("totalRecordsBadge");
+    const filterInput = document.getElementById("filterInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    const loadingBox = document.getElementById("loadingBox");
+    const loadingBranchLabel = document.getElementById("loadingBranchLabel");
+    const emptyBox = document.getElementById("emptyBox");
+    const emptyMessageText = document.getElementById("emptyMessageText");
+    const cardsGrid = document.getElementById("cardsGrid");
+    const btnRefresh = document.getElementById("btnRefresh");
+    const btnLogout = document.getElementById("btnLogout");
+    const btnRetryEmpty = document.getElementById("btnRetryEmpty");
+
+    // Drawer Elements
+    const sidebarDrawer = document.getElementById("sidebarDrawer");
+    const drawerOverlay = document.getElementById("drawerOverlay");
+    const toggleDrawerBtn = document.getElementById("toggleDrawerBtn");
+    const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+
+    // Modal Elements
+    const photoModal = document.getElementById("photoModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const modalPinTitle = document.getElementById("modalPinTitle");
+    const modalSubTitle = document.getElementById("modalSubTitle");
+    const modalImage = document.getElementById("modalImage");
+    const modalCopyBtn = document.getElementById("modalCopyBtn");
+    const copyBtnText = document.getElementById("copyBtnText");
+    const modalDriveLink = document.getElementById("modalDriveLink");
+    const toast = document.getElementById("toast");
+    const toastMsg = document.getElementById("toastMsg");
+
+    // Initialize UI on Load
+    function initApp() {
+      // Synchronize Branch Selector
+      if (branchSelector) {
+        branchSelector.value = currentBranch;
+      }
+      updateBranchLabels();
+      setActiveYearPill(currentYear);
+      setActiveTreeItem(currentYear);
+
+      // Fetch Photos from Drive
+      loadPhotosFromDrive();
+
+      setupEventListeners();
+    }
+
+    // Update Headings & Labels
+    function updateBranchLabels() {
+      badgeBranchDisplay.textContent = `${currentBranch} Branch`;
+      sideBranchName.textContent = currentBranch;
+      crumbBranch.textContent = currentBranch;
+      crumbYear.textContent = currentYear === "all" ? "All Years" : currentYear;
+      mainDepartmentTitle.textContent = `${currentBranch} Department Student Gallery`;
+      loadingBranchLabel.textContent = `${currentBranch} (${currentYear})`;
+    }
+
+    // Active Year Pill Styling
+    function setActiveYearPill(year) {
+      document.querySelectorAll(".year-pill-btn").forEach(btn => {
+        const btnYear = btn.getAttribute("data-year");
+        if (btnYear.toLowerCase() === year.toLowerCase()) {
+          btn.className = "year-pill-btn active-pill flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-brand-500 text-white shadow-md shadow-brand-500/30";
+        } else {
+          btn.className = "year-pill-btn flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 text-slate-400 hover:text-white";
+        }
+      });
+    }
+
+    // Active Tree Navigation Styling
+    function setActiveTreeItem(year) {
+      document.querySelectorAll(".tree-item-btn").forEach(btn => {
+        const btnYear = btn.getAttribute("data-year");
+        if (btnYear.toLowerCase() === year.toLowerCase()) {
+          btn.className = "tree-item-btn active-tree w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600/30 border border-brand-500/40 text-brand-300 transition";
+          const icon = btn.querySelector("i");
+          if (icon && icon.classList.contains("fa-folder")) {
+            icon.className = "fa-solid fa-folder-open text-amber-300";
+          }
+        } else {
+          btn.className = "tree-item-btn w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition";
+          const icon = btn.querySelector("i");
+          if (icon && icon.classList.contains("fa-folder-open") && !icon.parentElement.classList.contains("group")) {
+            icon.className = "fa-solid fa-folder text-amber-400";
+          }
+        }
+      });
+    }
+
+    // Fetch Data from Google Apps Script
+    async function loadPhotosFromDrive() {
+      if (isFetching) return;
+      isFetching = true;
+
+      // Show Loading Spinner
+      loadingBox.classList.remove("hidden");
+      emptyBox.classList.add("hidden");
+      cardsGrid.classList.add("hidden");
+      totalRecordsBadge.textContent = "...";
+
+      const queryUrl = `${APPS_SCRIPT_ENDPOINT}?branch=${encodeURIComponent(currentBranch)}&year=${encodeURIComponent(currentYear)}`;
+
+      try {
+        const response = await fetch(queryUrl);
+        const result = await response.json();
+
+        if (result.status === "error") {
+          showEmptyState(`API Note: ${result.message || 'Unable to scan folder.'}`);
+          return;
+        }
+
+        const items = result.data || [];
+        cachedPhotos = items;
+        totalRecordsBadge.textContent = items.length;
+
+        // Update counts in sidebar tree
+        updateTreeCountBadge(currentYear, items.length);
+
+        if (items.length > 0) {
+          renderGallery(items);
+        } else {
+          showEmptyState(`No photos found in Drive for ${currentBranch} under ${currentYear}.`);
+        }
+      } catch (err) {
+        showEmptyState(`Network error contacting Google Apps Script: ${err.message}`);
+      } finally {
+        isFetching = false;
+        loadingBox.classList.add("hidden");
+      }
+    }
+
+    function showEmptyState(msg) {
+      emptyMessageText.textContent = msg;
+      totalRecordsBadge.textContent = "0";
+      emptyBox.classList.remove("hidden");
+      cardsGrid.classList.add("hidden");
+    }
+
+    function updateTreeCountBadge(year, count) {
+      const targetBadge = document.querySelector(`.count-badge-${year === '1st year' ? '1st' : year === '2nd Year' ? '2nd' : '3rd'}`);
+      if (targetBadge) {
+        targetBadge.textContent = count;
+        targetBadge.classList.remove("opacity-60");
+      }
+    }
+
+    // Render Gallery Cards
+    function renderGallery(photos) {
+      cardsGrid.innerHTML = "";
+
+      if (photos.length === 0) {
+        showEmptyState("No students match your search filter.");
+        return;
+      }
+
+      emptyBox.classList.add("hidden");
+      cardsGrid.classList.remove("hidden");
+
+      photos.forEach(item => {
+        const pinClean = item.pin || item.fileName.replace(/\.[^/.]+$/, "");
+        const thumb = item.thumbnailUrl || `https://lh3.googleusercontent.com/d/${item.id}`;
+        const folderLabel = item.branchFolder || item.branchCode || currentBranch;
+        const yearLabel = item.year || currentYear;
+
+        const card = document.createElement("div");
+        card.className = "group relative bg-brand-card/90 hover:bg-brand-card border border-brand-border hover:border-brand-500/60 rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col cursor-pointer";
+        
+        card.innerHTML = `
+          <!-- Image Box -->
+          <div class="relative w-full aspect-[4/5] bg-slate-950 overflow-hidden">
+            <img src="${thumb}" 
+                 alt="${pinClean}" 
+                 loading="lazy" 
+                 class="w-full h-full object-cover transition duration-300 group-hover:scale-105"
+                 onerror="this.src='https://placehold.co/400x500/0b1329/38bdf8?text=SVGP+Photo'; this.onerror=null;">
+            
+            <!-- Quick View Hover Badge -->
+            <div class="absolute inset-0 bg-brand-dark/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+              <span class="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur text-white text-[11px] font-bold flex items-center gap-1">
+                <i class="fa-solid fa-expand text-[10px]"></i> View
+              </span>
+            </div>
+
+            <!-- Academic Year Pill -->
+            <div class="absolute top-2 left-2">
+              <span class="px-2 py-0.5 rounded-md bg-brand-dark/80 backdrop-blur text-[10px] font-bold text-slate-300 border border-slate-700/60">
+                ${yearLabel}
+              </span>
+            </div>
+          </div>
+
+          <!-- Student Metadata & Action Footer -->
+          <div class="p-3 flex-1 flex flex-col justify-between bg-slate-900/60">
+            <div>
+              <h4 class="text-xs lg:text-sm font-bold text-white truncate tracking-wide" title="${pinClean}">${pinClean}</h4>
+              <p class="text-[11px] text-brand-400 font-semibold mt-0.5">${folderLabel}</p>
+            </div>
+
+            <!-- Copy PIN button -->
+            <div class="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between">
+              <button class="btn-copy-pin text-[11px] font-bold text-slate-400 hover:text-white flex items-center gap-1 transition" data-pin="${pinClean}" title="Copy PIN">
+                <i class="fa-regular fa-copy"></i>
+                <span>Copy</span>
+              </button>
+              <i class="fa-solid fa-circle-check text-emerald-400 text-xs opacity-0 transition-opacity"></i>
+            </div>
+          </div>
+        `;
+
+        // Card Click opens Modal
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".btn-copy-pin")) return; // Don't open if clicked copy button
+          openImageModal(item, pinClean, thumb, yearLabel);
+        });
+
+        cardsGrid.appendChild(card);
+      });
+
+      // Bind all copy buttons
+      document.querySelectorAll(".btn-copy-pin").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const pinVal = btn.getAttribute("data-pin");
+          copyToClipboard(pinVal);
+        });
+      });
+    }
+
+    // Modal Control Functions
+    function openImageModal(item, pin, thumb, year) {
+      modalPinTitle.textContent = pin;
+      modalSubTitle.textContent = `${item.branchCode || currentBranch} • ${year}`;
+      modalImage.src = thumb;
+      modalDriveLink.href = item.viewUrl || `https://drive.google.com/file/d/${item.id}/view`;
+      
+      modalCopyBtn.onclick = () => copyToClipboard(pin);
+
+      photoModal.classList.remove("hidden");
+      photoModal.classList.add("flex");
+    }
+
+    function closeModal() {
+      photoModal.classList.add("hidden");
+      photoModal.classList.remove("flex");
+      modalImage.src = "";
+    }
+
+    // Safe Clipboard Copy Handler
+    function copyToClipboard(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showToast(`Copied "${text}" to clipboard!`);
+      } catch (err) {
+        showToast("Could not copy PIN.");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showToast(msg) {
+      toastMsg.textContent = msg;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 2400);
+    }
+
+    // Setup Global Event Listeners
+    function setupEventListeners() {
+      
+      // Branch Selection Change
+      branchSelector.addEventListener("change", (e) => {
+        currentBranch = e.target.value.toUpperCase();
+        localStorage.setItem("activeBranchCode", currentBranch);
+        updateBranchLabels();
+        loadPhotosFromDrive();
+        closeDrawer();
+      });
+
+      // Year Pill Navigation Click
+      document.querySelectorAll(".year-pill-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentYear = btn.getAttribute("data-year");
+          setActiveYearPill(currentYear);
+          setActiveTreeItem(currentYear);
+          updateBranchLabels();
+          loadPhotosFromDrive();
+        });
+      });
+
+      // Tree View Item Click (Sidebar)
+      document.querySelectorAll(".tree-item-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentYear = btn.getAttribute("data-year");
+          setActiveYearPill(currentYear);
+          setActiveTreeItem(currentYear);
+          updateBranchLabels();
+          loadPhotosFromDrive();
+          closeDrawer();
+        });
+      });
+
+      // Search Filter
+      filterInput.addEventListener("input", (e) => {
+        const val = e.target.value.trim().toLowerCase();
+        if (val.length > 0) {
+          clearSearchBtn.classList.remove("hidden");
+        } else {
+          clearSearchBtn.classList.add("hidden");
+        }
+
+        const filtered = cachedPhotos.filter(item => {
+          const pinClean = (item.pin || item.fileName).toLowerCase();
+          return pinClean.includes(val);
+        });
+
+        renderGallery(filtered);
+      });
+
+      // Clear Search
+      clearSearchBtn.addEventListener("click", () => {
+        filterInput.value = "";
+        clearSearchBtn.classList.add("hidden");
+        renderGallery(cachedPhotos);
+      });
+
+      // Refresh Button
+      btnRefresh.addEventListener("click", () => {
+        loadPhotosFromDrive();
+      });
+
+      // Retry Button on empty
+      btnRetryEmpty.addEventListener("click", () => {
+        loadPhotosFromDrive();
+      });
+
+      // Logout handler
+      btnLogout.addEventListener("click", () => {
+        localStorage.removeItem("activeBranchCode");
+        localStorage.removeItem("activeBranchId");
+        window.location.href = "branch-login.html";
+      });
+
+      // Drawer Open / Close (Mobile View)
+      toggleDrawerBtn.addEventListener("click", openDrawer);
+      closeDrawerBtn.addEventListener("click", closeDrawer);
+      drawerOverlay.addEventListener("click", closeDrawer);
+
+      // Modal Close Handlers
+      closeModalBtn.addEventListener("click", closeModal);
+      photoModal.addEventListener("click", (e) => {
+        if (e.target === photoModal) closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !photoModal.classList.contains("hidden")) {
+          closeModal();
+        }
+      });
+    }
+
+    function openDrawer() {
+      sidebarDrawer.classList.remove("-translate-x-full");
+      drawerOverlay.classList.remove("hidden");
+    }
+
+    function closeDrawer() {
+      sidebarDrawer.classList.add("-translate-x-full");
+      drawerOverlay.classList.add("hidden");
+    }
+
+    // Start App
+    window.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>
