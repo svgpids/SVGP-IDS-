@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - S.V. GOVERNMENT POLYTECHNIC</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- BACKGROUND OVERLAY -->
+  <div class="bg-overlay"></div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <i class="fa-solid fa-building-columns brand-icon"></i>
+      <div class="brand-text">
+        <span class="brand-title">S.V. GOVERNMENT POLYTECHNIC</span>
+        <span class="brand-sub">TIRUPATI</span>
+      </div>
+    </div>
+
+    <!-- PROFILE DROPDOWN -->
+    <div class="profile-container">
+      <div class="profile-btn" id="profileToggle">
+        <div class="avatar-circle">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <span class="admin-label">Admin</span>
+        <i class="fa-solid fa-chevron-down caret-icon"></i>
+      </div>
+
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="user-info">
+          <p class="role-badge">Super Admin</p>
+          <p class="user-id" id="currentUserDisplay">master_admin</p>
+        </div>
+        <hr class="divider">
+        <button class="menu-action-btn" onclick="openModal('gmailResetModal')">
+          <i class="fa-brands fa-google"></i> Reset via Gmail
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- DASHBOARD MAIN CONTENT -->
+  <main class="dashboard-wrapper">
+    <!-- WELCOME BANNER -->
+    <section class="welcome-header">
+      <p class="welcome-sub">WELCOME</p>
+      <h1 class="welcome-title">Admin</h1>
+      <p class="college-tag">S.V. GOVERNMENT POLYTECHNIC<br>TIRUPATI</p>
+    </section>
+
+    <!-- ACTION CARDS GRID -->
+    <section class="cards-grid">
+      <!-- 1. QR GENERATOR -->
+      <div class="feature-card card-blue" onclick="openModule('qr')">
+        <div class="icon-box icon-blue">
+          <i class="fa-solid fa-qrcode"></i>
+        </div>
+        <h3>QR Generator</h3>
+        <p>Upload student photo and generate QR code instantly.</p>
+        <button class="arrow-btn btn-blue" aria-label="Open QR Generator">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- 2. ALL BRANCHES -->
+      <div class="feature-card card-purple" onclick="openModule('branches')">
+        <div class="icon-box icon-purple">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <h3>All Branches</h3>
+        <p>View and manage all branch students and details.</p>
+        <button class="arrow-btn btn-purple" aria-label="Open All Branches">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- 3. CHANGE PASSWORD (ADMIN) -->
+      <div class="feature-card card-orange" onclick="openModal('adminPassModal')">
+        <div class="icon-box icon-orange">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3>Change Password<br>(Admin)</h3>
+        <p>Update admin login password.</p>
+        <button class="arrow-btn btn-orange" aria-label="Change Admin Password">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- 4. BRANCH PASSWORD CHANGE -->
+      <div class="feature-card card-pink" onclick="openModal('branchPassModal')">
+        <div class="icon-box icon-pink">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <h3>Branch Password<br>Change</h3>
+        <p>Update individual branch login passwords.</p>
+        <button class="arrow-btn btn-pink" aria-label="Change Branch Password">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: ADMIN CHANGE PASSWORD -->
+  <div class="modal-overlay" id="adminPassModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Change Admin Password</h3>
+        <i class="fa-solid fa-xmark close-icon" onclick="closeModal('adminPassModal')"></i>
+      </div>
+      <div class="modal-body">
+        <input type="password" id="adminOldPass" placeholder="Current Admin Password">
+        <input type="password" id="adminNewPass" placeholder="New Password">
+        <input type="password" id="adminConfirmPass" placeholder="Confirm New Password">
+        <button class="modal-submit-btn bg-orange" id="btnUpdateAdminPass">Update Admin Password</button>
+        <div class="modal-status" id="adminStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: BRANCH CHANGE PASSWORD -->
+  <div class="modal-overlay" id="branchPassModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Update Branch Password</h3>
+        <i class="fa-solid fa-xmark close-icon" onclick="closeModal('branchPassModal')"></i>
+      </div>
+      <div class="modal-body">
+        <select id="branchSelect">
+          <option value="">Select Branch</option>
+          <option value="ECE">ECE (Electronics & Communication)</option>
+          <option value="CSE">CSE (Computer Engineering)</option>
+          <option value="EEE">EEE (Electrical & Electronics)</option>
+          <option value="MECH">MECH (Mechanical Engineering)</option>
+          <option value="CIVIL">CIVIL (Civil Engineering)</option>
+        </select>
+        <input type="password" id="branchNewPass" placeholder="New Branch Password">
+        <button class="modal-submit-btn bg-pink" id="btnUpdateBranchPass">Set Branch Password</button>
+        <div class="modal-status" id="branchStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GMAIL PASSWORD RESET -->
+  <div class="modal-overlay" id="gmailResetModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Reset via Gmail</h3>
+        <i class="fa-solid fa-xmark close-icon" onclick="closeModal('gmailResetModal')"></i>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Registered Gmail ki direct password reset link velluthundi.</p>
+        <input type="email" id="registeredEmailInput" placeholder="Registered Gmail Address" required>
+        <button class="modal-submit-btn bg-blue" id="btnSendResetEmail">Send Reset Link</button>
+        <div class="modal-status" id="emailResetStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    S.V. GOVERNMENT POLYTECHNIC &nbsp;|&nbsp; TIRUPATI
+  </footer>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>

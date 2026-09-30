@@ -1,10 +1,11 @@
 /**
- * QR Generator - 100% Scannable & Bulletproof
+ * QR Generator - 100% Scannable
+ * Generates QR code that opens exactly: https://svgpids.github.io/SVGP-IDS-/scan.html
  */
 (function() {
     'use strict';
 
-    // Exact URL to be encoded
+    // ✅ EXACT TARGET URL
     const TARGET_URL = "https://svgpids.github.io/SVGP-IDS-/scan.html";
 
     const DOM = {
@@ -18,46 +19,19 @@
         placeholder: document.getElementById('qr-placeholder'),
         downloadBtn: document.getElementById('qr-download-btn'),
         regenerateBtn: document.getElementById('qr-regenerate-btn'),
-        statusText: document.getElementById('qr-status-text'),
-        dateEl: document.getElementById('qr-current-date'),
-        timeEl: document.getElementById('qr-current-time')
+        statusText: document.getElementById('qr-status-text')
     };
 
     let qrInstance = null;
 
-    // 1. Live Clock
-    function updateDateTime() {
-        const now = new Date();
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        
-        const dayName = days[now.getDay()];
-        const date = now.getDate();
-        const month = months[now.getMonth()];
-        const year = now.getFullYear();
-        
-        let hours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12;
-        
-        if (DOM.dateEl) DOM.dateEl.textContent = `${dayName}, ${date} ${month} ${year}`;
-        if (DOM.timeEl) DOM.timeEl.textContent = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
-    }
-
-    // 2. File Upload Handler
     function handleFileSelect(file) {
         if (!file) return;
-
-        const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (!validTypes.includes(file.type)) {
-            alert('⚠️ Please upload a valid image (JPG, PNG, or WEBP)');
+        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+            alert('⚠️ Please upload JPG, PNG, or WEBP');
             return;
         }
-
         if (file.size > 5 * 1024 * 1024) {
-            alert('⚠️ File size exceeds 5 MB limit');
+            alert('⚠️ File size exceeds 5 MB');
             return;
         }
 
@@ -75,15 +49,12 @@
         reader.readAsDataURL(file);
     }
 
-    // 3. QR Code Generation (Bulletproof)
     function generateQRCode(data) {
-        // Force clear previous QR code completely
         DOM.qrDisplay.innerHTML = '';
         DOM.placeholder.style.display = 'none';
 
-        // Check if library is loaded
         if (typeof QRCode === 'undefined') {
-            DOM.placeholder.textContent = '❌ QR Library not loaded. Check internet connection.';
+            DOM.placeholder.textContent = '❌ QR Library not loaded. Check internet.';
             DOM.placeholder.style.display = 'block';
             return;
         }
@@ -95,41 +66,32 @@
                 height: 250,
                 colorDark: "#000000", // Pure Black (Best for scanning)
                 colorLight: "#ffffff", // Pure White
-                correctLevel: QRCode.CorrectLevel.H // Highest error correction
+                correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Add visible URL text below QR so you know what's inside
+            // Show URL below QR so user knows it's correct
             const urlText = document.createElement('p');
             urlText.textContent = TARGET_URL;
             urlText.style.marginTop = '15px';
-            urlText.style.fontSize = '0.8rem';
+            urlText.style.fontSize = '0.75rem';
             urlText.style.color = '#64748b';
             urlText.style.wordBreak = 'break-all';
             DOM.qrDisplay.appendChild(urlText);
 
             DOM.downloadBtn.disabled = false;
             DOM.statusText.textContent = '✅ QR Code Ready! Scan to open scan.html';
-            console.log('✅ QR Generated successfully with URL:', data);
         } catch (error) {
-            console.error('QR Generation failed:', error);
             DOM.placeholder.textContent = '❌ Failed to generate QR.';
             DOM.placeholder.style.display = 'block';
         }
     }
 
-    // 4. Download QR Code
     function downloadQR() {
         setTimeout(() => {
             const qrCanvas = DOM.qrDisplay.querySelector('canvas');
             const qrImg = DOM.qrDisplay.querySelector('img');
-
-            let dataUrl;
-            if (qrCanvas) {
-                dataUrl = qrCanvas.toDataURL('image/png');
-            } else if (qrImg) {
-                dataUrl = qrImg.src;
-            }
-
+            const dataUrl = qrCanvas ? qrCanvas.toDataURL('image/png') : (qrImg ? qrImg.src : null);
+            
             if (dataUrl) {
                 const link = document.createElement('a');
                 link.download = 'svpg-qr-code.png';
@@ -141,7 +103,6 @@
         }, 300);
     }
 
-    // 5. Reset Generator
     function resetGenerator() {
         DOM.qrDisplay.innerHTML = '';
         DOM.placeholder.style.display = 'block';
@@ -152,25 +113,15 @@
         DOM.downloadBtn.disabled = true;
         DOM.statusText.textContent = 'Your QR code is ready!';
         DOM.fileInput.value = '';
-        qrInstance = null;
     }
 
-    // 6. Event Listeners
-    function setupEventListeners() {
+    function setupEvents() {
         DOM.dropZone.addEventListener('click', () => DOM.fileInput.click());
         DOM.selectBtn.addEventListener('click', () => DOM.fileInput.click());
-
-        DOM.fileInput.addEventListener('change', (e) => {
-            if (e.target.files[0]) handleFileSelect(e.target.files[0]);
-        });
-
-        DOM.dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            DOM.dropZone.classList.add('drag-over');
-        });
-        DOM.dropZone.addEventListener('dragleave', () => {
-            DOM.dropZone.classList.remove('drag-over');
-        });
+        DOM.fileInput.addEventListener('change', (e) => { if (e.target.files[0]) handleFileSelect(e.target.files[0]); });
+        
+        DOM.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); DOM.dropZone.classList.add('drag-over'); });
+        DOM.dropZone.addEventListener('dragleave', () => DOM.dropZone.classList.remove('drag-over'));
         DOM.dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
             DOM.dropZone.classList.remove('drag-over');
@@ -181,19 +132,9 @@
         DOM.regenerateBtn.addEventListener('click', resetGenerator);
     }
 
-    // Initialize
-    function init() {
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-        setupEventListeners();
-        console.log('✅ QR Generator initialized!');
-        console.log('📱 Target URL:', TARGET_URL);
-    }
-
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', setupEvents);
     } else {
-        init();
+        setupEvents();
     }
-
 })();

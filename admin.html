@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - S.V. GOVERNMENT POLYTECHNIC</title>
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- BACKGROUND OVERLAY -->
+  <div class="bg-overlay"></div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <i class="fa-solid fa-building-columns brand-icon"></i>
+      <div class="brand-text">
+        <span class="brand-title">S.V. GOVERNMENT POLYTECHNIC</span>
+        <span class="brand-sub">TIRUPATI | ESTD. 1980 | GOVT. OF ANDHRA PRADESH</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="scan-qr.html" class="nav-item"><i class="fa-solid fa-qrcode"></i> Scan QR</a>
+      <a href="branch-login.html" class="nav-item"><i class="fa-solid fa-users-gear"></i> Branch Login</a>
+      <a href="admin.html" class="nav-btn active"><i class="fa-solid fa-shield-halved"></i> Admin Login</a>
+    </nav>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- LOGIN CONTAINER -->
+  <main class="login-wrapper">
+    <div class="login-card">
+      <div class="shield-badge">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+
+      <h4 class="college-sub">S.V. GOVERNMENT POLYTECHNIC</h4>
+      <p class="location-tag">TIRUPATI</p>
+
+      <h1 class="login-heading">Admin Login</h1>
+      <p class="login-desc">Access to manage branches, students and system settings.</p>
+
+      <form id="adminLoginForm">
+        <!-- USERNAME INPUT -->
+        <div class="input-group">
+          <i class="fa-regular fa-user input-icon"></i>
+          <input type="text" id="username" placeholder="Username" required autocomplete="off">
+        </div>
+
+        <!-- PASSWORD INPUT -->
+        <div class="input-group">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input type="password" id="password" placeholder="Password" required>
+          <i class="fa-regular fa-eye-slash toggle-pass" id="togglePassword"></i>
+        </div>
+
+        <!-- REMEMBER & FORGOT -->
+        <div class="form-actions">
+          <label class="remember-label">
+            <input type="checkbox" id="rememberMe"> Remember Me
+          </label>
+          <a href="#" class="forgot-link" id="forgotBtn">Forgot Password?</a>
+        </div>
+
+        <!-- LOGIN BUTTON -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+        </button>
+
+        <div id="statusMsg" class="status-msg"></div>
+      </form>
+    </div>
+  </main>
+
+  <!-- RESET VIA GMAIL MODAL (LOGIN PAGE) -->
+  <div class="modal-overlay" id="loginResetModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Reset Password</h3>
+        <i class="fa-solid fa-xmark close-icon" id="closeResetModal"></i>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">Enter your registered Gmail address to get a password reset link.</p>
+        <input type="email" id="resetEmailInput" placeholder="Registered Gmail" required>
+        <button class="modal-submit-btn" id="btnSendResetLink">Send Reset Email</button>
+        <div class="modal-status" id="resetModalStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    S.V. GOVERNMENT POLYTECHNIC &nbsp;|&nbsp; TIRUPATI &nbsp;|&nbsp; ESTD. 1980 &nbsp;|&nbsp; GOVT. OF ANDHRA PRADESH
+  </footer>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Scanner & Generator</title>
+    <style>
+        body {
+            background-color: #0b132b;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #1c2541;
+            padding: 25px;
+            border-radius: 12px;
+            width: 360px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+        h2 { margin-bottom: 20px; color: #48cae4; }
+        .section {
+            border: 1px dashed #3a506b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #0f172a;
+        }
+        input[type="file"], input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #3a506b;
+            background: #1c2541;
+            color: #fff;
+        }
+        button {
+            width: 95%;
+            padding: 10px;
+            background: #48cae4;
+            border: none;
+            border-radius: 6px;
+            color: #0b132b;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        button:hover { background: #00b4d8; }
+        .result-box {
+            margin-top: 10px;
+            padding: 10px;
+            background: #1e293b;
+            border-radius: 6px;
+            word-break: break-all;
+            font-size: 14px;
+            color: #52b788;
+            display: none;
+        }
+        #qrOutputImg {
+            width: 160px;
+            height: 160px;
+            margin-top: 10px;
+            background: white;
+            padding: 6px;
+            border-radius: 6px;
+            display: none;
+        }
+        .error { color: #f87171 !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>QR Master</h2>
+
+    <!-- 1. IMAGE TO QR SCANNER -->
+    <div class="section">
+        <h4>1. Image nundi QR Data Read Cheyandi</h4>
+        <input type="file" id="qrFileInput" accept="image/*">
+        <button type="button" onclick="decodeQRImage()">Scan QR Image</button>
+        <div id="decodeResult" class="result-box"></div>
+    </div>
+
+    <!-- 2. TEXT TO QR GENERATOR -->
+    <div class="section">
+        <h4>2. QR Code Generate Cheyandi</h4>
+        <input type="text" id="genText" placeholder="Text or URL enter cheyandi...">
+        <button type="button" onclick="generateQR()">Create QR</button>
+        <center><img id="qrOutputImg" alt="Generated QR"></center>
+        <div id="genError" class="result-box error"></div>
+    </div>
+</div>
+
+<script>
+// 1. Decode Image to QR
+async function decodeQRImage() {
+    const fileInput = document.getElementById("qrFileInput");
+    const resultBox = document.getElementById("decodeResult");
+
+    if (fileInput.files.length === 0) {
+        resultBox.style.display = "block";
+        resultBox.className = "result-box error";
+        resultBox.innerText = "Dhayachesi photo select cheyandi!";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", fileInput.files[0]);
+
+    resultBox.style.display = "block";
+    resultBox.className = "result-box";
+    resultBox.innerText = "Scanning Image...";
+
+    try {
+        const response = await fetch("/decode_qr", {
+            method: "POST",
+            body: formData
+        });
+
+        const res = await response.json();
+        if (response.ok && res.decoded_data) {
+            resultBox.className = "result-box";
+            resultBox.innerHTML = "<strong>Result:</strong><br>" + res.decoded_data;
+        } else {
+            resultBox.className = "result-box error";
+            resultBox.innerText = res.error || "QR Code read avvaledhu!";
+        }
+    } catch (err) {
+        resultBox.className = "result-box error";
+        resultBox.innerText = "Server error!";
+    }
+}
+
+// 2. Generate QR from Text
+async function generateQR() {
+    const text = document.getElementById("genText").value.trim();
+    const qrImg = document.getElementById("qrOutputImg");
+    const errBox = document.getElementById("genError");
+
+    errBox.style.display = "none";
+    qrImg.style.display = "none";
+
+    if (!text) {
+        errBox.style.display = "block";
+        errBox.innerText = "Text enter cheyandi!";
+        return;
+    }
+
+    try {
+        const response = await fetch("/generate_qr", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: text })
+        });
+
+        const res = await response.json();
+        if (response.ok && res.qr_image) {
+            qrImg.src = "data:image/png;base64," + res.qr_image;
+            qrImg.style.display = "block";
+        } else {
+            errBox.style.display = "block";
+            errBox.innerText = res.error || "Generate cheyadam fail ayindi!";
+        }
+    } catch (err) {
+        errBox.style.display = "block";
+        errBox.innerText = "Server error!";
+    }
+}
+</script>
+
+</body>
+</html>
