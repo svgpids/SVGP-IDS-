@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0"
+>
+
+<title>SVGP | Upload IDs</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+
+    font-family:Arial;
+
+    background:
+    linear-gradient(
+        135deg,
+        #f4f0ff,
+        #eef7ff
+    );
+}
+
+.header{
+    background:#10152f;
+
+    color:white;
+
+    padding:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.header h2{
+    margin:0;
+
+    font-size:16px;
+}
+
+.header a{
+    color:white;
+
+    text-decoration:none;
+
+    font-size:11px;
+}
+
+.container{
+    width:92%;
+
+    max-width:700px;
+
+    margin:40px auto;
+}
+
+.card{
+    background:white;
+
+    border-radius:18px;
+
+    padding:28px;
+
+    box-shadow:
+    0 15px 45px
+    rgba(40,30,100,.10);
+}
+
+h1{
+    font-size:23px;
+
+    color:#5524c1;
+}
+
+.subtitle{
+    color:#888;
+
+    font-size:11px;
+
+    margin-bottom:25px;
+}
+
+label{
+    font-size:11px;
+
+    font-weight:bold;
+
+    display:block;
+
+    margin-bottom:5px;
+}
+
+select,
+input[type=file]{
+    width:100%;
+
+    padding:13px;
+
+    border:
+    1px solid #ddd;
+
+    border-radius:9px;
+
+    margin-bottom:18px;
+
+    background:white;
+}
+
+.upload-box{
+    border:
+    2px dashed #9c72ff;
+
+    background:#faf8ff;
+
+    border-radius:13px;
+
+    padding:40px 20px;
+
+    text-align:center;
+
+    margin-bottom:18px;
+}
+
+.upload-icon{
+    font-size:45px;
+
+    color:#713cff;
+}
+
+.upload-box p{
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+button{
+    width:100%;
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:9px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #713cff,
+        #d73fe8
+    );
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+#status{
+    margin-top:18px;
+
+    font-size:11px;
+
+    line-height:1.8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+<h2>
+SVGP DIGITAL ID
+</h2>
+
+<a href="qr.html">
+← All IDs
+</a>
+
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+<h1>
+Upload Student IDs
+</h1>
+
+<div class="subtitle">
+Upload student images directly to the correct
+Google Drive Year / Branch folder.
+</div>
+
+
+<label>
+Academic Year
+</label>
+
+<select id="year">
+
+<option>1st Year</option>
+
+<option>2nd Year</option>
+
+<option>3rd Year</option>
+
+</select>
+
+
+<label>
+Branch
+</label>
+
+<select id="branch">
+
+<option>ECE</option>
+
+<option>EEE</option>
+
+<option>CIVIL</option>
+
+<option>MECH</option>
+
+<option>CME</option>
+
+<option>CHST</option>
+
+<option>BME</option>
+
+</select>
+
+
+<div class="upload-box">
+
+<div class="upload-icon">
+☁
+</div>
+
+<p>
+Select Student Images
+</p>
+
+<input
+type="file"
+id="files"
+accept="image/*"
+multiple
+>
+
+</div>
+
+
+<button
+onclick="uploadImages()"
+>
+UPLOAD TO GOOGLE DRIVE
+</button>
+
+
+<div id="status">
+Ready.
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
+
+
+async function uploadImages(){
+
+    const files =
+    document
+    .getElementById("files")
+    .files;
+
+
+    const year =
+    document
+    .getElementById("year")
+    .value;
+
+
+    const branch =
+    document
+    .getElementById("branch")
+    .value;
+
+
+    const status =
+    document
+    .getElementById("status");
+
+
+    if(!files.length){
+
+        alert(
+            "Please select images."
+        );
+
+        return;
+
+    }
+
+
+    for(
+        let i=0;
+        i<files.length;
+        i++
+    ){
+
+        const file =
+        files[i];
+
+
+        status.innerHTML =
+        "Uploading "+
+        (i+1)+
+        " / "+
+        files.length+
+        " : "+
+        file.name;
+
+
+        try{
+
+            const base64 =
+            await toBase64(file);
+
+
+            const payload = {
+
+                action:"upload",
+
+                year:year,
+
+                branch:branch,
+
+                fileName:file.name,
+
+                mimeType:file.type,
+
+                data:base64
+
+            };
+
+
+            const response =
+            await fetch(
+                API_URL,
+                {
+                    method:"POST",
+
+                    body:
+                    JSON.stringify(
+                        payload
+                    )
+                }
+            );
+
+
+            const result =
+            await response.json();
+
+
+            if(!result.success){
+
+                throw new Error(
+                    result.error
+                );
+
+            }
+
+
+        }catch(error){
+
+            status.innerHTML +=
+            "<br>❌ "+
+            error.message;
+
+        }
+
+    }
+
+
+    status.innerHTML +=
+    "<br><br>✅ Upload completed.";
+
+}
+
+
+function toBase64(file){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const reader =
+            new FileReader();
+
+
+            reader.onload =
+            () => {
+
+                resolve(
+                    reader.result
+                    .split(",")[1]
+                );
+
+            };
+
+
+            reader.onerror =
+            reject;
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>

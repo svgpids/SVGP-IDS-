@@ -1,145 +1,895 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SVGP-IDS QR Generator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>SVGP Digital ID | All IDs</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f3f4f6;
-    color: #111827;
+body{
+    font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    background:#f5f7ff;
+    color:#20243a;
 }
 
-.container {
-    width: 95%;
-    max-width: 1100px;
-    margin: 30px auto;
+/* ================= NAVBAR ================= */
+
+.navbar{
+    height:70px;
+
+    background:#10152f;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 4%;
+
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
-.header {
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-h1 {
-    margin: 0;
+.logo-icon{
+    width:40px;
+    height:40px;
+
+    border-radius:11px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #693cff,
+        #d941e9
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
 }
 
-.subtitle {
-    margin-top: 8px;
-    color: #6b7280;
+.logo-text{
+    font-size:14px;
+    font-weight:800;
 }
 
-.controls {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+.logo-text small{
+    display:block;
+
+    font-size:8px;
+
+    opacity:.6;
+
+    margin-top:3px;
 }
 
-button {
-    border: 0;
-    padding: 13px 20px;
-    border-radius: 9px;
-    background: #111827;
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
+.nav{
+    display:flex;
+    gap:6px;
 }
 
-button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
+.nav a{
+    color:#dfe3ff;
+
+    text-decoration:none;
+
+    padding:10px 14px;
+
+    border-radius:9px;
+
+    font-size:12px;
 }
 
-.progress {
-    margin-top: 20px;
-    width: 100%;
-    height: 18px;
-    background: #e5e7eb;
-    border-radius: 20px;
-    overflow: hidden;
+.nav a:hover,
+.nav a.active{
+    color:white;
+
+    background:
+    linear-gradient(
+        90deg,
+        #713cff,
+        #d73ee8
+    );
 }
 
-.progress-bar {
-    width: 0%;
-    height: 100%;
-    background: #2563eb;
+.clock{
+    background:#1d2447;
+
+    border-radius:9px;
+
+    padding:8px 12px;
+
+    text-align:center;
+
+    font-size:9px;
 }
 
-#status {
-    margin-top: 12px;
-    font-weight: bold;
+/* ================= HERO ================= */
+
+.hero{
+    padding:45px 5% 70px;
+
+    color:white;
+
+    background:
+    radial-gradient(
+        circle at 20% 20%,
+        rgba(135,69,255,.65),
+        transparent 35%
+    ),
+    radial-gradient(
+        circle at 80% 20%,
+        rgba(233,63,219,.45),
+        transparent 35%
+    ),
+    linear-gradient(
+        135deg,
+        #151b43,
+        #45207e,
+        #182451
+    );
 }
 
-.grid {
-    margin-top: 25px;
-    display: grid;
+.hero-content{
+    max-width:1300px;
+    margin:auto;
+}
+
+.hero-tag{
+    display:inline-block;
+
+    padding:7px 12px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.12);
+
+    font-size:10px;
+
+    margin-bottom:15px;
+}
+
+.hero h1{
+    font-size:40px;
+
+    margin-bottom:10px;
+}
+
+.hero h1 span{
+    color:#df66ff;
+}
+
+.hero p{
+    color:#dfe3ff;
+
+    font-size:13px;
+
+    max-width:600px;
+}
+
+/* ================= MAIN ================= */
+
+.container{
+    width:92%;
+    max-width:1350px;
+
+    margin:-35px auto 40px;
+
+    position:relative;
+}
+
+/* ================= STAT CARDS ================= */
+
+.stats{
+    display:grid;
+
     grid-template-columns:
-        repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    repeat(4,1fr);
+
+    gap:15px;
+
+    margin-bottom:20px;
 }
 
-.student-card {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+.stat{
+    background:white;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:
+    0 8px 30px
+    rgba(34,28,90,.08);
+
+    position:relative;
+
+    overflow:hidden;
 }
 
-.student-card h2 {
-    font-size: 18px;
-    margin: 0 0 5px;
+.stat::after{
+    content:"";
+
+    position:absolute;
+
+    width:80px;
+    height:80px;
+
+    right:-20px;
+    bottom:-30px;
+
+    border-radius:50%;
+
+    background:#eee7ff;
 }
 
-.student-card p {
-    color: #666;
-    margin: 4px;
+.stat-icon{
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:#f0eaff;
+
+    color:#6834d8;
+
+    margin-bottom:10px;
 }
 
-.qr {
-    margin: 20px auto;
-    padding: 15px;
-    width: 430px;
-    max-width: 100%;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.stat-title{
+    color:#85899b;
+
+    font-size:11px;
 }
 
-.qr img,
-.qr canvas {
-    width: 400px !important;
-    height: 400px !important;
-    max-width: 100%;
+.stat-value{
+    font-size:27px;
+
+    font-weight:800;
+
+    margin-top:4px;
 }
 
-.url {
-    font-size: 12px;
-    color: #555;
-    word-break: break-all;
-    margin: 10px 0;
+/* ================= TOOLBAR ================= */
+
+.toolbar{
+    background:white;
+
+    border-radius:15px;
+
+    padding:16px;
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    box-shadow:
+    0 8px 30px
+    rgba(34,28,90,.07);
+
+    margin-bottom:20px;
 }
 
-.download {
-    width: 100%;
-    background: #2563eb;
+.search{
+    flex:1;
+
+    min-width:230px;
+
+    border:1px solid #e3e5ef;
+
+    border-radius:10px;
+
+    padding:12px 14px;
+
+    outline:none;
+
+    font-size:12px;
+}
+
+.search:focus{
+    border-color:#743dff;
+
+    box-shadow:
+    0 0 0 3px #eee8ff;
+}
+
+.button{
+    border:0;
+
+    border-radius:10px;
+
+    padding:12px 17px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.button-primary{
+    color:white;
+
+    background:
+    linear-gradient(
+        90deg,
+        #713cff,
+        #d93fe8
+    );
+}
+
+.button-light{
+    background:#f0f2f8;
+
+    color:#30364b;
+}
+
+/* ================= YEAR SELECT ================= */
+
+.section-title{
+    margin:25px 0 13px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.section-title h2{
+    font-size:18px;
+}
+
+.section-title span{
+    color:#85899b;
+
+    font-size:11px;
+}
+
+.year-tabs{
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
+}
+
+.year-tab{
+    background:white;
+
+    border:2px solid transparent;
+
+    padding:13px 20px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 5px 18px
+    rgba(34,28,90,.06);
+
+    min-width:130px;
+
+    text-align:left;
+}
+
+.year-tab:hover{
+    border-color:#cbb8ff;
+}
+
+.year-tab.active{
+    border-color:#743cff;
+
+    background:#f5f0ff;
+}
+
+.year-tab strong{
+    display:block;
+
+    font-size:13px;
+}
+
+.year-tab small{
+    display:block;
+
+    color:#8a8ea0;
+
+    margin-top:4px;
+
+    font-size:9px;
+}
+
+/* ================= BRANCH ================= */
+
+.branch-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fill,minmax(160px,1fr));
+
+    gap:12px;
+
+    margin-bottom:25px;
+}
+
+.branch-card{
+    background:white;
+
+    border-radius:13px;
+
+    padding:17px;
+
+    cursor:pointer;
+
+    border:2px solid transparent;
+
+    box-shadow:
+    0 6px 22px
+    rgba(34,28,90,.06);
+
+    transition:.2s;
+}
+
+.branch-card:hover{
+    transform:translateY(-2px);
+
+    border-color:#c9b5ff;
+}
+
+.branch-card.active{
+    border-color:#713cff;
+
+    background:
+    linear-gradient(
+        135deg,
+        #faf7ff,
+        #f3edff
+    );
+}
+
+.branch-icon{
+    width:42px;
+    height:42px;
+
+    border-radius:11px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #713cff,
+        #d63ee7
+    );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+
+    margin-bottom:10px;
+}
+
+.branch-card h3{
+    font-size:13px;
+}
+
+.branch-card p{
+    font-size:10px;
+
+    color:#85899b;
+
+    margin-top:4px;
+}
+
+/* ================= STUDENTS ================= */
+
+.student-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fill,minmax(230px,1fr));
+
+    gap:16px;
+}
+
+.student-card{
+    background:white;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 7px 28px
+    rgba(34,28,90,.07);
+
+    transition:.2s;
+
+    border:1px solid #edf0f7;
+}
+
+.student-card:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 12px 35px
+    rgba(73,45,160,.14);
+}
+
+.student-top{
+    height:105px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #6536df,
+        #d83fe7
+    );
+
+    position:relative;
+}
+
+.student-photo{
+    width:85px;
+    height:105px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    position:absolute;
+
+    left:18px;
+    bottom:-42px;
+
+    border:4px solid white;
+
+    background:#eee;
+
+    box-shadow:
+    0 4px 15px
+    rgba(0,0,0,.15);
+}
+
+.status{
+    position:absolute;
+
+    right:12px;
+    top:12px;
+
+    background:#d9ffe9;
+
+    color:#087b40;
+
+    padding:5px 8px;
+
+    border-radius:20px;
+
+    font-size:8px;
+
+    font-weight:bold;
+}
+
+.student-body{
+    padding:50px 15px 15px;
+}
+
+.student-body h3{
+    font-size:14px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.student-pin{
+    color:#6734d7;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    margin-top:4px;
+}
+
+.student-details{
+    margin-top:12px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+}
+
+.detail{
+    background:#f7f8fc;
+
+    border-radius:7px;
+
+    padding:7px;
+}
+
+.detail span{
+    display:block;
+
+    color:#9699a7;
+
+    font-size:8px;
+}
+
+.detail strong{
+    display:block;
+
+    margin-top:2px;
+
+    font-size:10px;
+}
+
+.student-actions{
+    display:flex;
+
+    gap:7px;
+
+    margin-top:13px;
+}
+
+.student-actions button{
+    flex:1;
+
+    border:0;
+
+    border-radius:8px;
+
+    padding:9px;
+
+    cursor:pointer;
+
+    font-size:9px;
+
+    font-weight:bold;
+}
+
+.qr-btn{
+    background:#713cff;
+    color:white;
+}
+
+.view-btn{
+    background:#edf0f7;
+    color:#34394d;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(7,10,30,.72);
+
+    z-index:500;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+
+    max-width:520px;
+
+    max-height:92vh;
+
+    overflow:auto;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    position:relative;
+
+    text-align:center;
+}
+
+.close{
+    position:absolute;
+
+    right:15px;
+    top:15px;
+
+    width:32px;
+    height:32px;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:#f0f1f6;
+
+    cursor:pointer;
+
+    font-size:18px;
+}
+
+.modal-title{
+    font-size:20px;
+
+    color:#5422b9;
+}
+
+.modal-photo{
+    width:120px;
+    height:150px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    margin:15px auto;
+
+    display:block;
+}
+
+.modal-info{
+    background:#f6f7fb;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    text-align:left;
+
+    font-size:11px;
+
+    line-height:1.9;
+}
+
+#modalQR{
+    width:280px;
+    height:280px;
+
+    margin:15px auto;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+}
+
+#modalQR img,
+#modalQR canvas{
+    max-width:100%;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+    background:#10152f;
+
+    color:white;
+
+    text-align:center;
+
+    padding:28px;
+
+    font-size:10px;
+
+    margin-top:40px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:900px){
+
+    .stats{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .navbar{
+        height:auto;
+
+        padding:12px;
+
+        flex-wrap:wrap;
+    }
+
+    .nav{
+        order:3;
+
+        width:100%;
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .hero{
+        padding:35px 20px 60px;
+    }
+
+    .hero h1{
+        font-size:28px;
+    }
+
+    .container{
+        width:94%;
+    }
+
+    .stats{
+        grid-template-columns:
+        1fr 1fr;
+    }
+
+    .stat{
+        padding:14px;
+    }
+
+    .stat-value{
+        font-size:22px;
+    }
+
+    .student-grid{
+        grid-template-columns:1fr;
+    }
+
 }
 
 </style>
@@ -148,52 +898,334 @@ button:disabled {
 
 <body>
 
-<div class="container">
 
-<div class="header">
+<!-- NAVBAR -->
 
-<h1>SVGP-IDS QR Generator</h1>
+<header class="navbar">
 
-<div class="subtitle">
-Google Drive Students → Automatic QR
+<div class="logo">
+
+<div class="logo-icon">
+ID
 </div>
 
-<div class="controls">
+<div class="logo-text">
+
+SVGP DIGITAL ID
+
+<small>
+S.V. GOVERNMENT POLYTECHNIC • TIRUPATI
+</small>
+
+</div>
+
+</div>
+
+
+<nav class="nav">
+
+<a href="index.html">
+Home
+</a>
+
+<a href="qr.html" class="active">
+All IDs
+</a>
+
+<a href="upload.html">
+Upload
+</a>
+
+</nav>
+
+
+<div class="clock" id="clock">
+Loading...
+</div>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<div class="hero-tag">
+DIGITAL ID MANAGEMENT SYSTEM
+</div>
+
+<h1>
+All Student <span>IDs</span>
+</h1>
+
+<p>
+Manage student digital IDs, QR codes and verification
+year-wise and branch-wise from one dashboard.
+</p>
+
+</div>
+
+</section>
+
+
+<main class="container">
+
+
+<!-- STATISTICS -->
+
+<section class="stats">
+
+<div class="stat">
+
+<div class="stat-icon">
+▣
+</div>
+
+<div class="stat-title">
+ALL STUDENT IDs
+</div>
+
+<div class="stat-value" id="totalCount">
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-icon">
+1
+</div>
+
+<div class="stat-title">
+1ST YEAR
+</div>
+
+<div class="stat-value" id="year1">
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-icon">
+2
+</div>
+
+<div class="stat-title">
+2ND YEAR
+</div>
+
+<div class="stat-value" id="year2">
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-icon">
+3
+</div>
+
+<div class="stat-title">
+3RD YEAR
+</div>
+
+<div class="stat-value" id="year3">
+0
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<section class="toolbar">
+
+<input
+class="search"
+id="search"
+placeholder="Search PIN / branch / file name..."
+oninput="searchStudents()"
+>
 
 <button
-id="loadBtn"
-onclick="loadStudents()">
-Load Students
+class="button button-primary"
+onclick="loadStudents()"
+>
+↻ Refresh IDs
 </button>
 
 <button
-id="generateBtn"
-onclick="generateQRs()"
-disabled>
-Generate QR
+class="button button-light"
+onclick="showAll()"
+>
+ALL IDs
 </button>
 
+</section>
+
+
+<!-- YEAR -->
+
+<div class="section-title">
+
+<h2>
+Select Year
+</h2>
+
+<span id="yearInfo">
+Loading...
+</span>
+
 </div>
 
-<div class="progress">
 
 <div
-id="progressBar"
-class="progress-bar">
+class="year-tabs"
+id="yearTabs"
+>
 </div>
 
-</div>
 
-<div id="status">
-Ready
-</div>
+<!-- BRANCH -->
+
+<div class="section-title">
+
+<h2>
+Select Branch
+</h2>
+
+<span id="branchInfo">
+All branches
+</span>
 
 </div>
 
 
 <div
-id="grid"
-class="grid">
+class="branch-grid"
+id="branchGrid"
+>
+</div>
+
+
+<!-- STUDENTS -->
+
+<div class="section-title">
+
+<h2>
+Student Digital IDs
+</h2>
+
+<span id="studentInfo">
+0 students
+</span>
+
+</div>
+
+
+<div
+class="student-grid"
+id="studentGrid"
+>
+</div>
+
+
+</main>
+
+
+<footer class="footer">
+
+S.V. GOVERNMENT POLYTECHNIC • TIRUPATI
+
+<br><br>
+
+Digital ID • QR Verification • Student Management
+
+</footer>
+
+
+<!-- MODAL -->
+
+<div
+class="modal"
+id="modal"
+>
+
+<div class="modal-box">
+
+<button
+class="close"
+onclick="closeModal()"
+>
+×
+</button>
+
+
+<h2
+class="modal-title"
+id="modalTitle"
+>
+Student ID
+</h2>
+
+
+<img
+class="modal-photo"
+id="modalPhoto"
+>
+
+
+<div
+id="modalQR"
+>
+</div>
+
+
+<div
+class="modal-info"
+id="modalInfo"
+>
+</div>
+
+
+<div
+style="
+display:flex;
+gap:8px;
+margin-top:15px;
+"
+>
+
+<button
+class="button button-primary"
+style="flex:1"
+onclick="downloadCurrentQR()"
+>
+↓ Download QR
+</button>
+
+<a
+id="driveLink"
+target="_blank"
+class="button button-light"
+style="flex:1;text-decoration:none"
+>
+View Image
+</a>
+
+</div>
+
 </div>
 
 </div>
@@ -201,17 +1233,15 @@ class="grid">
 
 <script>
 
-/* ==========================================
-   APPS SCRIPT URL
-========================================== */
+
+/* ==============================
+   CONFIG
+============================== */
+
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
 
-
-/* ==========================================
-   YOUR SCAN PAGE
-========================================== */
 
 const SCAN_PAGE =
 "https://svgpids.github.io/SVGP-IDS-/scan.html";
@@ -219,405 +1249,966 @@ const SCAN_PAGE =
 
 let students = [];
 
+let selectedYear = "ALL";
 
-/* ==========================================
-   LOAD STUDENTS
-========================================== */
+let selectedBranch = "ALL";
 
-async function loadStudents() {
-
-    const status =
-        document.getElementById("status");
-
-    const loadBtn =
-        document.getElementById("loadBtn");
-
-    const generateBtn =
-        document.getElementById("generateBtn");
+let currentStudent = null;
 
 
-    loadBtn.disabled = true;
+/* ==============================
+   LOAD
+============================== */
 
-    status.textContent =
-        "Loading students from Google Drive...";
 
+async function loadStudents(){
 
-    try {
+    try{
+
+        document
+        .getElementById("studentGrid")
+        .innerHTML =
+        "<p>Loading students...</p>";
+
 
         const response =
-            await fetch(
-                API_URL + "?action=files"
-            );
-
-
-        if (!response.ok) {
-            throw new Error(
-                "API HTTP error: " +
-                response.status
-            );
-        }
+        await fetch(
+            API_URL+
+            "?action=files&t="+
+            Date.now()
+        );
 
 
         const data =
-            await response.json();
+        await response.json();
 
 
-        if (!data.success) {
+        if(!data.success){
 
             throw new Error(
                 data.error ||
-                "API failed"
+                "API Error"
             );
 
         }
 
 
         students =
-            data.files || [];
+        data.files || [];
 
 
-        status.textContent =
-            students.length +
-            " students loaded.";
+        updateStatistics();
+
+        createYearTabs();
+
+        selectYear("ALL");
 
 
-        if (students.length > 0) {
-
-            generateBtn.disabled =
-                false;
-
-        }
-
-
-    } catch (error) {
+    }catch(error){
 
         console.error(error);
 
-        status.textContent =
-            "Error: " +
-            error.message;
+        document
+        .getElementById("studentGrid")
+        .innerHTML =
 
-        loadBtn.disabled =
-            false;
+        `<p style="color:red">
+        Unable to load student data.<br>
+        ${escapeHTML(error.message)}
+        </p>`;
 
     }
 
 }
 
 
-/* ==========================================
-   CREATE QR URL
-========================================== */
-
-function getQRURL(pin) {
-
-    pin =
-        String(pin)
-        .trim();
+/* ==============================
+   STATISTICS
+============================== */
 
 
-    return (
-        SCAN_PAGE +
-        "?pin=" +
-        encodeURIComponent(pin)
-    );
+function updateStatistics(){
+
+    document
+    .getElementById("totalCount")
+    .innerText =
+    students.length;
+
+
+    document
+    .getElementById("year1")
+    .innerText =
+    countYear("1st Year");
+
+
+    document
+    .getElementById("year2")
+    .innerText =
+    countYear("2nd Year");
+
+
+    document
+    .getElementById("year3")
+    .innerText =
+    countYear("3rd Year");
 
 }
 
 
-/* ==========================================
-   GENERATE ALL QR
-========================================== */
+function countYear(year){
 
-async function generateQRs() {
+    return students.filter(
+        s =>
+        String(s.year)
+        .toLowerCase()
+        ===
+        year.toLowerCase()
+    ).length;
+
+}
+
+
+/* ==============================
+   YEAR TABS
+============================== */
+
+
+function createYearTabs(){
+
+    const years =
+    ["ALL","1st Year","2nd Year","3rd Year"];
+
+
+    document
+    .getElementById("yearTabs")
+    .innerHTML =
+
+    years.map(year=>{
+
+        const count =
+        year==="ALL"
+        ? students.length
+        : countYear(year);
+
+
+        return `
+
+        <button
+        class="year-tab ${
+            selectedYear===year
+            ? "active"
+            : ""
+        }"
+        onclick="selectYear('${year}')"
+        >
+
+            <strong>
+                ${year==="ALL"
+                ?"ALL IDs"
+                :year}
+            </strong>
+
+            <small>
+                ${count} Student IDs
+            </small>
+
+        </button>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ==============================
+   YEAR SELECT
+============================== */
+
+
+function selectYear(year){
+
+    selectedYear =
+    year;
+
+    selectedBranch =
+    "ALL";
+
+
+    createYearTabs();
+
+    createBranches();
+
+    renderStudents();
+
+
+    document
+    .getElementById("yearInfo")
+    .innerText =
+    year==="ALL"
+    ? "All years"
+    : year;
+
+}
+
+
+/* ==============================
+   BRANCHES
+============================== */
+
+
+function createBranches(){
+
+    let list =
+    students;
+
+
+    if(
+        selectedYear!=="ALL"
+    ){
+
+        list =
+        list.filter(
+            s =>
+            s.year ===
+            selectedYear
+        );
+
+    }
+
+
+    const branches =
+    [...new Set(
+        list.map(
+            s =>
+            s.branch ||
+            "Unknown"
+        )
+    )].sort();
+
 
     const grid =
-        document.getElementById("grid");
-
-    const status =
-        document.getElementById("status");
-
-    const progress =
-        document.getElementById("progressBar");
-
-    const generateBtn =
-        document.getElementById("generateBtn");
+    document
+    .getElementById("branchGrid");
 
 
-    if (!students.length) {
+    let html = `
 
-        alert(
-            "First Load Students click cheyyi."
+        <div
+        class="branch-card ${
+            selectedBranch==="ALL"
+            ?"active":""
+        }"
+        onclick="selectBranch('ALL')"
+        >
+
+            <div class="branch-icon">
+                ALL
+            </div>
+
+            <h3>
+                All Branches
+            </h3>
+
+            <p>
+                ${list.length} Students
+            </p>
+
+        </div>
+
+    `;
+
+
+    branches.forEach(branch=>{
+
+        const count =
+        list.filter(
+            s =>
+            s.branch ===
+            branch
+        ).length;
+
+
+        html += `
+
+        <div
+        class="branch-card ${
+            selectedBranch===branch
+            ?"active":""
+        }"
+        onclick='selectBranch(${JSON.stringify(branch)})'
+        >
+
+            <div class="branch-icon">
+                ${branch
+                    .substring(0,3)
+                    .toUpperCase()}
+            </div>
+
+            <h3>
+                ${escapeHTML(branch)}
+            </h3>
+
+            <p>
+                ${count} Student IDs
+            </p>
+
+        </div>
+
+        `;
+
+    });
+
+
+    grid.innerHTML =
+    html;
+
+
+    document
+    .getElementById("branchInfo")
+    .innerText =
+    branches.length+
+    " branches";
+
+}
+
+
+/* ==============================
+   BRANCH SELECT
+============================== */
+
+
+function selectBranch(branch){
+
+    selectedBranch =
+    branch;
+
+    createBranches();
+
+    renderStudents();
+
+}
+
+
+/* ==============================
+   STUDENT FILTER
+============================== */
+
+
+function getFilteredStudents(){
+
+    let list =
+    [...students];
+
+
+    if(
+        selectedYear!=="ALL"
+    ){
+
+        list =
+        list.filter(
+            s =>
+            s.year ===
+            selectedYear
         );
+
+    }
+
+
+    if(
+        selectedBranch!=="ALL"
+    ){
+
+        list =
+        list.filter(
+            s =>
+            s.branch ===
+            selectedBranch
+        );
+
+    }
+
+
+    const query =
+    document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
+
+
+    if(query){
+
+        list =
+        list.filter(s=>{
+
+            const text =
+
+                String(s.pin||"")+
+                " "+
+                String(s.fileName||"")+
+                " "+
+                String(s.branch||"")+
+                " "+
+                String(s.year||"");
+
+            return text
+            .toLowerCase()
+            .includes(query);
+
+        });
+
+    }
+
+
+    return list;
+
+}
+
+
+/* ==============================
+   RENDER STUDENTS
+============================== */
+
+
+function renderStudents(){
+
+    const list =
+    getFilteredStudents();
+
+
+    document
+    .getElementById("studentInfo")
+    .innerText =
+    list.length+
+    " students";
+
+
+    const grid =
+    document
+    .getElementById("studentGrid");
+
+
+    if(!list.length){
+
+        grid.innerHTML = `
+
+            <div style="
+            grid-column:1/-1;
+            text-align:center;
+            padding:60px;
+            color:#888;
+            ">
+
+                <div style="font-size:45px">
+                    📭
+                </div>
+
+                <p>
+                    No student IDs found.
+                </p>
+
+            </div>
+
+        `;
 
         return;
 
     }
 
 
-    generateBtn.disabled =
-        true;
+    grid.innerHTML =
+    list.map(student=>{
 
-    grid.innerHTML = "";
+        return `
 
+        <article class="student-card">
 
-    for (
-        let i = 0;
-        i < students.length;
-        i++
-    ) {
+            <div class="student-top">
 
-        const student =
-            students[i];
+                <span class="status">
+                    ● ACTIVE
+                </span>
 
+                <img
+                class="student-photo"
+                src="${escapeAttr(
+                    student.thumbnailUrl
+                )}"
+                onerror="this.style.opacity='.2'"
+                >
 
-        const pin =
-            String(
-                student.pin
-            ).trim();
+            </div>
 
 
-        const qrURL =
-            getQRURL(pin);
+            <div class="student-body">
 
+                <h3>
+                    ${escapeHTML(
+                        student.pin
+                    )}
+                </h3>
 
-        /* -----------------------------
-           CARD
-        ----------------------------- */
 
-        const card =
-            document.createElement(
-                "div"
-            );
+                <div class="student-pin">
+                    DIGITAL ID
+                </div>
 
-        card.className =
-            "student-card";
 
+                <div class="student-details">
 
-        const title =
-            document.createElement(
-                "h2"
-            );
+                    <div class="detail">
 
-        title.textContent =
-            pin;
+                        <span>
+                            YEAR
+                        </span>
 
+                        <strong>
+                            ${escapeHTML(
+                                student.year
+                            )}
+                        </strong>
 
-        const year =
-            document.createElement(
-                "p"
-            );
+                    </div>
 
-        year.textContent =
-            "Year: " +
-            (
-                student.year ||
-                "-"
-            );
 
+                    <div class="detail">
 
-        const branch =
-            document.createElement(
-                "p"
-            );
+                        <span>
+                            BRANCH
+                        </span>
 
-        branch.textContent =
-            "Branch: " +
-            (
-                student.branch ||
-                "-"
-            );
+                        <strong>
+                            ${escapeHTML(
+                                student.branch
+                            )}
+                        </strong>
 
+                    </div>
 
-        const qr =
-            document.createElement(
-                "div"
-            );
+                </div>
 
-        qr.className =
-            "qr";
 
+                <div class="student-actions">
 
-        const urlText =
-            document.createElement(
-                "div"
-            );
+                    <button
+                    class="qr-btn"
+                    onclick='openQR(${safeJSON(student)})'
+                    >
+                        QR CODE
+                    </button>
 
-        urlText.className =
-            "url";
 
-        urlText.textContent =
-            qrURL;
+                    <button
+                    class="view-btn"
+                    onclick='openQR(${safeJSON(student)})'
+                    >
+                        VIEW
+                    </button>
 
+                </div>
 
-        const download =
-            document.createElement(
-                "button"
-            );
+            </div>
 
-        download.className =
-            "download";
+        </article>
 
-        download.textContent =
-            "Download QR";
+        `;
 
-
-        card.appendChild(title);
-
-        card.appendChild(year);
-
-        card.appendChild(branch);
-
-        card.appendChild(qr);
-
-        card.appendChild(urlText);
-
-        card.appendChild(download);
-
-        grid.appendChild(card);
-
-
-        /* -----------------------------
-           GENERATE QR
-        ----------------------------- */
-
-        new QRCode(
-            qr,
-            {
-                text: qrURL,
-
-                width: 400,
-
-                height: 400,
-
-                colorDark:
-                    "#000000",
-
-                colorLight:
-                    "#ffffff",
-
-                correctLevel:
-                    QRCode.CorrectLevel.H
-            }
-        );
-
-
-        /* -----------------------------
-           WAIT
-        ----------------------------- */
-
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    20
-                )
-        );
-
-
-        const qrImage =
-            qr.querySelector(
-                "img"
-            );
-
-
-        /* -----------------------------
-           DOWNLOAD
-        ----------------------------- */
-
-        download.onclick =
-            function() {
-
-                if (!qrImage) {
-
-                    alert(
-                        "QR image ready kaaledu."
-                    );
-
-                    return;
-
-                }
-
-
-                const link =
-                    document.createElement(
-                        "a"
-                    );
-
-
-                link.href =
-                    qrImage.src;
-
-
-                link.download =
-                    pin +
-                    ".png";
-
-
-                document.body.appendChild(
-                    link
-                );
-
-
-                link.click();
-
-
-                link.remove();
-
-            };
-
-
-        /* -----------------------------
-           PROGRESS
-        ----------------------------- */
-
-        const percent =
-            Math.round(
-                (
-                    (i + 1) /
-                    students.length
-                ) * 100
-            );
-
-
-        progress.style.width =
-            percent + "%";
-
-
-        status.textContent =
-            "QR " +
-            (i + 1) +
-            " / " +
-            students.length;
-
-
-        /*
-         * Give browser time to render
-         */
-
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    10
-                )
-        );
-
-    }
-
-
-    status.textContent =
-        "All QR codes generated successfully.";
+    }).join("");
 
 }
 
 
-/* ==========================================
+/* ==============================
+   SEARCH
+============================== */
+
+
+function searchStudents(){
+
+    renderStudents();
+
+}
+
+
+/* ==============================
+   ALL
+============================== */
+
+
+function showAll(){
+
+    document
+    .getElementById("search")
+    .value = "";
+
+    selectedYear =
+    "ALL";
+
+    selectedBranch =
+    "ALL";
+
+    createYearTabs();
+
+    createBranches();
+
+    renderStudents();
+
+}
+
+
+/* ==============================
+   QR MODAL
+============================== */
+
+
+function openQR(student){
+
+    currentStudent =
+    student;
+
+
+    const url =
+    SCAN_PAGE+
+    "?pin="+
+    encodeURIComponent(
+        student.pin
+    );
+
+
+    document
+    .getElementById("modalTitle")
+    .innerText =
+    student.pin;
+
+
+    document
+    .getElementById("modalPhoto")
+    .src =
+    student.thumbnailUrl;
+
+
+    document
+    .getElementById("driveLink")
+    .href =
+    student.driveUrl;
+
+
+    document
+    .getElementById("modalInfo")
+    .innerHTML = `
+
+        <b>PIN:</b>
+        ${escapeHTML(student.pin)}
+
+        <br>
+
+        <b>Year:</b>
+        ${escapeHTML(student.year)}
+
+        <br>
+
+        <b>Branch:</b>
+        ${escapeHTML(student.branch)}
+
+        <br>
+
+        <b>File:</b>
+        ${escapeHTML(student.fileName)}
+
+        <br>
+
+        <b>Verification URL:</b>
+        <span style="word-break:break-all">
+        ${escapeHTML(url)}
+        </span>
+
+    `;
+
+
+    const qr =
+    document
+    .getElementById("modalQR");
+
+
+    qr.innerHTML = "";
+
+
+    new QRCode(
+        qr,
+        {
+            text:url,
+
+            width:270,
+            height:270,
+
+            colorDark:"#000000",
+
+            colorLight:"#ffffff",
+
+            correctLevel:
+            QRCode.CorrectLevel.H
+        }
+    );
+
+
+    document
+    .getElementById("modal")
+    .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+    .getElementById("modal")
+    .classList.remove("show");
+
+}
+
+
+document
+.getElementById("modal")
+.addEventListener(
+    "click",
+    function(e){
+
+        if(
+            e.target === this
+        ){
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* ==============================
+   DOWNLOAD QR
+============================== */
+
+
+function downloadCurrentQR(){
+
+    if(!currentStudent){
+
+        return;
+
+    }
+
+
+    const url =
+    SCAN_PAGE+
+    "?pin="+
+    encodeURIComponent(
+        currentStudent.pin
+    );
+
+
+    const temp =
+    document.createElement(
+        "div"
+    );
+
+
+    temp.style.position =
+    "fixed";
+
+    temp.style.left =
+    "-99999px";
+
+
+    document.body.appendChild(
+        temp
+    );
+
+
+    new QRCode(
+        temp,
+        {
+            text:url,
+
+            width:700,
+            height:700,
+
+            colorDark:"#000000",
+
+            colorLight:"#ffffff",
+
+            correctLevel:
+            QRCode.CorrectLevel.H
+        }
+    );
+
+
+    setTimeout(()=>{
+
+        const canvas =
+        temp.querySelector(
+            "canvas"
+        );
+
+
+        if(!canvas){
+
+            temp.remove();
+
+            alert(
+                "QR generation failed."
+            );
+
+            return;
+
+        }
+
+
+        const link =
+        document.createElement(
+            "a"
+        );
+
+
+        link.href =
+        canvas.toDataURL(
+            "image/png"
+        );
+
+
+        link.download =
+        "SVGP-QR-"+
+
+        currentStudent.pin+
+
+        ".png";
+
+
+        link.click();
+
+
+        temp.remove();
+
+    },500);
+
+}
+
+
+/* ==============================
+   HELPERS
+============================== */
+
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+function escapeAttr(value){
+
+    return escapeHTML(value);
+
+}
+
+
+function safeJSON(obj){
+
+    return JSON.stringify(obj)
+    .replace(
+        /</g,
+        "\\u003c"
+    )
+    .replace(
+        />/g,
+        "\\u003e"
+    )
+    .replace(
+        /&/g,
+        "\\u0026"
+    );
+
+}
+
+
+/* ==============================
+   CLOCK
+============================== */
+
+
+function updateClock(){
+
+    const now =
+    new Date();
+
+
+    document
+    .getElementById("clock")
+    .innerHTML =
+
+    now.toLocaleDateString(
+        "en-IN",
+        {
+            weekday:"short",
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    )
+
+    +
+
+    "<br>"
+
+    +
+
+    now.toLocaleTimeString(
+        "en-IN"
+    );
+
+}
+
+
+setInterval(
+    updateClock,
+    1000
+);
+
+updateClock();
+
+
+/* ==============================
    START
-========================================== */
+============================== */
+
+
+loadStudents();
 
 </script>
 
 </body>
-
 </html>

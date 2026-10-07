@@ -7,579 +7,512 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0"
+content="width=device-width,initial-scale=1.0"
 >
 
-<title>SVGP-IDS Digital ID</title>
+<title>SVGP | ID Verification</title>
 
 <style>
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-
-    margin: 0;
-
-    min-height: 100vh;
+body{
+    margin:0;
 
     font-family:
-        Arial,
-        sans-serif;
+    Arial,
+    Helvetica,
+    sans-serif;
 
     background:
-        #f3f4f6;
+    linear-gradient(
+        135deg,
+        #eef1ff,
+        #fff0ff
+    );
 
-    padding: 20px;
-
+    min-height:100vh;
 }
 
-.container {
+.header{
+    background:#10152f;
 
-    width: 100%;
+    color:white;
 
-    max-width: 450px;
+    padding:20px;
 
-    margin: auto;
-
+    text-align:center;
 }
 
-.card {
+.header h1{
+    margin:0;
 
-    background: white;
+    font-size:20px;
+}
 
-    border-radius: 20px;
+.header p{
+    margin:6px 0 0;
 
-    overflow: hidden;
+    font-size:10px;
+
+    opacity:.7;
+}
+
+.container{
+    width:94%;
+
+    max-width:570px;
+
+    margin:35px auto;
+}
+
+.card{
+    background:white;
+
+    border-radius:20px;
+
+    overflow:hidden;
 
     box-shadow:
-        0 10px 40px
-        rgba(0,0,0,.15);
-
+    0 15px 50px
+    rgba(30,20,90,.14);
 }
 
-.header {
-
+.card-top{
     background:
-        #111827;
+    linear-gradient(
+        135deg,
+        #6434df,
+        #d83fe7
+    );
 
-    color: white;
+    color:white;
 
-    text-align: center;
+    text-align:center;
 
-    padding: 22px;
-
+    padding:25px;
 }
 
-.header h1 {
+.card-top h2{
+    margin:0;
 
-    margin: 0;
-
-    font-size: 25px;
-
+    font-size:19px;
 }
 
-.header p {
+.card-top p{
+    margin:5px 0 0;
 
-    margin: 7px 0 0;
-
-    opacity: .8;
-
+    font-size:10px;
 }
 
-.loading {
-
-    padding: 40px 20px;
-
-    text-align: center;
-
-    color: #666;
-
+.content{
+    padding:25px;
 }
 
-.error {
-
-    display: none;
-
-    padding: 30px 20px;
-
-    text-align: center;
-
-    color: #dc2626;
-
-    font-weight: bold;
-
+.photo{
+    text-align:center;
 }
 
-.photo-container {
+.photo img{
+    width:150px;
+    height:190px;
 
-    padding: 25px 20px 10px;
+    object-fit:cover;
 
-    text-align: center;
+    border-radius:12px;
 
+    border:5px solid white;
+
+    box-shadow:
+    0 5px 20px
+    rgba(0,0,0,.12);
 }
 
-#studentPhoto {
-
-    display: none;
-
-    width: 180px;
-
-    height: 220px;
-
-    object-fit: cover;
-
-    border-radius: 12px;
-
-    border: 3px solid #e5e7eb;
-
-}
-
-.details {
-
-    display: none;
-
-    padding: 20px;
-
-}
-
-.row {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 13px 0;
+.row{
+    display:flex;
 
     border-bottom:
-        1px solid #eeeeee;
+    1px solid #edf0f5;
 
+    padding:11px 0;
 }
 
-.label {
+.label{
+    width:40%;
 
-    color: #666;
+    color:#8b8e9e;
 
+    font-size:11px;
 }
 
-.value {
+.value{
+    width:60%;
 
-    font-weight: bold;
+    font-size:12px;
 
-    text-align: right;
-
-    word-break: break-word;
-
+    font-weight:bold;
 }
 
-.status {
+.valid{
+    margin-top:20px;
 
-    text-align: center;
+    padding:17px;
 
-    padding: 15px;
+    border-radius:12px;
 
-    font-size: 13px;
+    text-align:center;
 
-    color: #666;
+    background:#e9fff2;
 
-    word-break: break-all;
+    border:2px solid #16a05d;
 
+    color:#08753e;
+}
+
+.valid strong{
+    font-size:15px;
+}
+
+.invalid{
+    padding:40px 25px;
+
+    text-align:center;
+
+    color:#d00000;
+
+    background:#fff0f0;
+
+    border:2px solid #e32929;
+
+    margin:20px;
+
+    border-radius:14px;
+}
+
+.invalid-icon{
+    font-size:55px;
+}
+
+.loading{
+    padding:60px;
+
+    text-align:center;
+
+    color:#777;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
 
-<div class="container">
-
-<div class="card">
-
-
-<div class="header">
+<header class="header">
 
 <h1>
-SVGP-IDS
+S.V. GOVERNMENT POLYTECHNIC
 </h1>
 
 <p>
-Digital Student ID
+TIRUPATI • DIGITAL ID VERIFICATION
 </p>
 
-</div>
+</header>
 
 
-<div
-id="loading"
-class="loading">
-
-Student details loading...
-
-</div>
-
-
-<div
-id="error"
-class="error">
-</div>
-
-
-<div
-class="photo-container">
-
-<img
-id="studentPhoto"
-alt="Student Photo"
+<main
+class="container"
+id="app"
 >
 
-</div>
+<div class="card">
 
-
-<div
-id="details"
-class="details">
-
-
-<div class="row">
-
-<span class="label">
-PIN
-</span>
-
-<span
-id="studentPIN"
-class="value">
-</span>
-
-</div>
-
-
-<div class="row">
-
-<span class="label">
-Year
-</span>
-
-<span
-id="studentYear"
-class="value">
-</span>
-
-</div>
-
-
-<div class="row">
-
-<span class="label">
-Branch
-</span>
-
-<span
-id="studentBranch"
-class="value">
-</span>
-
-</div>
-
-
-<div class="row">
-
-<span class="label">
-Image
-</span>
-
-<span
-id="studentFile"
-class="value">
-</span>
-
-</div>
-
-
-</div>
-
-
-<div
-id="status"
-class="status">
-</div>
-
-
+<div class="loading">
+Verifying Digital ID...
 </div>
 
 </div>
+
+</main>
 
 
 <script>
-
-
-/* ==========================================
-   APPS SCRIPT API
-========================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
 
 
-/* ==========================================
-   LOAD STUDENT
-========================================== */
+function getPIN(){
 
-async function loadStudent() {
+    return new URLSearchParams(
+        location.search
+    ).get("pin");
 
-
-    const loading =
-        document.getElementById(
-            "loading"
-        );
+}
 
 
-    const errorBox =
-        document.getElementById(
-            "error"
-        );
-
-
-    const details =
-        document.getElementById(
-            "details"
-        );
-
-
-    const photo =
-        document.getElementById(
-            "studentPhoto"
-        );
-
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-
-    /* -----------------------------
-       READ QR PARAMETER
-    ----------------------------- */
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
+async function verify(){
 
     const pin =
-        params.get("pin");
+    getPIN();
 
 
-    console.log(
-        "QR PIN =",
-        pin
-    );
+    if(!pin){
 
-
-    /* -----------------------------
-       NO PIN
-    ----------------------------- */
-
-    if (!pin) {
-
-        loading.style.display =
-            "none";
-
-
-        errorBox.textContent =
-            "QR URL lo PIN ledu.";
-
-
-        errorBox.style.display =
-            "block";
-
+        showInvalid(
+            "Student PIN is missing."
+        );
 
         return;
 
     }
 
 
-    status.textContent =
-        "Searching: " +
-        pin;
-
-
-    try {
-
-
-        /* -----------------------------
-           API
-        ----------------------------- */
-
-        const url =
-            API_URL +
-            "?action=student&pin=" +
-            encodeURIComponent(
-                pin
-            );
-
-
-        console.log(
-            "API URL =",
-            url
-        );
-
+    try{
 
         const response =
-            await fetch(url);
+        await fetch(
 
+            API_URL+
+            "?action=student&pin="+
+            encodeURIComponent(pin)+
+            "&t="+
+            Date.now()
 
-        if (!response.ok) {
-
-            throw new Error(
-                "API HTTP " +
-                response.status
-            );
-
-        }
+        );
 
 
         const data =
-            await response.json();
+        await response.json();
 
 
-        console.log(
-            "API DATA =",
-            data
-        );
-
-
-        if (
+        if(
             !data.success ||
             !data.student
-        ) {
+        ){
 
-            throw new Error(
-                data.error ||
-                "Student not found"
+            showInvalid(
+                "This ID card is no longer active."
             );
+
+            return;
 
         }
 
 
-        const student =
-            data.student;
-
-
-        /* -----------------------------
-           DETAILS
-        ----------------------------- */
-
-        document.getElementById(
-            "studentPIN"
-        ).textContent =
-            student.pin ||
-            "-";
-
-
-        document.getElementById(
-            "studentYear"
-        ).textContent =
-            student.year ||
-            "-";
-
-
-        document.getElementById(
-            "studentBranch"
-        ).textContent =
-            student.branch ||
-            "-";
-
-
-        document.getElementById(
-            "studentFile"
-        ).textContent =
-            student.fileName ||
-            "-";
-
-
-        /* -----------------------------
-           IMAGE
-        ----------------------------- */
-
-        photo.onload =
-            function() {
-
-                photo.style.display =
-                    "inline-block";
-
-            };
-
-
-        photo.onerror =
-            function() {
-
-                status.textContent =
-                    "Student found, but Drive image access problem.";
-
-            };
-
-
-        photo.src =
-            student.thumbnailUrl;
-
-
-        /* -----------------------------
-           SHOW
-        ----------------------------- */
-
-        loading.style.display =
-            "none";
-
-
-        details.style.display =
-            "block";
-
-
-        status.textContent =
-            "Student ID loaded successfully.";
-
-    }
-
-
-    catch (error) {
-
-
-        console.error(
-            error
+        showStudent(
+            data.student
         );
 
 
-        loading.style.display =
-            "none";
+    }catch(error){
 
+        document
+        .getElementById("app")
+        .innerHTML = `
 
-        errorBox.textContent =
-            "Student load failed: " +
-            error.message;
+        <div class="card">
 
+            <div class="invalid">
 
-        errorBox.style.display =
-            "block";
+                <div class="invalid-icon">
+                    ⚠
+                </div>
 
+                <h2>
+                    VERIFICATION ERROR
+                </h2>
+
+                <p>
+                    Unable to connect to
+                    the verification server.
+                </p>
+
+            </div>
+
+        </div>
+
+        `;
 
     }
 
 }
 
 
-/* ==========================================
-   START
-========================================== */
+function showStudent(student){
 
-loadStudent();
+    document
+    .getElementById("app")
+    .innerHTML = `
+
+    <div class="card">
+
+        <div class="card-top">
+
+            <h2>
+                S.V. GOVERNMENT POLYTECHNIC
+            </h2>
+
+            <p>
+                TIRUPATI
+            </p>
+
+        </div>
+
+
+        <div class="content">
+
+            <div class="photo">
+
+                <img
+                src="${safe(student.thumbnailUrl)}"
+                onerror="photoError()"
+                >
+
+            </div>
+
+
+            <div style="margin-top:20px">
+
+                <div class="row">
+
+                    <div class="label">
+                        PIN / ROLL NO.
+                    </div>
+
+                    <div class="value">
+                        ${safe(student.pin)}
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        YEAR
+                    </div>
+
+                    <div class="value">
+                        ${safe(student.year)}
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        BRANCH
+                    </div>
+
+                    <div class="value">
+                        ${safe(student.branch)}
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        FILE
+                    </div>
+
+                    <div class="value">
+                        ${safe(student.fileName)}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="valid">
+
+                <strong>
+                    ✓ VALID DIGITAL ID
+                </strong>
+
+                <br>
+
+                <small>
+                    Student record successfully verified.
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function showInvalid(message){
+
+    document
+    .getElementById("app")
+    .innerHTML = `
+
+    <div class="card">
+
+        <div class="invalid">
+
+            <div class="invalid-icon">
+                ✕
+            </div>
+
+            <h2>
+                INVALID ID CARD
+            </h2>
+
+            <p>
+                ${safe(message)}
+            </p>
+
+            <p>
+                This QR code is not associated
+                with an active student record.
+            </p>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function photoError(){
+
+    showInvalid(
+        "Student image was removed or is no longer available."
+    );
+
+}
+
+
+function safe(value){
+
+    return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+verify();
 
 </script>
 
