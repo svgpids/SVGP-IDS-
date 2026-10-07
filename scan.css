@@ -1,590 +1,865 @@
-/* ===== SCAN PAGE - COMPLETE STYLES ===== */
-* {
+/* =========================================================
+   RESET & SYSTEM VARIABLES
+========================================================= */
+:root {
+    --bg-main: #f0f3fa;
+    --navy-header: #070d24;
+    --card-surface: #ffffff;
+    --border-color: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --text-heading: #0f172a;
+    --text-body: #334155;
+    --text-muted: #64748b;
+    
+    --purple-primary: #7c3aed;
+    --purple-gradient: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+    --id-header-gradient: linear-gradient(135deg, #101944 0%, #291a58 60%, #4a1e75 100%);
+    --blue-accent: #0284c7;
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-card: 16px;
+    --shadow-panel: 0 8px 30px rgba(15, 23, 42, 0.05);
+}
+
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #f0f4ff;
-    color: #1e293b;
+html, body {
+    width: 100%;
     overflow-x: hidden;
 }
 
-/* ===== NAVBAR ===== */
-.scan-nav {
-    background: #0a1628;
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-body);
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+}
+
+/* =========================================================
+   NAVBAR (PC & MOBILE)
+========================================================= */
+.navbar {
+    background-color: var(--navy-header);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 5%;
+    display: flex;
     align-items: center;
-    padding: 14px 50px;
+    justify-content: space-between;
     position: sticky;
     top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 100;
+    width: 100%;
 }
 
-.scan-nav-left {
+.brand {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 10px;
+    min-width: 0;
 }
 
-.scan-logo-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.college-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
     object-fit: cover;
-    border: 2px solid rgba(255,255,255,0.2);
+    background: #111a3d;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
 }
 
-.scan-logo-text h1 {
-    color: white;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin-bottom: 2px;
+.brand-titles {
+    min-width: 0;
 }
 
-.scan-logo-text p {
+.brand-titles h1 {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.brand-titles p {
+    font-size: 8.5px;
     color: #94a3b8;
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.scan-nav-center {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.scan-nav-btn {
+.nav-menu {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
-    border-radius: 10px;
+}
+
+.nav-link {
     text-decoration: none;
-    color: white;
-    font-size: 0.88rem;
-    font-weight: 600;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s ease;
-}
-
-.scan-nav-btn:hover {
-    background: rgba(255,255,255,0.15);
-}
-
-.scan-nav-btn-active {
-    background: linear-gradient(135deg, #7c3aed, #a855f7) !important;
-    border-color: rgba(168, 85, 247, 0.5);
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-}
-
-.scan-nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.scan-datetime-box {
-    background: linear-gradient(135deg, #1e3a5f, #2d4a7a);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-.scan-dt-icon {
-    width: 28px;
-    height: 28px;
-    color: #a78bfa;
-}
-
-.scan-dt-content {
-    display: flex;
-    flex-direction: column;
-}
-
-#scan-current-date {
     color: #cbd5e1;
-    font-size: 0.72rem;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
 }
 
-#scan-current-time {
-    color: white;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+.nav-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.scan-hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 5px;
+.nav-link.active {
+    background: var(--purple-gradient);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
 }
 
-.scan-hamburger span {
-    width: 26px;
-    height: 3px;
-    background: white;
-    border-radius: 2px;
-}
-
-/* ===== HERO SECTION ===== */
-.scan-hero {
-    position: relative;
-    height: 340px;
-    background: url('images/college.jpg') center/cover no-repeat;
+.header-clock {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #e2e8f0;
+    text-align: right;
+    line-height: 1.35;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   HERO STRIP (COLLEGE BACKGROUND)
+========================================================= */
+.hero-strip {
+    position: relative;
+    padding: 48px 20px 54px;
     text-align: center;
-    overflow: hidden;
+    color: #ffffff;
+    background-image: 
+        linear-gradient(135deg, rgba(8, 14, 46, 0.90) 0%, rgba(29, 21, 74, 0.88) 55%, rgba(68, 26, 114, 0.88) 100%),
+        url('images/college.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
 }
 
-.scan-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(10, 22, 40, 0.85) 0%, rgba(88, 28, 135, 0.7) 50%, rgba(124, 58, 237, 0.6) 100%);
-}
-
-.scan-hero-content {
+.hero-inner {
+    max-width: 720px;
+    margin: 0 auto;
     position: relative;
     z-index: 2;
-    color: white;
-    padding: 0 20px;
 }
 
-.scan-hero-title {
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin-bottom: 12px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-.scan-highlight {
-    background: linear-gradient(90deg, #c084fc, #e879f9, #f0abfc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.scan-hero-subtitle {
-    font-size: 1.05rem;
-    color: #e2e8f0;
-    margin-bottom: 20px;
-    font-weight: 400;
-}
-
-.scan-hero-badge {
+.hero-pill {
     display: inline-block;
-    padding: 8px 20px;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 30px;
-    font-size: 0.78rem;
-    letter-spacing: 2px;
-    color: #cbd5e1;
-    background: rgba(255,255,255,0.08);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    color: #ddd6fe;
+    background: rgba(221, 214, 254, 0.15);
+    border: 1px solid rgba(221, 214, 254, 0.3);
+    padding: 5px 12px;
+    border-radius: 99px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
-/* Floating ID Card */
-.scan-floating-card {
-    position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%) rotate(8deg);
-    z-index: 3;
-    animation: scanFloat 3s ease-in-out infinite;
+.hero-strip h2 {
+    font-size: clamp(22px, 5vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
-@keyframes scanFloat {
-    0%, 100% { transform: translateY(-50%) rotate(8deg); }
-    50% { transform: translateY(-55%) rotate(10deg); }
+.hero-strip p {
+    font-size: clamp(12px, 3.2vw, 14px);
+    color: #e2e8f0;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
-.scan-id-mockup {
-    background: white;
-    border-radius: 12px;
-    padding: 14px;
-    width: 220px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-}
-
-.scan-id-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #7c3aed;
-    margin-bottom: 10px;
-}
-
-.scan-id-college {
-    font-size: 0.65rem;
+.institution-tag {
+    font-size: clamp(8px, 2.5vw, 9.5px);
     font-weight: 700;
-    color: #1e293b;
-    letter-spacing: 0.5px;
-    text-align: center;
+    letter-spacing: 1.5px;
+    color: #cbd5e1;
 }
 
-.scan-id-loc {
-    font-size: 0.55rem;
-    color: #64748b;
-    letter-spacing: 1px;
-}
-
-.scan-id-body {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.scan-id-photo {
-    width: 50px;
-    height: 60px;
-    background: #f1f5f9;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.scan-id-lines {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    justify-content: center;
-}
-
-.scan-id-line {
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-}
-
-.scan-id-line.long { width: 100%; }
-.scan-id-line.medium { width: 75%; }
-.scan-id-line.short { width: 50%; }
-
-.scan-id-barcode {
-    padding: 6px 0;
-    border-top: 1px solid #f1f5f9;
-}
-
-.scan-barcode-bars {
-    display: flex;
-    gap: 2px;
-    justify-content: center;
-}
-
-.scan-barcode-bars span {
-    width: 3px;
-    height: 22px;
-    background: #1e293b;
-    border-radius: 1px;
-}
-
-.scan-barcode-bars span:nth-child(even) {
-    height: 18px;
-}
-
-/* ===== MAIN CONTENT ===== */
-.scan-main {
-    padding: 50px;
-    max-width: 1300px;
-    margin: 0 auto;
-}
-
-.scan-grid {
+/* =========================================================
+   DASHBOARD CONTAINER
+========================================================= */
+.dashboard-container {
+    width: 92%;
+    max-width: 1220px;
+    margin: -24px auto 40px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 20px;
+    position: relative;
+    z-index: 10;
 }
 
-.scan-card {
-    background: white;
-    border-radius: 16px;
-    padding: 28px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    border: 1px solid #f1f5f9;
+.panel {
+    background: var(--card-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    box-shadow: var(--shadow-panel);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-.scan-card-header {
+.panel-heading {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 22px;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-.scan-card-icon {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    border-radius: 10px;
+.panel-icon-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #ffffff;
     flex-shrink: 0;
 }
 
-.scan-card-header h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #1e293b;
+.purple-tone {
+    background: var(--purple-gradient);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
-/* Scanner Area */
-.scan-scanner-area {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-    border-radius: 14px;
-    height: 300px;
+.panel-heading h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-heading);
+}
+
+/* =========================================================
+   SCANNER SCREEN
+========================================================= */
+.scanner-screen {
+    background: #090e24;
+    border-radius: var(--radius-md);
+    min-height: 290px;
+    height: 290px;
     position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    margin-bottom: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
 }
 
-.scan-scanner-corners {
+.bracket {
     position: absolute;
-    inset: 20px;
+    width: 26px;
+    height: 26px;
+    pointer-events: none;
+    z-index: 8;
+}
+
+.b-tl { top: 14px; left: 14px; border-top: 3px solid #a855f7; border-left: 3px solid #a855f7; border-radius: 4px 0 0 0; }
+.b-tr { top: 14px; right: 14px; border-top: 3px solid #a855f7; border-right: 3px solid #a855f7; border-radius: 0 4px 0 0; }
+.b-bl { bottom: 14px; left: 14px; border-bottom: 3px solid #a855f7; border-left: 3px solid #a855f7; border-radius: 0 0 0 4px; }
+.b-br { bottom: 14px; right: 14px; border-bottom: 3px solid #a855f7; border-right: 3px solid #a855f7; border-radius: 0 0 4px 0; }
+
+.aim-center {
+    text-align: center;
+    color: #ffffff;
+    z-index: 6;
+    pointer-events: none;
+    padding: 0 10px;
+}
+
+.barcode-bars {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #f472b6;
+    margin-bottom: 8px;
+}
+
+.aim-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.aim-subtitle {
+    font-size: 9.5px;
+    color: #94a3b8;
+}
+
+.scan-laser {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #e879f9;
+    box-shadow: 0 0 14px 2px rgba(232, 121, 249, 0.8);
+    opacity: 0;
+    z-index: 7;
     pointer-events: none;
 }
 
-.scan-corner {
+.laser-active .scan-laser {
+    opacity: 1;
+    animation: sweepBeam 2s ease-in-out infinite alternate;
+}
+
+@keyframes sweepBeam {
+    0% { top: 8%; }
+    100% { top: 92%; }
+}
+
+#reader {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 3px solid #a855f7;
+    z-index: 5;
+    top: 0;
+    left: 0;
 }
 
-.scan-corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 6px 0 0 0; }
-.scan-corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 6px 0 0; }
-.scan-corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 0 0 6px; }
-.scan-corner-br { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 0 0 6px 0; }
-
-.scan-scanner-content {
-    text-align: center;
-    color: white;
-    z-index: 2;
+#reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: var(--radius-md) !important;
 }
 
-.scan-barcode-anim {
-    display: flex;
-    gap: 3px;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.scan-barcode-anim span {
-    width: 4px;
-    height: 50px;
-    background: white;
-    border-radius: 2px;
-    animation: scanPulse 1.5s ease-in-out infinite;
-}
-
-.scan-barcode-anim span:nth-child(even) {
-    height: 40px;
-    animation-delay: 0.2s;
-}
-
-@keyframes scanPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.scan-red-line {
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #ef4444, transparent);
-    box-shadow: 0 0 10px #ef4444;
-    animation: scanMove 2s ease-in-out infinite;
-}
-
-@keyframes scanMove {
-    0%, 100% { top: 30%; }
-    50% { top: 70%; }
-}
-
-.scan-scanner-text {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.scan-scanner-subtext {
-    font-size: 0.82rem;
-    color: #94a3b8;
-}
-
-/* Scan Actions */
-.scan-actions {
+/* =========================================================
+   CONTROLS
+========================================================= */
+.controls-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.scan-action-btn {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    padding: 14px 16px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-    font-family: inherit;
+    margin-top: 14px;
+    width: 100%;
 }
 
-.scan-action-btn:hover {
-    background: #f1f5f9;
-    border-color: #7c3aed;
-    transform: translateY(-2px);
-}
-
-.scan-action-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.scan-upload-icon { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-.scan-camera-icon { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-
-.scan-action-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.scan-action-text strong {
-    font-size: 0.92rem;
-    color: #1e293b;
-    font-weight: 700;
-}
-
-.scan-action-text span {
-    font-size: 0.72rem;
-    color: #64748b;
-}
-
-/* Student Details */
-.scan-student-details {
-    display: flex;
-    gap: 24px;
-}
-
-.scan-student-photo {
-    flex-shrink: 0;
-}
-
-.scan-student-photo img {
-    width: 160px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.scan-student-info {
-    flex: 1;
-}
-
-.scan-student-name {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #1e293b;
-    margin-bottom: 16px;
-}
-
-.scan-detail-row {
+.control-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px;
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 0.88rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    width: 100%;
 }
 
-.scan-detail-row:last-child {
-    border-bottom: none;
+.control-card:hover {
+    border-color: var(--border-hover);
+    background: #f8fafc;
 }
 
-.scan-detail-icon {
-    font-size: 1.1rem;
-    width: 24px;
+.btn-clickable {
+    font-family: inherit;
+    border: 1px solid var(--border-color);
+    outline: none;
+}
+
+.control-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-purple {
+    background: #f3e8ff;
+    color: var(--purple-primary);
+}
+
+.icon-blue {
+    background: #e0f2fe;
+    color: var(--blue-accent);
+}
+
+.control-text strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.control-text span {
+    font-size: 9.5px;
+    color: var(--text-muted);
+}
+
+.file-hidden {
+    display: none;
+}
+
+/* =========================================================
+   DETAILS PANEL & EMPTY STATE
+========================================================= */
+.student-display-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 340px;
+    width: 100%;
+}
+
+.empty-placeholder {
     text-align: center;
+    padding: 25px 15px;
 }
 
-.scan-detail-label {
-    color: #64748b;
-    font-weight: 500;
-    min-width: 130px;
+.empty-icon-wrap {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 24px;
+    color: var(--purple-primary);
 }
 
-.scan-detail-sep {
-    color: #94a3b8;
+.empty-placeholder h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 5px;
 }
 
-.scan-detail-value {
-    color: #1e293b;
+.empty-placeholder p {
+    font-size: 11px;
+    color: var(--text-muted);
+    max-width: 260px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   RESPONSIVE OFFICIAL ID CARD
+========================================================= */
+.official-id-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-card);
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    animation: fadeCard 0.3s ease;
+}
+
+@keyframes fadeCard {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.id-card-header {
+    background: var(--id-header-gradient);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.id-college-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.id-header-titles h4 {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    line-height: 1.25;
+}
+
+.id-header-titles p {
+    font-size: 8px;
+    color: #cbd5e1;
+    letter-spacing: 0.4px;
+    margin-top: 2px;
+}
+
+.id-card-body {
+    padding: 16px 14px;
+    display: grid;
+    grid-template-columns: 105px 1fr 85px;
+    gap: 14px;
+    align-items: center;
+    background: #ffffff;
+}
+
+.id-photo-frame {
+    width: 105px;
+    height: 130px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+    flex-shrink: 0;
+}
+
+.id-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.id-info-col {
+    min-width: 0;
+}
+
+.id-info-col h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-heading);
+    margin-bottom: 10px;
+    letter-spacing: -0.2px;
+    word-break: break-word;
+}
+
+.id-field-row {
+    display: grid;
+    grid-template-columns: 18px 75px 8px 1fr;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.id-field-row:last-child {
+    margin-bottom: 0;
+}
+
+.field-icon {
+    font-size: 11px;
+}
+
+.field-lbl {
+    color: var(--text-muted);
     font-weight: 600;
 }
 
-/* ===== MOBILE RESPONSIVE ===== */
-@media (max-width: 1024px) {
-    .scan-nav { padding: 14px 25px; }
-    .scan-main { padding: 30px 25px; }
+.field-col {
+    color: #94a3b8;
+    font-weight: 700;
 }
 
-@media (max-width: 768px) {
-    .scan-nav { padding: 12px 16px; flex-wrap: wrap; }
-    .scan-nav-center { display: none; }
-    .scan-logo-text h1 { font-size: 0.8rem; }
-    .scan-logo-text p { font-size: 0.55rem; }
-    .scan-datetime-box { display: none; }
-    .scan-hamburger { display: flex; }
-    
-    .scan-hero { height: 220px; }
-    .scan-hero-title { font-size: 1.8rem; }
-    .scan-hero-subtitle { font-size: 0.82rem; }
-    .scan-hero-badge { font-size: 0.6rem; padding: 6px 14px; }
-    .scan-floating-card { display: none; }
-    
-    .scan-main { padding: 20px 16px; }
-    .scan-grid { grid-template-columns: 1fr; gap: 20px; }
-    .scan-card { padding: 20px; }
-    .scan-scanner-area { height: 220px; }
-    .scan-actions { grid-template-columns: 1fr; }
-    
-    .scan-student-details { flex-direction: column; align-items: center; text-align: center; }
-    .scan-student-photo img { width: 140px; height: 170px; }
-    .scan-student-name { font-size: 1.15rem; text-align: center; }
-    .scan-detail-row { justify-content: center; flex-wrap: wrap; font-size: 0.78rem; }
-    .scan-detail-label { min-width: auto; }
+.field-val {
+    font-weight: 800;
+    color: var(--text-heading);
+    word-break: break-word;
+}
+
+.id-qr-box {
+    width: 85px;
+    height: 85px;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+    flex-shrink: 0;
+}
+
+.id-qr-box canvas, .id-qr-box img {
+    max-width: 100%;
+    height: auto;
+}
+
+.id-verified-strip {
+    background: #eefcf4;
+    border-top: 1px solid #bbf7d0;
+    border-bottom: 1px solid #bbf7d0;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #15803d;
+}
+
+.copy-pin-badge {
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.copy-pin-badge:hover {
+    background: #166534;
+    color: #ffffff;
+}
+
+.id-card-footer {
+    padding: 8px 14px;
+    background: #0f172a;
+    font-size: 8.5px;
+    color: #94a3b8;
+    text-align: center;
+    letter-spacing: 0.6px;
+}
+
+/* =========================================================
+   STATUS STATES & FOOTER
+========================================================= */
+.state-box {
+    text-align: center;
+    padding: 40px 15px;
+}
+
+.smooth-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #f1f5f9;
+    border-top-color: var(--purple-primary);
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    animation: rotateSpin 0.75s linear infinite;
+}
+
+@keyframes rotateSpin {
+    to { transform: rotate(360deg); }
+}
+
+.state-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 4px;
+}
+
+.state-desc {
+    font-size: 10.5px;
+    color: var(--text-muted);
+}
+
+.site-footer {
+    margin-top: auto;
+    background-color: var(--navy-header);
+    color: #94a3b8;
+    text-align: center;
+    padding: 20px 15px;
+    font-size: 10px;
+    line-height: 1.6;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-footer strong {
+    color: #e2e8f0;
+}
+
+/* =========================================================
+   MEDIA QUERIES (FULL MOBILE FIX)
+========================================================= */
+
+/* Tablets / Medium Desktops */
+@media (max-width: 980px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        margin-top: -18px;
+        gap: 18px;
+    }
+
+    .header-clock {
+        display: none;
+    }
+}
+
+/* Mobile Screens (<= 680px) */
+@media (max-width: 680px) {
+    .navbar {
+        padding: 8px 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .brand {
+        justify-content: center;
+    }
+
+    .brand-titles h1 {
+        font-size: 11.5px;
+    }
+
+    .brand-titles p {
+        font-size: 7px;
+    }
+
+    .college-logo {
+        width: 34px;
+        height: 34px;
+    }
+
+    .nav-menu {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 8px;
+    }
+
+    .nav-link {
+        justify-content: center;
+        padding: 7px 4px;
+        font-size: 10.5px;
+        gap: 4px;
+    }
+
+    .hero-strip {
+        padding: 30px 14px 38px;
+    }
+
+    .hero-strip h2 {
+        font-size: 20px;
+    }
+
+    .hero-strip p {
+        font-size: 11.5px;
+    }
+
+    .dashboard-container {
+        width: 94%;
+        margin-top: -16px;
+        margin-bottom: 30px;
+    }
+
+    .panel {
+        padding: 14px;
+        border-radius: var(--radius-md);
+    }
+
+    .scanner-screen {
+        min-height: 250px;
+        height: 250px;
+    }
+
+    .controls-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    /* ID Card Mobile View Layout */
+    .id-card-body {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        gap: 14px;
+        padding: 14px 10px;
+    }
+
+    .id-photo-frame {
+        width: 100px;
+        height: 125px;
+    }
+
+    .id-info-col {
+        width: 100%;
+    }
+
+    .id-info-col h3 {
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .id-field-row {
+        grid-template-columns: 16px 80px 8px 1fr;
+        text-align: left;
+        font-size: 10.5px;
+        margin-bottom: 7px;
+    }
+
+    .id-qr-box {
+        width: 80px;
+        height: 80px;
+        margin: 4px auto 0;
+    }
+
+    .id-verified-strip {
+        font-size: 9.5px;
+        padding: 7px 10px;
+    }
+
+    .copy-pin-badge {
+        font-size: 9px;
+        padding: 2.5px 6px;
+    }
+}
+
+/* Extra Small Phones (<= 360px) */
+@media (max-width: 360px) {
+    .id-field-row {
+        grid-template-columns: 14px 68px 6px 1fr;
+        font-size: 9.5px;
+    }
+
+    .brand-titles h1 {
+        font-size: 10px;
+    }
 }
