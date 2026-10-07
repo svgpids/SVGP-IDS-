@@ -1,198 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scan Student ID Card - S.V. Government Polytechnic</title>
-    <link rel="stylesheet" href="scan.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SVGP-IDS Digital ID</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow:
+                0 10px 40px
+                rgba(0,0,0,0.15);
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            opacity: 0.8;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .error {
+            display: none;
+            padding: 30px 20px;
+            text-align: center;
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .photo-container {
+            text-align: center;
+            padding: 25px 20px 10px;
+        }
+
+        #studentPhoto {
+            display: none;
+            width: 180px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 3px solid #e5e7eb;
+        }
+
+        .details {
+            display: none;
+            padding: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 13px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .label {
+            color: #666666;
+        }
+
+        .value {
+            font-weight: bold;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+    </style>
+
 </head>
+
+
 <body>
 
-    <!-- ===== TOP NAVBAR ===== -->
-    <nav class="scan-nav">
-        <div class="scan-nav-left">
-            <img src="images/logo.jfif" alt="Logo" class="scan-logo-img">
-            <div class="scan-logo-text">
-                <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
-                <p>TIRUPATI &nbsp;|&nbsp; ESTD. 1980 &nbsp;|&nbsp; GOVT. OF ANDHRA PRADESH</p>
-            </div>
+<div class="container">
+
+    <div class="card">
+
+        <div class="header">
+
+            <h1>
+                SVGP-IDS
+            </h1>
+
+            <p>
+                Digital Student ID
+            </p>
+
         </div>
-        <div class="scan-nav-center">
-            <a href="index.html" class="scan-nav-btn">Home</a>
-            <a href="scan.html" class="scan-nav-btn scan-nav-btn-active">Scan QR</a>
-            <a href="admin.html" class="scan-nav-btn">Admin Login</a>
+
+
+        <!-- Loading -->
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            Student details loading...
         </div>
-        <div class="scan-nav-right">
-            <div class="scan-datetime-box">
-                <svg class="scan-dt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <div class="scan-dt-content">
-                    <span id="scan-current-date">Fri, 26 Sep 2026</span>
-                    <span id="scan-current-time">12:30:45 PM</span>
-                </div>
-            </div>
-            <button class="scan-hamburger" id="scan-hamburger-btn">
-                <span></span><span></span><span></span>
-            </button>
+
+
+        <!-- Error -->
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+
+        <!-- Photo -->
+
+        <div
+            id="photoContainer"
+            class="photo-container"
+        >
+
+            <img
+                id="studentPhoto"
+                alt="Student Photo"
+            >
+
         </div>
-    </nav>
 
-    <!-- ===== HERO SECTION ===== -->
-    <section class="scan-hero">
-        <div class="scan-hero-overlay"></div>
-        <div class="scan-hero-content">
-            <h1 class="scan-hero-title">Scan <span class="scan-highlight">Student ID Card</span></h1>
-            <p class="scan-hero-subtitle">Scan the barcode/QR on student ID card to view student details instantly.</p>
-            <div class="scan-hero-badge">
-                <span>S.V. GOVERNMENT POLYTECHNIC &nbsp;|&nbsp; TIRUPATI</span>
-            </div>
-        </div>
-        <!-- Floating ID Card Mockup -->
-        <div class="scan-floating-card">
-            <div class="scan-id-mockup">
-                <div class="scan-id-header">
-                    <span class="scan-id-college">S.V. GOVERNMENT POLYTECHNIC</span>
-                    <span class="scan-id-loc">TIRUPATI</span>
-                </div>
-                <div class="scan-id-body">
-                    <div class="scan-id-photo">
-                        <svg viewBox="0 0 24 24" fill="#94a3b8" width="36" height="36"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    </div>
-                    <div class="scan-id-lines">
-                        <div class="scan-id-line long"></div>
-                        <div class="scan-id-line medium"></div>
-                        <div class="scan-id-line short"></div>
-                    </div>
-                </div>
-                <div class="scan-id-barcode">
-                    <div class="scan-barcode-bars">
-                        <span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span><span></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <section class="scan-main">
-        <div class="scan-grid">
+        <!-- Details -->
 
-            <!-- LEFT: Scanner Card -->
-            <div class="scan-card">
-                <div class="scan-card-header">
-                    <div class="scan-card-icon">
-                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    </div>
-                    <h2>Scan ID Card</h2>
-                </div>
+        <div
+            id="details"
+            class="details"
+        >
 
-                <div class="scan-scanner-area">
-                    <div class="scan-scanner-corners">
-                        <div class="scan-corner scan-corner-tl"></div>
-                        <div class="scan-corner scan-corner-tr"></div>
-                        <div class="scan-corner scan-corner-bl"></div>
-                        <div class="scan-corner scan-corner-br"></div>
-                    </div>
-                    <div class="scan-scanner-content">
-                        <div class="scan-barcode-anim">
-                            <span></span><span></span><span></span><span></span><span></span>
-                            <span></span><span></span><span></span><span></span><span></span>
-                            <span></span><span></span><span></span><span></span><span></span>
-                        </div>
-                        <div class="scan-red-line"></div>
-                        <p class="scan-scanner-text">Point your ID card here</p>
-                        <p class="scan-scanner-subtext">Barcode/QR will be scanned automatically</p>
-                    </div>
-                </div>
+            <div class="row">
 
-                <div class="scan-actions">
-                    <button class="scan-action-btn" id="scan-upload-btn">
-                        <div class="scan-action-icon scan-upload-icon">
-                            <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                        </div>
-                        <div class="scan-action-text">
-                            <strong>Upload Image</strong>
-                            <span>JPG, PNG, WEBP</span>
-                        </div>
-                    </button>
+                <span class="label">
+                    PIN
+                </span>
 
-                    <button class="scan-action-btn" id="scan-camera-btn">
-                        <div class="scan-action-icon scan-camera-icon">
-                            <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M9.4 10.5l4.77-8.26C13.47 2.09 12.75 2 12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1zM21.54 9c-.92-2.92-3.15-5.26-6-6.34L11.88 9h9.66zm.26 2h-7.49l.75 1.3L20.4 21.5c.96-1.34 1.6-2.93 1.82-4.66.12-.97.12-1.94 0-2.91l-.42-2.93zM8.54 12L3.1 2.57C1.82 4.21 1 6.27 1 8.5c0 .68.08 1.34.21 1.98L8.54 12zM1 15.5c.22 1.73.86 3.32 1.82 4.66l5.64-9.76H1c0 .68.08 1.34.21 1.98l-.21-.88zM12 22c2.4 0 4.6-.85 6.32-2.25l-3.66-6.35L12 17.5V22z"/></svg>
-                        </div>
-                        <div class="scan-action-text">
-                            <strong>Use Camera</strong>
-                            <span>Scan using device camera</span>
-                        </div>
-                    </button>
-                </div>
+                <span
+                    id="studentPIN"
+                    class="value"
+                ></span>
+
             </div>
 
-            <!-- RIGHT: Student Details Card -->
-            <div class="scan-card">
-                <div class="scan-card-header">
-                    <div class="scan-card-icon">
-                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    </div>
-                    <h2>Student Details</h2>
-                </div>
 
-                <div class="scan-student-details">
-                    <div class="scan-student-photo">
-                        <img src="images/student.jpg" alt="Student Photo" onerror="this.src='https://via.placeholder.com/200x240/3b82f6/ffffff?text=Student'">
-                    </div>
-                    <div class="scan-student-info">
-                        <h3 class="scan-student-name">K. PRAVEEN KUMAR</h3>
-                        <div class="scan-detail-row">
-                            <span class="scan-detail-icon">🆔</span>
-                            <span class="scan-detail-label">PIN / Roll No.</span>
-                            <span class="scan-detail-sep">:</span>
-                            <span class="scan-detail-value">2026ECE001</span>
-                        </div>
-                        <div class="scan-detail-row">
-                            <span class="scan-detail-icon">📚</span>
-                            <span class="scan-detail-label">Branch</span>
-                            <span class="scan-detail-sep">:</span>
-                            <span class="scan-detail-value">Electronics & Communication (ECE)</span>
-                        </div>
-                        <div class="scan-detail-row">
-                            <span class="scan-detail-icon">📅</span>
-                            <span class="scan-detail-label">Year</span>
-                            <span class="scan-detail-sep">:</span>
-                            <span class="scan-detail-value">1st Year</span>
-                        </div>
-                        <div class="scan-detail-row">
-                            <span class="scan-detail-icon">🎂</span>
-                            <span class="scan-detail-label">Date of Birth</span>
-                            <span class="scan-detail-sep">:</span>
-                            <span class="scan-detail-value">17-02-2007</span>
-                        </div>
-                        <div class="scan-detail-row">
-                            <span class="scan-detail-icon">👥</span>
-                            <span class="scan-detail-label">Batch</span>
-                            <span class="scan-detail-sep">:</span>
-                            <span class="scan-detail-value">2026 - 2029</span>
-                        </div>
-                        <div class="scan-detail-row">
-                            <span class="scan-detail-icon">🩸</span>
-                            <span class="scan-detail-label">Blood Group</span>
-                            <span class="scan-detail-sep">:</span>
-                            <span class="scan-detail-value">O +ve</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="row">
+
+                <span class="label">
+                    Year
+                </span>
+
+                <span
+                    id="studentYear"
+                    class="value"
+                ></span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Branch
+                </span>
+
+                <span
+                    id="studentBranch"
+                    class="value"
+                ></span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Image
+                </span>
+
+                <span
+                    id="studentFile"
+                    class="value"
+                ></span>
+
             </div>
 
         </div>
-    </section>
 
-    <script src="scan.js"></script>
+
+        <div
+            id="status"
+            class="status"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   APPS SCRIPT WEB APP
+========================================= */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
+
+
+/* =========================================
+   LOAD STUDENT
+========================================= */
+
+async function loadStudent() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+    const details =
+        document.getElementById(
+            "details"
+        );
+
+    const photo =
+        document.getElementById(
+            "studentPhoto"
+        );
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    /* -----------------------------
+       GET PIN
+    ----------------------------- */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const pin =
+        params.get("pin");
+
+
+    console.log(
+        "QR PIN:",
+        pin
+    );
+
+
+    /* -----------------------------
+       PIN MISSING
+    ----------------------------- */
+
+    if (!pin) {
+
+        loading.style.display =
+            "none";
+
+        error.textContent =
+            "Student PIN URL lo ledu.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    status.textContent =
+        "PIN: " + pin;
+
+
+    try {
+
+        /* -----------------------------
+           API REQUEST
+        ----------------------------- */
+
+        const response =
+            await fetch(
+                API_URL +
+                "?action=student&pin=" +
+                encodeURIComponent(pin)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Student API:",
+            data
+        );
+
+
+        if (
+            !data.success ||
+            !data.student
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Student not found"
+            );
+
+        }
+
+
+        const student =
+            data.student;
+
+
+        /* -----------------------------
+           STUDENT DETAILS
+        ----------------------------- */
+
+        document.getElementById(
+            "studentPIN"
+        ).textContent =
+            student.pin ||
+            "-";
+
+
+        document.getElementById(
+            "studentYear"
+        ).textContent =
+            student.year ||
+            "-";
+
+
+        document.getElementById(
+            "studentBranch"
+        ).textContent =
+            student.branch ||
+            "-";
+
+
+        document.getElementById(
+            "studentFile"
+        ).textContent =
+            student.fileName ||
+            "-";
+
+
+        /* -----------------------------
+           PHOTO
+        ----------------------------- */
+
+        photo.onload =
+            function() {
+
+                photo.style.display =
+                    "inline-block";
+
+            };
+
+
+        photo.onerror =
+            function() {
+
+                console.error(
+                    "Image failed:",
+                    student.thumbnailUrl
+                );
+
+                status.textContent =
+                    "Student data vachindi, kani Drive image public access lo ledu.";
+
+            };
+
+
+        photo.src =
+            student.thumbnailUrl;
+
+
+        /* -----------------------------
+           SHOW DETAILS
+        ----------------------------- */
+
+        loading.style.display =
+            "none";
+
+        details.style.display =
+            "block";
+
+
+        status.textContent =
+            "Student ID loaded successfully.";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        loading.style.display =
+            "none";
+
+
+        error.textContent =
+            "Student load failed: " +
+            error.message;
+
+
+        error.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadStudent();
+
+</script>
+
 </body>
+
 </html>

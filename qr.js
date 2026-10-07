@@ -1,140 +1,150 @@
-/**
- * QR Generator - 100% Scannable
- * Generates QR code that opens exactly: https://svgpids.github.io/SVGP-IDS-/scan.html
- */
-(function() {
-    'use strict';
+// ImgBB API Key
+const IMGBB_API_KEY = "3e30b3e79091a80ad92c442851cef6aa";
 
-    // ✅ EXACT TARGET URL
-    const TARGET_URL = "https://svgpids.github.io/SVGP-IDS-/scan.html";
+// DOM Elements
+const fileInput = document.getElementById("fileInput");
+const selectBtn = document.getElementById("selectBtn");
+const dropZone = document.getElementById("dropZone");
+const uploadStatus = document.getElementById("uploadStatus");
+const qrcodeBox = document.getElementById("qrcodeBox");
+const qrStatusText = document.getElementById("qrStatusText");
+const downloadBtn = document.getElementById("downloadBtn");
+const resetBtn = document.getElementById("resetBtn");
+const liveDateTime = document.getElementById("liveDateTime");
 
-    const DOM = {
-        dropZone: document.getElementById('qr-drop-zone'),
-        fileInput: document.getElementById('qr-file-input'),
-        selectBtn: document.getElementById('qr-select-btn'),
-        previewArea: document.getElementById('qr-preview-area'),
-        previewImg: document.getElementById('qr-preview-img'),
-        fileName: document.getElementById('qr-file-name'),
-        qrDisplay: document.getElementById('qrcode'),
-        placeholder: document.getElementById('qr-placeholder'),
-        downloadBtn: document.getElementById('qr-download-btn'),
-        regenerateBtn: document.getElementById('qr-regenerate-btn'),
-        statusText: document.getElementById('qr-status-text')
-    };
+let currentUploadedUrl = "";
 
-    let qrInstance = null;
+// 1. Live Date & Time Updater (Like the UI Header)
+function updateClock() {
+  const now = new Date();
+  const optionsDate = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+  const dateStr = now.toLocaleDateString('en-GB', optionsDate);
+  const timeStr = now.toLocaleTimeString('en-US', { hour12: true });
 
-    function handleFileSelect(file) {
-        if (!file) return;
-        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-            alert('⚠️ Please upload JPG, PNG, or WEBP');
-            return;
-        }
-        if (file.size > 5 * 1024 * 1024) {
-            alert('⚠️ File size exceeds 5 MB');
-            return;
-        }
+  if (liveDateTime) {
+    liveDateTime.innerHTML = `${dateStr}<br>${timeStr}`;
+  }
+}
+setInterval(updateClock, 1000);
+updateClock();
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            DOM.previewImg.src = e.target.result;
-            DOM.fileName.textContent = file.name;
-            DOM.previewArea.style.display = 'block';
-            DOM.dropZone.style.display = 'none';
-            DOM.selectBtn.style.display = 'none';
+// 2. File Selection & Drag-and-Drop Triggers
+selectBtn.addEventListener("click", () => fileInput.click());
+dropZone.addEventListener("click", () => fileInput.click());
 
-            // Generate QR with EXACT URL
-            generateQRCode(TARGET_URL);
-        };
-        reader.readAsDataURL(file);
-    }
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropZone.classList.add("dragover");
+});
 
-    function generateQRCode(data) {
-        DOM.qrDisplay.innerHTML = '';
-        DOM.placeholder.style.display = 'none';
+dropZone.addEventListener("dragleave", () => {
+  dropZone.classList.remove("dragover");
+});
 
-        if (typeof QRCode === 'undefined') {
-            DOM.placeholder.textContent = '❌ QR Library not loaded. Check internet.';
-            DOM.placeholder.style.display = 'block';
-            return;
-        }
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
+  if (e.dataTransfer.files.length > 0) {
+    handleFileUpload(e.dataTransfer.files[0]);
+  }
+});
 
-        try {
-            qrInstance = new QRCode(DOM.qrDisplay, {
-                text: data,
-                width: 250,
-                height: 250,
-                colorDark: "#000000", // Pure Black (Best for scanning)
-                colorLight: "#ffffff", // Pure White
-                correctLevel: QRCode.CorrectLevel.H
-            });
+fileInput.addEventListener("change", (e) => {
+  if (e.target.files.length > 0) {
+    handleFileUpload(e.target.files[0]);
+  }
+});
 
-            // Show URL below QR so user knows it's correct
-            const urlText = document.createElement('p');
-            urlText.textContent = TARGET_URL;
-            urlText.style.marginTop = '15px';
-            urlText.style.fontSize = '0.75rem';
-            urlText.style.color = '#64748b';
-            urlText.style.wordBreak = 'break-all';
-            DOM.qrDisplay.appendChild(urlText);
+// 3. Upload to ImgBB and Render QR Code
+async function handleFileUpload(file) {
+  // File size validation (Max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    setStatus("File size exceeds 5MB limit. Please choose a smaller image.", "#ef4444");
+    return;
+  }
 
-            DOM.downloadBtn.disabled = false;
-            DOM.statusText.textContent = '✅ QR Code Ready! Scan to open scan.html';
-        } catch (error) {
-            DOM.placeholder.textContent = '❌ Failed to generate QR.';
-            DOM.placeholder.style.display = 'block';
-        }
-    }
+  setStatus("Uploading image to cloud storage...", "#6366f1");
+  qrStatusText.innerText = "Processing QR...";
 
-    function downloadQR() {
-        setTimeout(() => {
-            const qrCanvas = DOM.qrDisplay.querySelector('canvas');
-            const qrImg = DOM.qrDisplay.querySelector('img');
-            const dataUrl = qrCanvas ? qrCanvas.toDataURL('image/png') : (qrImg ? qrImg.src : null);
-            
-            if (dataUrl) {
-                const link = document.createElement('a');
-                link.download = 'svpg-qr-code.png';
-                link.href = dataUrl;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }, 300);
-    }
+  const formData = new FormData();
+  formData.append("image", file);
 
-    function resetGenerator() {
-        DOM.qrDisplay.innerHTML = '';
-        DOM.placeholder.style.display = 'block';
-        DOM.placeholder.textContent = 'Upload an image to generate QR code';
-        DOM.previewArea.style.display = 'none';
-        DOM.dropZone.style.display = 'block';
-        DOM.selectBtn.style.display = 'flex';
-        DOM.downloadBtn.disabled = true;
-        DOM.statusText.textContent = 'Your QR code is ready!';
-        DOM.fileInput.value = '';
-    }
+  try {
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+      method: "POST",
+      body: formData
+    });
 
-    function setupEvents() {
-        DOM.dropZone.addEventListener('click', () => DOM.fileInput.click());
-        DOM.selectBtn.addEventListener('click', () => DOM.fileInput.click());
-        DOM.fileInput.addEventListener('change', (e) => { if (e.target.files[0]) handleFileSelect(e.target.files[0]); });
-        
-        DOM.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); DOM.dropZone.classList.add('drag-over'); });
-        DOM.dropZone.addEventListener('dragleave', () => DOM.dropZone.classList.remove('drag-over'));
-        DOM.dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            DOM.dropZone.classList.remove('drag-over');
-            if (e.dataTransfer.files[0]) handleFileSelect(e.dataTransfer.files[0]);
-        });
+    const result = await response.json();
 
-        DOM.downloadBtn.addEventListener('click', downloadQR);
-        DOM.regenerateBtn.addEventListener('click', resetGenerator);
-    }
+    if (result.success) {
+      currentUploadedUrl = result.data.url;
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupEvents);
+      setStatus("Image uploaded successfully!", "#10b981");
+      qrStatusText.innerText = "Your QR code is ready!";
+
+      // Generate QR Code
+      qrcodeBox.innerHTML = "";
+      new QRCode(qrcodeBox, {
+        text: currentUploadedUrl,
+        width: 180,
+        height: 180,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      downloadBtn.removeAttribute("disabled");
     } else {
-        setupEvents();
+      setStatus("Upload failed: " + (result.error ? result.error.message : "Try again"), "#ef4444");
+      qrStatusText.innerText = "Generation failed.";
     }
-})();
+  } catch (error) {
+    console.error(error);
+    setStatus("Network error while connecting to server.", "#ef4444");
+    qrStatusText.innerText = "Connection error.";
+  }
+}
+
+function setStatus(text, color) {
+  uploadStatus.innerText = text;
+  uploadStatus.style.color = color;
+}
+
+// 4. Download QR Code as PNG
+downloadBtn.addEventListener("click", () => {
+  const qrImg = qrcodeBox.querySelector("img");
+  const qrCanvas = qrcodeBox.querySelector("canvas");
+
+  let downloadUrl = "";
+  if (qrImg && qrImg.src) {
+    downloadUrl = qrImg.src;
+  } else if (qrCanvas) {
+    downloadUrl = qrCanvas.toDataURL("image/png");
+  }
+
+  if (downloadUrl) {
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = `svgp-qr-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+});
+
+// 5. Reset / Generate Again
+resetBtn.addEventListener("click", () => {
+  fileInput.value = "";
+  currentUploadedUrl = "";
+  uploadStatus.innerText = "";
+  qrStatusText.innerText = "Your QR code will appear here!";
+  downloadBtn.setAttribute("disabled", "true");
+
+  qrcodeBox.innerHTML = `
+    <div class="qr-placeholder">
+      <i class="fa-solid fa-qrcode"></i>
+      <span>Upload an image to preview QR</span>
+    </div>
+  `;
+});

@@ -1,241 +1,644 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to QR Code - S.V. Government Polytechnic</title>
-    <link rel="stylesheet" href="qr.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- QR Code Library (GitHub compatible CDN) -->
+
+    <title>SVGP-IDS QR Generator</title>
+
+    <!-- QR Generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- ZIP Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 9px;
+            background: #111827;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+            background: #e5e7eb;
+            height: 18px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        #status {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        .grid {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fill,
+                minmax(190px, 1fr)
+            );
+            gap: 15px;
+        }
+
+        .student-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+
+        .student-card h3 {
+            margin: 5px 0;
+            font-size: 15px;
+        }
+
+        .student-card p {
+            margin: 3px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .qr {
+            display: flex;
+            justify-content: center;
+            margin: 12px 0;
+        }
+
+        .qr img {
+            width: 150px !important;
+            height: 150px !important;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 9px;
+            font-size: 12px;
+            background: #2563eb;
+        }
+    </style>
 </head>
+
 <body>
 
-    <!-- ===== TOP NAVBAR ===== -->
-    <nav class="qr-nav">
-        <div class="qr-nav-left">
-            <img src="images/logo.jfif" alt="Logo" class="qr-logo-img">
-            <div class="qr-logo-text">
-                <h1>S.V. GOVERNMENT POLYTECHNIC</h1>
-                <p>TIRUPATI &nbsp;|&nbsp; ESTD. 1980 &nbsp;|&nbsp; GOVT. OF ANDHRA PRADESH</p>
-            </div>
+<div class="container">
+
+    <div class="header">
+
+        <h1>SVGP-IDS QR Generator</h1>
+
+        <div class="subtitle">
+            Google Drive → Student PIN → Automatic QR
         </div>
-        <div class="qr-nav-center">
-            <a href="index.html" class="qr-nav-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                Home
-            </a>
-            <a href="qr.html" class="qr-nav-btn qr-nav-btn-active">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2zM15 15h2v2h-2zM13 17h2v2h-2zM17 13h2v2h-2zM19 15h2v2h-2zM17 17h2v2h-2zM15 19h2v2h-2zM19 19h2v2h-2z"/></svg>
-                QR Generator
-            </a>
-            <a href="admin.html" class="qr-nav-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                Admin Login
-            </a>
-        </div>
-        <div class="qr-nav-right">
-            <div class="qr-datetime-box">
-                <svg class="qr-dt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <div class="qr-dt-content">
-                    <span id="qr-current-date">Fri, 26 Sep 2026</span>
-                    <span id="qr-current-time">12:30:45 PM</span>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- ===== HERO SECTION ===== -->
-    <section class="qr-hero">
-        <div class="qr-hero-overlay"></div>
-        <div class="qr-hero-content">
-            <h1 class="qr-hero-title">Image to <span class="qr-highlight">QR Code</span></h1>
-            <p class="qr-hero-subtitle">Upload any image and generate a QR code instantly.</p>
-            <div class="qr-features">
-                <div class="qr-feature-badge">
-                    <svg viewBox="0 0 24 24" fill="#fbbf24" width="18" height="18"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                    <span>Fast Generation</span>
-                </div>
-                <div class="qr-feature-badge">
-                    <svg viewBox="0 0 24 24" fill="#a78bfa" width="18" height="18"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                    <span>High Quality</span>
-                </div>
-                <div class="qr-feature-badge">
-                    <svg viewBox="0 0 24 24" fill="#60a5fa" width="18" height="18"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
-                    <span>Free to Use</span>
-                </div>
-            </div>
-        </div>
-        <div class="qr-floating-mockup">
-            <div class="qr-float-image">
-                <svg viewBox="0 0 24 24" fill="white" width="40" height="40"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-            </div>
-            <div class="qr-float-qr">
-                <svg viewBox="0 0 100 100" width="90" height="90">
-                    <rect x="5" y="5" width="25" height="25" fill="white" rx="3"/>
-                    <rect x="10" y="10" width="15" height="15" fill="#1e293b"/>
-                    <rect x="13" y="13" width="9" height="9" fill="white"/>
-                    <rect x="70" y="5" width="25" height="25" fill="white" rx="3"/>
-                    <rect x="75" y="10" width="15" height="15" fill="#1e293b"/>
-                    <rect x="78" y="13" width="9" height="9" fill="white"/>
-                    <rect x="5" y="70" width="25" height="25" fill="white" rx="3"/>
-                    <rect x="10" y="75" width="15" height="15" fill="#1e293b"/>
-                    <rect x="13" y="78" width="9" height="9" fill="white"/>
-                    <rect x="35" y="5" width="8" height="8" fill="#1e293b"/>
-                    <rect x="48" y="5" width="8" height="8" fill="#1e293b"/>
-                    <rect x="35" y="18" width="8" height="8" fill="#1e293b"/>
-                    <rect x="55" y="18" width="8" height="8" fill="#1e293b"/>
-                    <rect x="35" y="35" width="8" height="8" fill="#1e293b"/>
-                    <rect x="48" y="35" width="8" height="8" fill="#1e293b"/>
-                    <rect x="60" y="35" width="8" height="8" fill="#1e293b"/>
-                    <rect x="75" y="35" width="8" height="8" fill="#1e293b"/>
-                    <rect x="88" y="35" width="8" height="8" fill="#1e293b"/>
-                    <rect x="5" y="40" width="8" height="8" fill="#1e293b"/>
-                    <rect x="18" y="40" width="8" height="8" fill="#1e293b"/>
-                    <rect x="5" y="55" width="8" height="8" fill="#1e293b"/>
-                    <rect x="20" y="55" width="8" height="8" fill="#1e293b"/>
-                    <rect x="35" y="50" width="8" height="8" fill="#1e293b"/>
-                    <rect x="50" y="50" width="8" height="8" fill="#1e293b"/>
-                    <rect x="65" y="50" width="8" height="8" fill="#1e293b"/>
-                    <rect x="80" y="50" width="8" height="8" fill="#1e293b"/>
-                    <rect x="35" y="65" width="8" height="8" fill="#1e293b"/>
-                    <rect x="50" y="65" width="8" height="8" fill="#1e293b"/>
-                    <rect x="65" y="65" width="8" height="8" fill="#1e293b"/>
-                    <rect x="80" y="65" width="8" height="8" fill="#1e293b"/>
-                    <rect x="35" y="80" width="8" height="8" fill="#1e293b"/>
-                    <rect x="50" y="80" width="8" height="8" fill="#1e293b"/>
-                    <rect x="65" y="80" width="8" height="8" fill="#1e293b"/>
-                    <rect x="80" y="80" width="8" height="8" fill="#1e293b"/>
-                    <rect x="90" y="80" width="8" height="8" fill="#1e293b"/>
-                </svg>
-            </div>
-        </div>
-    </section>
+        <div class="controls">
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <section class="qr-main">
-        <div class="qr-grid">
+            <button id="loadBtn" onclick="loadStudents()">
+                Load 908 Students
+            </button>
 
-            <!-- LEFT: Upload Card -->
-            <div class="qr-card">
-                <div class="qr-card-header">
-                    <div class="qr-card-icon qr-icon-upload">
-                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                    </div>
-                    <div>
-                        <h2>Upload Image</h2>
-                        <p>Choose an image (JPG, PNG, WEBP) to generate QR code</p>
-                    </div>
-                </div>
+            <button
+                id="generateBtn"
+                onclick="generateAllQR()"
+                disabled
+            >
+                Generate All QR
+            </button>
 
-                <div class="qr-drop-zone" id="qr-drop-zone">
-                    <div class="qr-drop-content">
-                        <svg class="qr-cloud-icon" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
-                        <h3>Click or Drag & Drop Image Here</h3>
-                        <p>Supported formats: JPG, PNG, WEBP<br>(Max 5 MB)</p>
-                    </div>
-                    <input type="file" id="qr-file-input" accept="image/jpeg,image/png,image/webp" hidden>
-                </div>
-
-                <button class="qr-select-btn" id="qr-select-btn">
-                    <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                    Select Image
-                </button>
-
-                <!-- Image Preview -->
-                <div class="qr-preview-area" id="qr-preview-area" style="display: none;">
-                    <img id="qr-preview-img" src="" alt="Preview">
-                    <p id="qr-file-name"></p>
-                </div>
-            </div>
-
-            <!-- RIGHT: Generated QR Card -->
-            <div class="qr-card">
-                <div class="qr-card-header">
-                    <div class="qr-card-icon qr-icon-qr">
-                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4z"/></svg>
-                    </div>
-                    <div>
-                        <h2>Generated QR Code</h2>
-                        <p id="qr-status-text">Your QR code is ready!</p>
-                    </div>
-                </div>
-
-                <div class="qr-result-area">
-                    <div class="qr-code-display" id="qr-code-display">
-                        <div id="qrcode"></div>
-                        <p class="qr-placeholder-text" id="qr-placeholder">Upload an image to generate QR code</p>
-                    </div>
-                </div>
-
-                <div class="qr-action-buttons">
-                    <button class="qr-download-btn" id="qr-download-btn" disabled>
-                        <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        <div>
-                            <strong>Download QR</strong>
-                            <span>PNG (High Quality)</span>
-                        </div>
-                    </button>
-                    <button class="qr-regenerate-btn" id="qr-regenerate-btn">
-                        <svg viewBox="0 0 24 24" fill="#7c3aed" width="20" height="20"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-                        <span>Generate Again</span>
-                    </button>
-                </div>
-            </div>
+            <button
+                id="zipBtn"
+                onclick="downloadZIP()"
+                disabled
+            >
+                Download All QR ZIP
+            </button>
 
         </div>
-    </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="qr-footer">
-        <div class="qr-footer-left">
-            <img src="images/logo.jfif" alt="Logo" class="qr-footer-logo">
-            <div class="qr-footer-text">
-                <h3>S.V. GOVERNMENT POLYTECHNIC</h3>
-                <p>TIRUPATI</p>
-            </div>
+        <div class="progress-container">
+
+            <div
+                id="progressBar"
+                class="progress-bar"
+            ></div>
+
         </div>
-        <div class="qr-footer-center">
-            <div class="qr-footer-col">
-                <h4>🎯 Our Vision</h4>
-                <p>Skilled Students for a Better Tomorrow</p>
-            </div>
-            <div class="qr-footer-col">
-                <h4>🌐 Our Mission</h4>
-                <p>Quality Technical Education for All</p>
-            </div>
-            <div class="qr-footer-col">
-                <h4>💎 Our Motto</h4>
-                <p>Discipline • Skills • Service</p>
-            </div>
+
+        <div id="status">
+            Ready
         </div>
-    </footer>
 
-    <!-- Mobile Bottom Nav -->
-    <nav class="qr-mobile-nav">
-        <a href="index.html" class="qr-mobile-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>Home</span>
-        </a>
-        <a href="qr.html" class="qr-mobile-btn qr-mobile-active">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4z"/></svg>
-            <span>QR Generator</span>
-        </a>
-        <a href="admin.html" class="qr-mobile-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-            <span>Admin Login</span>
-        </a>
-    </nav>
+    </div>
 
-    <script src="qr.js"></script>
+
+    <div
+        id="grid"
+        class="grid"
+    ></div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   APPS SCRIPT API
+========================================= */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
+
+
+/* =========================================
+   WEBSITE SCAN PAGE
+========================================= */
+
+const SCAN_PAGE =
+"https://svgpids.github.io/SVGP-IDS-/scan.html";
+
+
+/* =========================================
+   DATA
+========================================= */
+
+let students = [];
+
+let qrList = [];
+
+
+/* =========================================
+   LOAD STUDENTS
+========================================= */
+
+async function loadStudents() {
+
+    const loadBtn =
+        document.getElementById("loadBtn");
+
+    const generateBtn =
+        document.getElementById("generateBtn");
+
+    const status =
+        document.getElementById("status");
+
+
+    loadBtn.disabled = true;
+
+    status.textContent =
+        "Google Drive data loading...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL + "?action=files"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.error ||
+                "API failed"
+            );
+
+        }
+
+
+        students =
+            data.files || [];
+
+
+        status.textContent =
+            students.length +
+            " students loaded.";
+
+
+        generateBtn.disabled =
+            students.length === 0;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+            "Error: " +
+            error.message;
+
+        loadBtn.disabled = false;
+
+    }
+
+}
+
+
+/* =========================================
+   GENERATE ALL QR
+========================================= */
+
+async function generateAllQR() {
+
+    const grid =
+        document.getElementById("grid");
+
+    const status =
+        document.getElementById("status");
+
+    const progressBar =
+        document.getElementById("progressBar");
+
+    const generateBtn =
+        document.getElementById("generateBtn");
+
+    const zipBtn =
+        document.getElementById("zipBtn");
+
+
+    if (!students.length) {
+
+        alert(
+            "First Load Students click cheyyi."
+        );
+
+        return;
+
+    }
+
+
+    generateBtn.disabled = true;
+
+    zipBtn.disabled = true;
+
+    grid.innerHTML = "";
+
+    qrList = [];
+
+
+    for (
+        let i = 0;
+        i < students.length;
+        i++
+    ) {
+
+        const student =
+            students[i];
+
+
+        /* -----------------------------
+           QR URL
+        ----------------------------- */
+
+        const qrURL =
+            SCAN_PAGE +
+            "?pin=" +
+            encodeURIComponent(
+                student.pin
+            );
+
+
+        /* -----------------------------
+           CARD
+        ----------------------------- */
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "student-card";
+
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            student.pin;
+
+
+        const year =
+            document.createElement("p");
+
+        year.textContent =
+            student.year ||
+            "-";
+
+
+        const branch =
+            document.createElement("p");
+
+        branch.textContent =
+            student.branch ||
+            "-";
+
+
+        const qr =
+            document.createElement("div");
+
+        qr.className =
+            "qr";
+
+
+        const download =
+            document.createElement("button");
+
+        download.className =
+            "download-btn";
+
+        download.textContent =
+            "Download QR";
+
+
+        card.appendChild(title);
+
+        card.appendChild(year);
+
+        card.appendChild(branch);
+
+        card.appendChild(qr);
+
+        card.appendChild(download);
+
+        grid.appendChild(card);
+
+
+        /* -----------------------------
+           CREATE QR
+        ----------------------------- */
+
+        new QRCode(
+            qr,
+            {
+                text: qrURL,
+                width: 150,
+                height: 150,
+                correctLevel:
+                    QRCode.CorrectLevel.H
+            }
+        );
+
+
+        /*
+         * Wait for QR image
+         */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    5
+                )
+        );
+
+
+        const img =
+            qr.querySelector("img");
+
+
+        if (img) {
+
+            const item = {
+
+                pin:
+                    student.pin,
+
+                data:
+                    img.src
+
+            };
+
+
+            qrList.push(item);
+
+
+            download.onclick =
+                function() {
+
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
+
+                    link.href =
+                        img.src;
+
+                    link.download =
+                        student.pin +
+                        ".png";
+
+                    link.click();
+
+                };
+
+        }
+
+
+        /* -----------------------------
+           PROGRESS
+        ----------------------------- */
+
+        const percent =
+            Math.round(
+                ((i + 1) /
+                    students.length) *
+                100
+            );
+
+
+        progressBar.style.width =
+            percent + "%";
+
+
+        status.textContent =
+            "Generating QR " +
+            (i + 1) +
+            " / " +
+            students.length;
+
+    }
+
+
+    status.textContent =
+        "All " +
+        students.length +
+        " QR codes generated.";
+
+
+    zipBtn.disabled =
+        qrList.length === 0;
+
+}
+
+
+/* =========================================
+   DOWNLOAD ALL ZIP
+========================================= */
+
+async function downloadZIP() {
+
+    if (!qrList.length) {
+
+        alert(
+            "QR codes generate cheyyaledu."
+        );
+
+        return;
+
+    }
+
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    const zipBtn =
+        document.getElementById(
+            "zipBtn"
+        );
+
+
+    zipBtn.disabled =
+        true;
+
+
+    status.textContent =
+        "Creating ZIP...";
+
+
+    const zip =
+        new JSZip();
+
+
+    for (
+        const item of qrList
+    ) {
+
+        const base64 =
+            item.data.split(",")[1];
+
+
+        zip.file(
+            item.pin + ".png",
+            base64,
+            {
+                base64: true
+            }
+        );
+
+    }
+
+
+    const blob =
+        await zip.generateAsync({
+            type: "blob"
+        });
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        "SVGP-IDS-QR-CODES.zip";
+
+
+    link.click();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    status.textContent =
+        "ZIP downloaded successfully.";
+
+
+    zipBtn.disabled =
+        false;
+
+}
+
+</script>
+
 </body>
+
 </html>
