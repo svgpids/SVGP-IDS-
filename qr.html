@@ -2,239 +2,232 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SVGP-IDS QR Generator</title>
+<title>SVGP-IDS QR Generator</title>
 
-    <!-- QR Generator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <!-- ZIP Generator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f4f6;
-            color: #111827;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    color: #111827;
+}
 
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: 30px auto;
-        }
+.container {
+    width: 95%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
 
-        .header {
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-        }
+.header {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
 
-        h1 {
-            margin: 0 0 8px;
-            font-size: 28px;
-        }
+h1 {
+    margin: 0;
+}
 
-        .subtitle {
-            color: #6b7280;
-        }
+.subtitle {
+    margin-top: 8px;
+    color: #6b7280;
+}
 
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
 
-        button {
-            border: none;
-            padding: 13px 20px;
-            border-radius: 9px;
-            background: #111827;
-            color: white;
-            cursor: pointer;
-            font-size: 15px;
-        }
+button {
+    border: 0;
+    padding: 13px 20px;
+    border-radius: 9px;
+    background: #111827;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
 
-        button:hover {
-            opacity: 0.9;
-        }
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
 
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+.progress {
+    margin-top: 20px;
+    width: 100%;
+    height: 18px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
 
-        .progress-container {
-            margin-top: 20px;
-            background: #e5e7eb;
-            height: 18px;
-            border-radius: 20px;
-            overflow: hidden;
-        }
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #2563eb;
+}
 
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #2563eb;
-            transition: width 0.2s;
-        }
+#status {
+    margin-top: 12px;
+    font-weight: bold;
+}
 
-        #status {
-            margin-top: 12px;
-            font-weight: bold;
-        }
+.grid {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
 
-        .grid {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(
-                auto-fill,
-                minmax(190px, 1fr)
-            );
-            gap: 15px;
-        }
+.student-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
 
-        .student-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-        }
+.student-card h2 {
+    font-size: 18px;
+    margin: 0 0 5px;
+}
 
-        .student-card h3 {
-            margin: 5px 0;
-            font-size: 15px;
-        }
+.student-card p {
+    color: #666;
+    margin: 4px;
+}
 
-        .student-card p {
-            margin: 3px;
-            color: #6b7280;
-            font-size: 12px;
-        }
+.qr {
+    margin: 20px auto;
+    padding: 15px;
+    width: 430px;
+    max-width: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .qr {
-            display: flex;
-            justify-content: center;
-            margin: 12px 0;
-        }
+.qr img,
+.qr canvas {
+    width: 400px !important;
+    height: 400px !important;
+    max-width: 100%;
+}
 
-        .qr img {
-            width: 150px !important;
-            height: 150px !important;
-        }
+.url {
+    font-size: 12px;
+    color: #555;
+    word-break: break-all;
+    margin: 10px 0;
+}
 
-        .download-btn {
-            width: 100%;
-            padding: 9px;
-            font-size: 12px;
-            background: #2563eb;
-        }
-    </style>
+.download {
+    width: 100%;
+    background: #2563eb;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="header">
+<div class="header">
 
-        <h1>SVGP-IDS QR Generator</h1>
+<h1>SVGP-IDS QR Generator</h1>
 
-        <div class="subtitle">
-            Google Drive → Student PIN → Automatic QR
-        </div>
+<div class="subtitle">
+Google Drive Students → Automatic QR
+</div>
 
-        <div class="controls">
+<div class="controls">
 
-            <button id="loadBtn" onclick="loadStudents()">
-                Load 908 Students
-            </button>
+<button
+id="loadBtn"
+onclick="loadStudents()">
+Load Students
+</button>
 
-            <button
-                id="generateBtn"
-                onclick="generateAllQR()"
-                disabled
-            >
-                Generate All QR
-            </button>
+<button
+id="generateBtn"
+onclick="generateQRs()"
+disabled>
+Generate QR
+</button>
 
-            <button
-                id="zipBtn"
-                onclick="downloadZIP()"
-                disabled
-            >
-                Download All QR ZIP
-            </button>
+</div>
 
-        </div>
+<div class="progress">
 
-        <div class="progress-container">
+<div
+id="progressBar"
+class="progress-bar">
+</div>
 
-            <div
-                id="progressBar"
-                class="progress-bar"
-            ></div>
+</div>
 
-        </div>
+<div id="status">
+Ready
+</div>
 
-        <div id="status">
-            Ready
-        </div>
-
-    </div>
+</div>
 
 
-    <div
-        id="grid"
-        class="grid"
-    ></div>
+<div
+id="grid"
+class="grid">
+</div>
 
 </div>
 
 
 <script>
 
-/* =========================================
-   APPS SCRIPT API
-========================================= */
+/* ==========================================
+   APPS SCRIPT URL
+========================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
 
 
-/* =========================================
-   WEBSITE SCAN PAGE
-========================================= */
+/* ==========================================
+   YOUR SCAN PAGE
+========================================== */
 
 const SCAN_PAGE =
 "https://svgpids.github.io/SVGP-IDS-/scan.html";
 
 
-/* =========================================
-   DATA
-========================================= */
-
 let students = [];
 
-let qrList = [];
 
-
-/* =========================================
+/* ==========================================
    LOAD STUDENTS
-========================================= */
+========================================== */
 
 async function loadStudents() {
+
+    const status =
+        document.getElementById("status");
 
     const loadBtn =
         document.getElementById("loadBtn");
@@ -242,14 +235,11 @@ async function loadStudents() {
     const generateBtn =
         document.getElementById("generateBtn");
 
-    const status =
-        document.getElementById("status");
-
 
     loadBtn.disabled = true;
 
     status.textContent =
-        "Google Drive data loading...";
+        "Loading students from Google Drive...";
 
 
     try {
@@ -258,6 +248,14 @@ async function loadStudents() {
             await fetch(
                 API_URL + "?action=files"
             );
+
+
+        if (!response.ok) {
+            throw new Error(
+                "API HTTP error: " +
+                response.status
+            );
+        }
 
 
         const data =
@@ -283,8 +281,12 @@ async function loadStudents() {
             " students loaded.";
 
 
-        generateBtn.disabled =
-            students.length === 0;
+        if (students.length > 0) {
+
+            generateBtn.disabled =
+                false;
+
+        }
 
 
     } catch (error) {
@@ -295,18 +297,39 @@ async function loadStudents() {
             "Error: " +
             error.message;
 
-        loadBtn.disabled = false;
+        loadBtn.disabled =
+            false;
 
     }
 
 }
 
 
-/* =========================================
-   GENERATE ALL QR
-========================================= */
+/* ==========================================
+   CREATE QR URL
+========================================== */
 
-async function generateAllQR() {
+function getQRURL(pin) {
+
+    pin =
+        String(pin)
+        .trim();
+
+
+    return (
+        SCAN_PAGE +
+        "?pin=" +
+        encodeURIComponent(pin)
+    );
+
+}
+
+
+/* ==========================================
+   GENERATE ALL QR
+========================================== */
+
+async function generateQRs() {
 
     const grid =
         document.getElementById("grid");
@@ -314,14 +337,11 @@ async function generateAllQR() {
     const status =
         document.getElementById("status");
 
-    const progressBar =
+    const progress =
         document.getElementById("progressBar");
 
     const generateBtn =
         document.getElementById("generateBtn");
-
-    const zipBtn =
-        document.getElementById("zipBtn");
 
 
     if (!students.length) {
@@ -335,13 +355,10 @@ async function generateAllQR() {
     }
 
 
-    generateBtn.disabled = true;
-
-    zipBtn.disabled = true;
+    generateBtn.disabled =
+        true;
 
     grid.innerHTML = "";
-
-    qrList = [];
 
 
     for (
@@ -354,16 +371,14 @@ async function generateAllQR() {
             students[i];
 
 
-        /* -----------------------------
-           QR URL
-        ----------------------------- */
+        const pin =
+            String(
+                student.pin
+            ).trim();
+
 
         const qrURL =
-            SCAN_PAGE +
-            "?pin=" +
-            encodeURIComponent(
-                student.pin
-            );
+            getQRURL(pin);
 
 
         /* -----------------------------
@@ -371,47 +386,77 @@ async function generateAllQR() {
         ----------------------------- */
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         card.className =
             "student-card";
 
 
         const title =
-            document.createElement("h3");
+            document.createElement(
+                "h2"
+            );
 
         title.textContent =
-            student.pin;
+            pin;
 
 
         const year =
-            document.createElement("p");
+            document.createElement(
+                "p"
+            );
 
         year.textContent =
-            student.year ||
-            "-";
+            "Year: " +
+            (
+                student.year ||
+                "-"
+            );
 
 
         const branch =
-            document.createElement("p");
+            document.createElement(
+                "p"
+            );
 
         branch.textContent =
-            student.branch ||
-            "-";
+            "Branch: " +
+            (
+                student.branch ||
+                "-"
+            );
 
 
         const qr =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         qr.className =
             "qr";
 
 
+        const urlText =
+            document.createElement(
+                "div"
+            );
+
+        urlText.className =
+            "url";
+
+        urlText.textContent =
+            qrURL;
+
+
         const download =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
         download.className =
-            "download-btn";
+            "download";
 
         download.textContent =
             "Download QR";
@@ -425,80 +470,101 @@ async function generateAllQR() {
 
         card.appendChild(qr);
 
+        card.appendChild(urlText);
+
         card.appendChild(download);
 
         grid.appendChild(card);
 
 
         /* -----------------------------
-           CREATE QR
+           GENERATE QR
         ----------------------------- */
 
         new QRCode(
             qr,
             {
                 text: qrURL,
-                width: 150,
-                height: 150,
+
+                width: 400,
+
+                height: 400,
+
+                colorDark:
+                    "#000000",
+
+                colorLight:
+                    "#ffffff",
+
                 correctLevel:
                     QRCode.CorrectLevel.H
             }
         );
 
 
-        /*
-         * Wait for QR image
-         */
+        /* -----------------------------
+           WAIT
+        ----------------------------- */
 
         await new Promise(
             resolve =>
                 setTimeout(
                     resolve,
-                    5
+                    20
                 )
         );
 
 
-        const img =
-            qr.querySelector("img");
+        const qrImage =
+            qr.querySelector(
+                "img"
+            );
 
 
-        if (img) {
+        /* -----------------------------
+           DOWNLOAD
+        ----------------------------- */
 
-            const item = {
+        download.onclick =
+            function() {
 
-                pin:
-                    student.pin,
+                if (!qrImage) {
 
-                data:
-                    img.src
+                    alert(
+                        "QR image ready kaaledu."
+                    );
+
+                    return;
+
+                }
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    qrImage.src;
+
+
+                link.download =
+                    pin +
+                    ".png";
+
+
+                document.body.appendChild(
+                    link
+                );
+
+
+                link.click();
+
+
+                link.remove();
 
             };
-
-
-            qrList.push(item);
-
-
-            download.onclick =
-                function() {
-
-                    const link =
-                        document.createElement(
-                            "a"
-                        );
-
-                    link.href =
-                        img.src;
-
-                    link.download =
-                        student.pin +
-                        ".png";
-
-                    link.click();
-
-                };
-
-        }
 
 
         /* -----------------------------
@@ -507,135 +573,48 @@ async function generateAllQR() {
 
         const percent =
             Math.round(
-                ((i + 1) /
-                    students.length) *
-                100
+                (
+                    (i + 1) /
+                    students.length
+                ) * 100
             );
 
 
-        progressBar.style.width =
+        progress.style.width =
             percent + "%";
 
 
         status.textContent =
-            "Generating QR " +
+            "QR " +
             (i + 1) +
             " / " +
             students.length;
 
+
+        /*
+         * Give browser time to render
+         */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    10
+                )
+        );
+
     }
 
 
     status.textContent =
-        "All " +
-        students.length +
-        " QR codes generated.";
-
-
-    zipBtn.disabled =
-        qrList.length === 0;
+        "All QR codes generated successfully.";
 
 }
 
 
-/* =========================================
-   DOWNLOAD ALL ZIP
-========================================= */
-
-async function downloadZIP() {
-
-    if (!qrList.length) {
-
-        alert(
-            "QR codes generate cheyyaledu."
-        );
-
-        return;
-
-    }
-
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-
-    const zipBtn =
-        document.getElementById(
-            "zipBtn"
-        );
-
-
-    zipBtn.disabled =
-        true;
-
-
-    status.textContent =
-        "Creating ZIP...";
-
-
-    const zip =
-        new JSZip();
-
-
-    for (
-        const item of qrList
-    ) {
-
-        const base64 =
-            item.data.split(",")[1];
-
-
-        zip.file(
-            item.pin + ".png",
-            base64,
-            {
-                base64: true
-            }
-        );
-
-    }
-
-
-    const blob =
-        await zip.generateAsync({
-            type: "blob"
-        });
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const link =
-        document.createElement("a");
-
-
-    link.href =
-        url;
-
-
-    link.download =
-        "SVGP-IDS-QR-CODES.zip";
-
-
-    link.click();
-
-
-    URL.revokeObjectURL(
-        url
-    );
-
-
-    status.textContent =
-        "ZIP downloaded successfully.";
-
-
-    zipBtn.disabled =
-        false;
-
-}
+/* ==========================================
+   START
+========================================== */
 
 </script>
 

@@ -3,287 +3,359 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-    <title>SVGP-IDS Digital ID</title>
+<title>SVGP-IDS Digital ID</title>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background: #f3f4f6;
-            padding: 20px;
-        }
+body {
 
-        .container {
-            width: 100%;
-            max-width: 450px;
-            margin: auto;
-        }
+    margin: 0;
 
-        .card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow:
-                0 10px 40px
-                rgba(0,0,0,0.15);
-        }
+    min-height: 100vh;
 
-        .header {
-            background: #111827;
-            color: white;
-            text-align: center;
-            padding: 22px;
-        }
+    font-family:
+        Arial,
+        sans-serif;
 
-        .header h1 {
-            margin: 0;
-            font-size: 25px;
-        }
+    background:
+        #f3f4f6;
 
-        .header p {
-            margin: 6px 0 0;
-            opacity: 0.8;
-        }
+    padding: 20px;
 
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
+}
 
-        .error {
-            display: none;
-            padding: 30px 20px;
-            text-align: center;
-            color: #dc2626;
-            font-weight: bold;
-        }
+.container {
 
-        .photo-container {
-            text-align: center;
-            padding: 25px 20px 10px;
-        }
+    width: 100%;
 
-        #studentPhoto {
-            display: none;
-            width: 180px;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 3px solid #e5e7eb;
-        }
+    max-width: 450px;
 
-        .details {
-            display: none;
-            padding: 20px;
-        }
+    margin: auto;
 
-        .row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 13px 0;
-            border-bottom: 1px solid #eeeeee;
-        }
+}
 
-        .label {
-            color: #666666;
-        }
+.card {
 
-        .value {
-            font-weight: bold;
-            text-align: right;
-            word-break: break-word;
-        }
+    background: white;
 
-        .status {
-            text-align: center;
-            padding: 15px;
-            color: #666;
-            font-size: 13px;
-            word-break: break-all;
-        }
+    border-radius: 20px;
 
-    </style>
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 40px
+        rgba(0,0,0,.15);
+
+}
+
+.header {
+
+    background:
+        #111827;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 22px;
+
+}
+
+.header h1 {
+
+    margin: 0;
+
+    font-size: 25px;
+
+}
+
+.header p {
+
+    margin: 7px 0 0;
+
+    opacity: .8;
+
+}
+
+.loading {
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    color: #666;
+
+}
+
+.error {
+
+    display: none;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    color: #dc2626;
+
+    font-weight: bold;
+
+}
+
+.photo-container {
+
+    padding: 25px 20px 10px;
+
+    text-align: center;
+
+}
+
+#studentPhoto {
+
+    display: none;
+
+    width: 180px;
+
+    height: 220px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    border: 3px solid #e5e7eb;
+
+}
+
+.details {
+
+    display: none;
+
+    padding: 20px;
+
+}
+
+.row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid #eeeeee;
+
+}
+
+.label {
+
+    color: #666;
+
+}
+
+.value {
+
+    font-weight: bold;
+
+    text-align: right;
+
+    word-break: break-word;
+
+}
+
+.status {
+
+    text-align: center;
+
+    padding: 15px;
+
+    font-size: 13px;
+
+    color: #666;
+
+    word-break: break-all;
+
+}
+
+</style>
 
 </head>
 
-
 <body>
+
 
 <div class="container">
 
-    <div class="card">
-
-        <div class="header">
-
-            <h1>
-                SVGP-IDS
-            </h1>
-
-            <p>
-                Digital Student ID
-            </p>
-
-        </div>
+<div class="card">
 
 
-        <!-- Loading -->
+<div class="header">
 
-        <div
-            id="loading"
-            class="loading"
-        >
-            Student details loading...
-        </div>
+<h1>
+SVGP-IDS
+</h1>
 
+<p>
+Digital Student ID
+</p>
 
-        <!-- Error -->
-
-        <div
-            id="error"
-            class="error"
-        ></div>
+</div>
 
 
-        <!-- Photo -->
+<div
+id="loading"
+class="loading">
 
-        <div
-            id="photoContainer"
-            class="photo-container"
-        >
+Student details loading...
 
-            <img
-                id="studentPhoto"
-                alt="Student Photo"
-            >
-
-        </div>
+</div>
 
 
-        <!-- Details -->
-
-        <div
-            id="details"
-            class="details"
-        >
-
-            <div class="row">
-
-                <span class="label">
-                    PIN
-                </span>
-
-                <span
-                    id="studentPIN"
-                    class="value"
-                ></span>
-
-            </div>
+<div
+id="error"
+class="error">
+</div>
 
 
-            <div class="row">
+<div
+class="photo-container">
 
-                <span class="label">
-                    Year
-                </span>
+<img
+id="studentPhoto"
+alt="Student Photo"
+>
 
-                <span
-                    id="studentYear"
-                    class="value"
-                ></span>
-
-            </div>
+</div>
 
 
-            <div class="row">
-
-                <span class="label">
-                    Branch
-                </span>
-
-                <span
-                    id="studentBranch"
-                    class="value"
-                ></span>
-
-            </div>
+<div
+id="details"
+class="details">
 
 
-            <div class="row">
+<div class="row">
 
-                <span class="label">
-                    Image
-                </span>
+<span class="label">
+PIN
+</span>
 
-                <span
-                    id="studentFile"
-                    class="value"
-                ></span>
+<span
+id="studentPIN"
+class="value">
+</span>
 
-            </div>
-
-        </div>
+</div>
 
 
-        <div
-            id="status"
-            class="status"
-        ></div>
+<div class="row">
 
-    </div>
+<span class="label">
+Year
+</span>
+
+<span
+id="studentYear"
+class="value">
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Branch
+</span>
+
+<span
+id="studentBranch"
+class="value">
+</span>
+
+</div>
+
+
+<div class="row">
+
+<span class="label">
+Image
+</span>
+
+<span
+id="studentFile"
+class="value">
+</span>
+
+</div>
+
+
+</div>
+
+
+<div
+id="status"
+class="status">
+</div>
+
+
+</div>
 
 </div>
 
 
 <script>
 
-/* =========================================
-   APPS SCRIPT WEB APP
-========================================= */
+
+/* ==========================================
+   APPS SCRIPT API
+========================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxxpk0ldccr8Q4NDsle2xwY3Q7RO5xvEk31eMMz229HOC391ozZ1e_Y7NDlcUd7s8dAHA/exec";
 
 
-/* =========================================
+/* ==========================================
    LOAD STUDENT
-========================================= */
+========================================== */
 
 async function loadStudent() {
+
 
     const loading =
         document.getElementById(
             "loading"
         );
 
-    const error =
+
+    const errorBox =
         document.getElementById(
             "error"
         );
+
 
     const details =
         document.getElementById(
             "details"
         );
 
+
     const photo =
         document.getElementById(
             "studentPhoto"
         );
+
 
     const status =
         document.getElementById(
@@ -292,7 +364,7 @@ async function loadStudent() {
 
 
     /* -----------------------------
-       GET PIN
+       READ QR PARAMETER
     ----------------------------- */
 
     const params =
@@ -306,13 +378,13 @@ async function loadStudent() {
 
 
     console.log(
-        "QR PIN:",
+        "QR PIN =",
         pin
     );
 
 
     /* -----------------------------
-       PIN MISSING
+       NO PIN
     ----------------------------- */
 
     if (!pin) {
@@ -320,11 +392,14 @@ async function loadStudent() {
         loading.style.display =
             "none";
 
-        error.textContent =
-            "Student PIN URL lo ledu.";
 
-        error.style.display =
+        errorBox.textContent =
+            "QR URL lo PIN ledu.";
+
+
+        errorBox.style.display =
             "block";
+
 
         return;
 
@@ -332,21 +407,43 @@ async function loadStudent() {
 
 
     status.textContent =
-        "PIN: " + pin;
+        "Searching: " +
+        pin;
 
 
     try {
 
+
         /* -----------------------------
-           API REQUEST
+           API
         ----------------------------- */
 
-        const response =
-            await fetch(
-                API_URL +
-                "?action=student&pin=" +
-                encodeURIComponent(pin)
+        const url =
+            API_URL +
+            "?action=student&pin=" +
+            encodeURIComponent(
+                pin
             );
+
+
+        console.log(
+            "API URL =",
+            url
+        );
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "API HTTP " +
+                response.status
+            );
+
+        }
 
 
         const data =
@@ -354,7 +451,7 @@ async function loadStudent() {
 
 
         console.log(
-            "Student API:",
+            "API DATA =",
             data
         );
 
@@ -377,7 +474,7 @@ async function loadStudent() {
 
 
         /* -----------------------------
-           STUDENT DETAILS
+           DETAILS
         ----------------------------- */
 
         document.getElementById(
@@ -409,7 +506,7 @@ async function loadStudent() {
 
 
         /* -----------------------------
-           PHOTO
+           IMAGE
         ----------------------------- */
 
         photo.onload =
@@ -424,13 +521,8 @@ async function loadStudent() {
         photo.onerror =
             function() {
 
-                console.error(
-                    "Image failed:",
-                    student.thumbnailUrl
-                );
-
                 status.textContent =
-                    "Student data vachindi, kani Drive image public access lo ledu.";
+                    "Student found, but Drive image access problem.";
 
             };
 
@@ -440,11 +532,12 @@ async function loadStudent() {
 
 
         /* -----------------------------
-           SHOW DETAILS
+           SHOW
         ----------------------------- */
 
         loading.style.display =
             "none";
+
 
         details.style.display =
             "block";
@@ -453,32 +546,38 @@ async function loadStudent() {
         status.textContent =
             "Student ID loaded successfully.";
 
+    }
 
-    } catch (error) {
 
-        console.error(error);
+    catch (error) {
+
+
+        console.error(
+            error
+        );
 
 
         loading.style.display =
             "none";
 
 
-        error.textContent =
+        errorBox.textContent =
             "Student load failed: " +
             error.message;
 
 
-        error.style.display =
+        errorBox.style.display =
             "block";
+
 
     }
 
 }
 
 
-/* =========================================
+/* ==========================================
    START
-========================================= */
+========================================== */
 
 loadStudent();
 
