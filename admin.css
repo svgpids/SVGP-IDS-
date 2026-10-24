@@ -17,10 +17,10 @@ body {
 .bg-overlay {
   position: fixed;
   inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1920&q=80');
+  background-image: url('images/college.jpg');
   background-size: cover;
   background-position: center;
-  filter: brightness(0.92) contrast(0.9);
+  filter: brightness(0.92);
   z-index: -2;
 }
 
